@@ -18,25 +18,34 @@ package de.carne.nio.compression.spi;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.WritableByteChannel;
 
 import de.carne.nio.compression.Compression;
 
 /**
- * Base class for compression decoders
+ * Base class for compression encoders
  */
-public abstract class Decoder extends Compression {
+public abstract class Encoder extends Compression {
 
 	/**
-	 * Decode data.
+	 * Encode data.
 	 *
-	 * @param dst The {@linkplain ByteBuffer} receiving the decoded bytes.
-	 * @param src The {@linkplain ReadableByteChannel} providing the encoded
+	 * @param src The {@linkplain ByteBuffer} providing the data to encode.
+	 * @param dst The {@linkplain WritableByteChannel} receiving the encoded
 	 *        bytes.
-	 * @return The number of decoded bytes or {@code -1} if the end of the
-	 *         encoded stream has been reached.
+	 * @return The number of encoded bytes.
 	 * @throws IOException if an I/O error occurs.
 	 */
-	public abstract int decode(ByteBuffer dst, ReadableByteChannel src) throws IOException;
+	public abstract int encode(ByteBuffer src, WritableByteChannel dst) throws IOException;
+
+	/**
+	 * Close the encoding data stream and write any needed termination mark.
+	 *
+	 * @param dst The {@linkplain WritableByteChannel} receiving the encoded
+	 *        bytes.
+	 * @return The number of encoded bytes.
+	 * @throws IOException if an I/O error occurs.
+	 */
+	public abstract int closeEncoding(WritableByteChannel dst) throws IOException;
 
 }
