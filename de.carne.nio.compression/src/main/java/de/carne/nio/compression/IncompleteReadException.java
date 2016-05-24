@@ -14,11 +14,29 @@
  * You should have received a copy of the GNU Lesser Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.nio.compression.util;
+package de.carne.nio.compression;
+
+import java.io.IOException;
 
 /**
- * 
+ * This exception is thrown when not all requested data could be read.
  */
-public final class HuffmanDecoder {
+public class IncompleteReadException extends IOException {
+
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Construct {@code IncompleteReadException}.
+	 *
+	 * @param requested The number of requested bytes.
+	 * @param read The actual number of read bytes.
+	 */
+	public IncompleteReadException(int requested, int read) {
+		super(formatMessage(requested, read));
+	}
+
+	private static final String formatMessage(int requested, int read) {
+		return "Failed to read the requested number of bytes: Requested " + requested + ", read " + read;
+	}
 
 }

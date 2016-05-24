@@ -14,7 +14,9 @@
  * You should have received a copy of the GNU Lesser Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.nio.compression.util;
+package de.carne.nio.compression.common;
+
+import de.carne.nio.compression.util.Assert;
 
 /**
  * Bit register for LSB byte-wise data access.
@@ -26,8 +28,9 @@ public final class LSBBytesBitRegister extends BitRegister {
 	 * @see de.carne.nio.compression.util.BitRegister#feedBits(byte)
 	 */
 	@Override
-	public int feedBits(byte b) throws IllegalStateException {
-		ensureUnusedBits(8);
+	public int feedBits(byte b) {
+		Assert.inState(this.bitCount < MAX_BIT_COUNT, "bitCount", this.bitCount);
+
 		this.register |= (b & 0xff) << this.bitCount;
 		this.bitCount += 8;
 		return this.bitCount;
@@ -38,8 +41,9 @@ public final class LSBBytesBitRegister extends BitRegister {
 	 * @see de.carne.nio.compression.util.BitRegister#peekBits(int)
 	 */
 	@Override
-	public int peekBits(int count) throws IllegalArgumentException {
-		ensureAvailableBits(count);
+	public int peekBits(int count) {
+		Assert.isValid(count >= 0, "count", count);
+		Assert.inState((this.bitCount + count) < (MAX_BIT_COUNT + 8), "bitCount", this.bitCount, "count", count);
 
 		int bits;
 
@@ -48,10 +52,10 @@ public final class LSBBytesBitRegister extends BitRegister {
 			bits = 0;
 			break;
 		case 32:
-			bits = this.register;
+			bits = (int) this.register;
 			break;
 		default:
-			bits = (this.register & (~(-1 << count)));
+			bits = (int) (this.register & (~(-1 << count)));
 		}
 		return bits;
 	}
@@ -61,8 +65,10 @@ public final class LSBBytesBitRegister extends BitRegister {
 	 * @see de.carne.nio.compression.util.BitRegister#discardBits(int)
 	 */
 	@Override
-	public int discardBits(int count) throws IllegalArgumentException {
-		ensureAvailableBits(count);
+	public int discardBits(int count) {
+		Assert.isValid(count >= 0, "count", count);
+		Assert.inState((this.bitCount + count) < (MAX_BIT_COUNT + 8), "bitCount", this.bitCount, "count", count);
+
 		this.register >>>= count;
 		this.bitCount -= count;
 		return this.bitCount;

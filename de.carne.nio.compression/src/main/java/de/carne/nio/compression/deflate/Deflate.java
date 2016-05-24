@@ -23,4 +23,94 @@ final class Deflate {
 
 	public static final String COMPRESSION_NAME = "Deflate compression";
 
+	public static final int HUFFMAN_BITS = 15;
+
+	public static final int LEN_SLOTS = 29;
+
+	public static final int FIXED_DIST_TABLE_SIZE = 32;
+	public static final int FIXED_LEN_TABLE_SIZE = 31;
+
+	public static final int SYMBOL_END_OF_BLOCK = 256;
+	public static final int SYMBOL_MATCH = SYMBOL_END_OF_BLOCK + 1;
+
+	public static final int MAIN_TABLE_SIZE = SYMBOL_MATCH + LEN_SLOTS;
+	public static final int FIXED_MAIN_TABLE_SIZE = SYMBOL_MATCH + FIXED_LEN_TABLE_SIZE;
+
+	public static final int LEVEL_TABLE_SIZE = 19;
+
+	public static final int HISTORY_SIZE_32 = 1 << 15;
+	public static final int HISTORY_SIZE_64 = 1 << 16;
+
+	public static final byte[] LEN_START_32 = {
+
+			0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16, 20, 24, 28, 32, 40, 48, 56, 64, 80, 96, 112, (byte) 128,
+			(byte) 160, (byte) 192, (byte) 224, (byte) 255, 0, 0
+
+	};
+	public static final byte[] LEN_DIRECT_BITS_32 = {
+
+			0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 0, 0
+
+	};
+
+	public static final byte[] LEN_START_64 = {
+
+			0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16, 20, 24, 28, 32, 40, 48, 56, 64, 80, 96, 112, (byte) 128,
+			(byte) 160, (byte) 192, (byte) 224, 0, 0, 0
+
+	};
+	public static final byte[] LEN_DIRECT_BITS_64 = {
+
+			0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 16, 0, 0
+
+	};
+
+	public static final int[] DIST_START = {
+
+			0, 1, 2, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192, 256, 384, 512, 768, 1024, 1536, 2048, 3072, 4096,
+			6144, 8192, 12288, 16384, 24576, 32768, 49152
+
+	};
+	public static final int[] DIST_DIRECT_BITS = {
+
+			0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14
+
+	};
+
+	public static final int MATCH_MIN_LEN = 3;
+
+	public static final int FINAL_BLOCK_FIELD_SIZE = 1;
+
+	public static final int BLOCK_TYPE_FIELD_SIZE = 2;
+
+	public static final int BLOCK_TYPE_STORED = 0;
+	public static final int BLOCK_TYPE_FIXED_HUFFMAN = 1;
+	public static final int BLOCK_TYPE_DYNAMIC_HUFFMAN = 2;
+
+	public static final int STORED_BLOCK_LENGTH_FIELD_SIZE = 16;
+
+	public static final int DIST_TABLE_SIZE_32 = 30;
+	public static final int DIST_TABLE_SIZE_64 = 32;
+
+	public static final int NUM_LEN_CODES_FIELD_SIZE = 5;
+	public static final int NUM_DIST_CODES_FIELD_SIZE = 5;
+	public static final int NUM_LEVEL_CODES_FIELD_SIZE = 4;
+
+	public static final int NUM_LIT_LEN_CODES_MIN = 257;
+	public static final int NUM_DIST_CODES_MIN = 1;
+	public static final int NUM_LEVEL_CODES_MIN = 4;
+
+	public static final byte[] CODE_LENGTH_ALPHABET_ORDER = {
+
+			16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15
+
+	};
+
+	public static final int LEVEL_FIELD_SIZE = 3;
+
+	public static final int TABLE_DIRECT_LEVELS = 16;
+	public static final int TABLE_LEVEL_REP_NUMBER = TABLE_DIRECT_LEVELS;
+	public static final int TABLE_LEVEL0_NUMBER = TABLE_LEVEL_REP_NUMBER + 1;
+	public static final int TABLE_LEVEL0_NUMBER2 = TABLE_LEVEL0_NUMBER + 1;
+
 }

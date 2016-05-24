@@ -16,6 +16,8 @@
  */
 package de.carne.nio.compression;
 
+import de.carne.nio.compression.util.Assert;
+
 /**
  * Basic interface for compression engines.
  */
@@ -107,9 +109,9 @@ public abstract class Compression {
 	protected synchronized final void endProcessing(long beginTime, long in, long out) {
 		long currentTime = System.currentTimeMillis();
 
-		assert beginTime <= currentTime;
-		assert in >= 0;
-		assert out >= 0;
+		Assert.isValid(beginTime <= currentTime, "beginTime", beginTime);
+		Assert.isValid(in >= 0, "in", in);
+		Assert.isValid(out >= 0, "out", out);
 
 		this.processingTime += currentTime - beginTime;
 		this.totalIn += in;

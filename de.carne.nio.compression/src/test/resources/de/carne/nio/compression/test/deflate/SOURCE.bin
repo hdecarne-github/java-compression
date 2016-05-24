@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Main-Class: de.carne.ApplicationLoader
+X-Version-ProjectId: de.carne.filescanner
+X-Version-ProjectName: FileScanner
+X-Version-ProjectVersion: 2.0.0-snapshot
+X-Version-BuildDate: 20160522105839
+
