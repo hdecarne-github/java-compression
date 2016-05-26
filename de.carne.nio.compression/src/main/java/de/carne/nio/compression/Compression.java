@@ -23,11 +23,11 @@ import de.carne.nio.compression.util.Assert;
  */
 public abstract class Compression {
 
-	private long processingTime = 0l;
+	private long processingTime = 0L;
 
-	private long totalIn = 0l;
+	private long totalIn = 0L;
 
-	private long totalOut = 0l;
+	private long totalOut = 0L;
 
 	/**
 	 * Get the compression name.
@@ -40,9 +40,9 @@ public abstract class Compression {
 	 * Reset the compression engine to it's initial state.
 	 */
 	public synchronized void reset() {
-		this.processingTime = 0l;
-		this.totalIn = 0l;
-		this.totalOut = 0l;
+		this.processingTime = 0L;
+		this.totalIn = 0L;
+		this.totalOut = 0L;
 	}
 
 	/**

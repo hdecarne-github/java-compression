@@ -118,7 +118,7 @@ public class DeflateDecoder extends Decoder implements DeflateName {
 			if (this.blockRemaining != -1) {
 				long decodeStart = this.bitDecoder.totalIn();
 
-				if (decodeStart == 0l && this.modes.contains(DeflateMode.FORMAT_ZLIB)) {
+				if (decodeStart == 0L && this.modes.contains(DeflateMode.FORMAT_ZLIB)) {
 					processZLibHeader(src);
 				}
 				emitted += this.historyBuffer.flush(dst);

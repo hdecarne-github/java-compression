@@ -71,7 +71,7 @@ public final class BitDecoder {
 
 	private void init() {
 		this.trailingBytesIndex = 0;
-		this.totalInBits = 0l;
+		this.totalInBits = 0L;
 	}
 
 	/**
