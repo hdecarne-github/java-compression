@@ -37,7 +37,7 @@ import de.carne.nio.compression.spi.Decoder;
  * <a href="https://en.wikipedia.org/wiki/DEFLATE">https://en.wikipedia.org/wiki
  * /DEFLATE</a>
  */
-public class DeflateDecoder extends Decoder {
+public class DeflateDecoder extends Decoder implements DeflateName {
 
 	private final HashSet<DeflateMode> modes;
 	private final BitDecoder bitDecoder = new BitDecoder(new BitRegister[] {
@@ -372,7 +372,7 @@ public class DeflateDecoder extends Decoder {
 	 */
 	@Override
 	public String name() {
-		return Deflate.COMPRESSION_NAME;
+		return NAME;
 	}
 
 	/*

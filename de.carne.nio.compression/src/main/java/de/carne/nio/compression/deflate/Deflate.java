@@ -21,8 +21,6 @@ package de.carne.nio.compression.deflate;
  */
 final class Deflate {
 
-	public static final String COMPRESSION_NAME = "Deflate compression";
-
 	public static final int HUFFMAN_BITS = 15;
 
 	public static final int LEN_SLOTS = 29;
