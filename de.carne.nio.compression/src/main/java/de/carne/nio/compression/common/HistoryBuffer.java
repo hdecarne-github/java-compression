@@ -47,6 +47,15 @@ public final class HistoryBuffer {
 	}
 
 	/**
+	 * Get the history buffer size.
+	 * 
+	 * @return The history buffer size.
+	 */
+	public int getSize() {
+		return this.buffer.length;
+	}
+
+	/**
 	 * Clear the history buffer.
 	 */
 	public void clear() {

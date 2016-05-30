@@ -126,7 +126,7 @@ public class DeflateDecoder extends Decoder implements DeflateName {
 				int decodeRemaining = dst.remaining();
 
 				while (decodeRemaining > 0 && this.blockRemaining != -1) {
-					decodeBlock(src, decodeRemaining);
+					decodeBlock(src, Math.min(decodeRemaining, this.historyBuffer.getSize() >>> 1));
 					emitted += this.historyBuffer.flush(dst);
 					decodeRemaining = dst.remaining();
 				}
