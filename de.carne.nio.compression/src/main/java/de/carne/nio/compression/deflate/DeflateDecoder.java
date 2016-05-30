@@ -270,7 +270,7 @@ public class DeflateDecoder extends Decoder implements DeflateName {
 			this.bitDecoder.alignToByte();
 			this.storedBlockSize = this.bitDecoder.decodeBits(src, Deflate.STORED_BLOCK_LENGTH_FIELD_SIZE, 1);
 
-			if (this.modes.contains(DeflateMode.FORMAT_NSIS)) {
+			if (!this.modes.contains(DeflateMode.FORMAT_NSIS)) {
 				int storedBlockSizeCheck = this.bitDecoder.decodeBits(src, Deflate.STORED_BLOCK_LENGTH_FIELD_SIZE, 1);
 
 				if (((this.storedBlockSize ^ storedBlockSizeCheck) & 0xffff) != 0xffff) {
