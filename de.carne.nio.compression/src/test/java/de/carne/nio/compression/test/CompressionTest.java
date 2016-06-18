@@ -87,9 +87,9 @@ public abstract class CompressionTest {
 			source = readResource("SOURCE.bin");
 			encoded = readResource("ENCODED.bin");
 		}
-		decoded = ByteBuffer.allocate(source.capacity() + 1);
+		decoded = ByteBuffer.allocate(source.capacity() + 10);
 		try (ReadableByteChannel encodedChannel = new ByteBufferChannel(encoded)) {
-			while (this.decoder.decode(decoded, encodedChannel) >= 0) {
+			while (this.decoder.decode(decoded, encodedChannel) > 0) {
 				// Nothing to do here
 			}
 			decoded.flip();
