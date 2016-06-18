@@ -110,7 +110,7 @@ public class DeflateDecoder extends Decoder implements DeflateName {
 	 */
 	@Override
 	public int decode(ByteBuffer dst, ReadableByteChannel src) throws IOException {
-		long beginTime = beginProcessin();
+		long beginTime = beginProcessing();
 		int decoded = -1;
 		int emitted = 0;
 

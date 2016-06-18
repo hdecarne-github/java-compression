@@ -23,7 +23,7 @@ import de.carne.nio.compression.util.Assert;
  */
 public abstract class Compression {
 
-	private long processingTime = 0L;
+	private long processingNanos = 0L;
 
 	private long totalIn = 0L;
 
@@ -40,25 +40,25 @@ public abstract class Compression {
 	 * Reset the compression engine to it's initial state.
 	 */
 	public synchronized void reset() {
-		this.processingTime = 0L;
+		this.processingNanos = 0L;
 		this.totalIn = 0L;
 		this.totalOut = 0L;
 	}
 
 	/**
-	 * Get the time (in milliseconds) spent in this engine since the last call
-	 * to {@linkplain #reset()}.
+	 * Get the time (in milliseconds) spent in this engine since it's creation
+	 * respectively the last call to {@linkplain #reset()}.
 	 *
 	 * @return The time (in milliseconds) spent in this engine since the last
 	 *         call to {@linkplain #reset()}.
 	 */
 	public synchronized final long processingTime() {
-		return this.processingTime;
+		return this.processingNanos / 1000000L;
 	}
 
 	/**
-	 * Get the number of bytes consumed by this engine since the last call to
-	 * {@linkplain #reset()}.
+	 * Get the number of bytes consumed by this engine since it's creation
+	 * respectively the last call to {@linkplain #reset()}.
 	 *
 	 * @return The number of bytes consumed by this engine since the last call
 	 *         to {@linkplain #reset()}.
@@ -68,14 +68,36 @@ public abstract class Compression {
 	}
 
 	/**
-	 * Get the number of bytes emitted by this engine since the last call to
-	 * {@linkplain #reset()}.
+	 * Get the input processing rate (in bytes per second) of this engine based
+	 * upon the consumed bytes {@linkplain #totalIn()} and the processing time
+	 * {@linkplain #processingTime()}.
+	 *
+	 * @return The input processing rate.
+	 */
+	public synchronized final long rateIn() {
+		return (this.processingNanos > 0L ? (this.totalIn / this.processingNanos) / 1000000L : 0L);
+	}
+
+	/**
+	 * Get the number of bytes emitted by this engine since it's creation
+	 * respectively the last call to {@linkplain #reset()}.
 	 *
 	 * @return The number of bytes emitted by this engine since the last call to
 	 *         {@linkplain #reset()}.
 	 */
 	public synchronized final long totalOut() {
 		return this.totalOut;
+	}
+
+	/**
+	 * Get the output processing rate (in bytes per second) of this engine based
+	 * upon the emitted bytes {@linkplain #totalOut()} and the processing time
+	 * {@linkplain #processingTime()}.
+	 *
+	 * @return The output processing rate.
+	 */
+	public synchronized final long rateOut() {
+		return (this.processingNanos > 0L ? (this.totalOut / this.processingNanos) / 1000000L : 0L);
 	}
 
 	/**
@@ -89,8 +111,8 @@ public abstract class Compression {
 	 *         {@linkplain #endProcessing(long, long, long)} call when engine
 	 *         processing ends.
 	 */
-	protected synchronized final long beginProcessin() {
-		return System.currentTimeMillis();
+	protected synchronized final long beginProcessing() {
+		return System.nanoTime();
 	}
 
 	/**
@@ -102,18 +124,17 @@ public abstract class Compression {
 	 * </p>
 	 *
 	 * @param beginTime The begin time as returned by
-	 *        {@linkplain #beginProcessin()}.
+	 *        {@linkplain #beginProcessing()}.
 	 * @param in The number of consumed bytes.
 	 * @param out The number of emitted bytes.
 	 */
 	protected synchronized final void endProcessing(long beginTime, long in, long out) {
-		long currentTime = System.currentTimeMillis();
+		long currentNanos = System.nanoTime();
 
-		Assert.isValid(beginTime <= currentTime, "beginTime", beginTime);
 		Assert.isValid(in >= 0, "in", in);
 		Assert.isValid(out >= 0, "out", out);
 
-		this.processingTime += currentTime - beginTime;
+		this.processingNanos += currentNanos - beginTime;
 		this.totalIn += in;
 		this.totalOut += out;
 	}
