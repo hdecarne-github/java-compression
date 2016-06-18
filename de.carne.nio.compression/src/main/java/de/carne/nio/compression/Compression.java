@@ -75,7 +75,7 @@ public abstract class Compression {
 	 * @return The input processing rate.
 	 */
 	public synchronized final long rateIn() {
-		return (this.processingNanos > 0L ? (this.totalIn / this.processingNanos) / 1000000L : 0L);
+		return (this.processingNanos >= 1000000L ? (this.totalIn * 1000L) / (this.processingNanos / 1000000L) : 0L);
 	}
 
 	/**
@@ -97,7 +97,7 @@ public abstract class Compression {
 	 * @return The output processing rate.
 	 */
 	public synchronized final long rateOut() {
-		return (this.processingNanos > 0L ? (this.totalOut / this.processingNanos) / 1000000L : 0L);
+		return (this.processingNanos >= 1000000L ? (this.totalOut * 1000L) / (this.processingNanos / 1000000L) : 0L);
 	}
 
 	/**
