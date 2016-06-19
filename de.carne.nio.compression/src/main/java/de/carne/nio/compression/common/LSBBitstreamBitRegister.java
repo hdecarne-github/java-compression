@@ -23,10 +23,6 @@ import de.carne.nio.compression.util.Assert;
  */
 public final class LSBBitstreamBitRegister extends BitRegister {
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.carne.nio.compression.util.BitRegister#feedBits(byte)
-	 */
 	@Override
 	public int feedBits(byte b) {
 		Assert.inState(this.bitCount < MAX_BIT_COUNT, "bitCount", this.bitCount);
@@ -36,10 +32,6 @@ public final class LSBBitstreamBitRegister extends BitRegister {
 		return this.bitCount;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.carne.nio.compression.util.BitRegister#peekBits(int)
-	 */
 	@Override
 	public int peekBits(int count) {
 		Assert.isValid(count >= 0, "count", count);
@@ -60,10 +52,6 @@ public final class LSBBitstreamBitRegister extends BitRegister {
 		return bits;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.carne.nio.compression.util.BitRegister#discardBits(int)
-	 */
 	@Override
 	public int discardBits(int count) {
 		Assert.isValid(count >= 0, "count", count);

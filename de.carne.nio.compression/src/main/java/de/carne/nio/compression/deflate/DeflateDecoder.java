@@ -93,21 +93,12 @@ public class DeflateDecoder extends Decoder implements DeflateName {
 		this.numDistLevels = 0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.carne.nio.compression.Compression#reset()
-	 */
 	@Override
 	public synchronized void reset() {
 		super.reset();
 		init();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.carne.nio.compression.spi.Decoder#decode(java.nio.ByteBuffer,
-	 * java.nio.channels.ReadableByteChannel)
-	 */
 	@Override
 	public int decode(ByteBuffer dst, ReadableByteChannel src) throws IOException {
 		long beginTime = beginProcessing();
@@ -366,19 +357,11 @@ public class DeflateDecoder extends Decoder implements DeflateName {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see de.carne.nio.compression.Compression#name()
-	 */
 	@Override
 	public String name() {
 		return NAME;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();

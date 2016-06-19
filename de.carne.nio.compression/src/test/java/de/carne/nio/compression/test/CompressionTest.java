@@ -132,10 +132,6 @@ public abstract class CompressionTest {
 			this.readBuffer = this.writeBuffer.asReadOnlyBuffer();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.nio.channels.ReadableByteChannel#read(java.nio.ByteBuffer)
-		 */
 		@Override
 		public int read(ByteBuffer dst) throws IOException {
 			ensureOpen();
@@ -154,28 +150,16 @@ public abstract class CompressionTest {
 			return read;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.nio.channels.Channel#isOpen()
-		 */
 		@Override
 		public boolean isOpen() {
 			return this.isOpen;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.nio.channels.Channel#close()
-		 */
 		@Override
 		public void close() throws IOException {
 			this.isOpen = false;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see java.nio.channels.WritableByteChannel#write(java.nio.ByteBuffer)
-		 */
 		@Override
 		public int write(ByteBuffer src) throws IOException {
 			ensureOpen();
