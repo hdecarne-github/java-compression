@@ -8,7 +8,8 @@
 <listAttribute key="tasks">
 <listEntry value="clean"/>
 <listEntry value="build"/>
-<listEntry value="uploadArchives"/>
+<listEntry value="install"/>
 </listAttribute>
-<stringAttribute key="working_dir" value="${workspace_loc:/compression}"/>
+<booleanAttribute key="use_gradle_distribution_from_import" value="false"/>
+<stringAttribute key="working_dir" value="${workspace_loc:/java-compression}"/>
 </launchConfiguration>
