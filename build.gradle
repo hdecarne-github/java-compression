@@ -22,7 +22,7 @@ jacocoTestReport {
 		xml.enabled true
 		xml.destination file("${buildDir}/reports/jacoco/coverage.xml")
 		html.enabled true
-		html.destination "file(${buildDir}/reports/jacoco")
+		html.destination file("${buildDir}/reports/jacoco")
 		csv.enabled false
 	}
 }
