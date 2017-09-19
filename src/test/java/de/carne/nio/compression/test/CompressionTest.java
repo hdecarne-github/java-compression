@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Holger de Carne and contributors, All Rights Reserved.
+ * Copyright (c) 2016-2017 Holger de Carne and contributors, All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser Public License as published by
@@ -60,9 +60,8 @@ public abstract class CompressionTest {
 	/**
 	 * Perform encode/decode run and compare the results.
 	 * <p>
-	 * If no encoder has been provided the necessary test data chunks
-	 * (SOURCE.bin and ENCODED.bin) are read from the test classe's package
-	 * directory.
+	 * If no encoder has been provided the necessary test data chunks (SOURCE.bin and ENCODED.bin) are read from the
+	 * test classe's package directory.
 	 * </p>
 	 */
 	protected void runEncodeDecodeTest() {

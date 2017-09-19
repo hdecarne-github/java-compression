@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Holger de Carne and contributors, All Rights Reserved.
+ * Copyright (c) 2016-2017 Holger de Carne and contributors, All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser Public License as published by
@@ -31,8 +31,7 @@ public abstract class Encoder extends Compression {
 	 * Encode data.
 	 *
 	 * @param src The {@linkplain ByteBuffer} providing the data to encode.
-	 * @param dst The {@linkplain WritableByteChannel} receiving the encoded
-	 *        bytes.
+	 * @param dst The {@linkplain WritableByteChannel} receiving the encoded bytes.
 	 * @return The number of encoded bytes.
 	 * @throws IOException if an I/O error occurs.
 	 */
@@ -41,8 +40,7 @@ public abstract class Encoder extends Compression {
 	/**
 	 * Close the encoding data stream and write any needed termination mark.
 	 *
-	 * @param dst The {@linkplain WritableByteChannel} receiving the encoded
-	 *        bytes.
+	 * @param dst The {@linkplain WritableByteChannel} receiving the encoded bytes.
 	 * @return The number of encoded bytes.
 	 * @throws IOException if an I/O error occurs.
 	 */

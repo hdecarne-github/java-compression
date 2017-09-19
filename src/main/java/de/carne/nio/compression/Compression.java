@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Holger de Carne and contributors, All Rights Reserved.
+ * Copyright (c) 2016-2017 Holger de Carne and contributors, All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser Public License as published by
@@ -46,31 +46,28 @@ public abstract class Compression {
 	}
 
 	/**
-	 * Get the time (in milliseconds) spent in this engine since it's creation
-	 * respectively the last call to {@linkplain #reset()}.
+	 * Get the time (in milliseconds) spent in this engine since it's creation respectively the last call to
+	 * {@linkplain #reset()}.
 	 *
-	 * @return The time (in milliseconds) spent in this engine since the last
-	 *         call to {@linkplain #reset()}.
+	 * @return The time (in milliseconds) spent in this engine since the last call to {@linkplain #reset()}.
 	 */
 	public synchronized final long processingTime() {
 		return this.processingNanos / 1000000L;
 	}
 
 	/**
-	 * Get the number of bytes consumed by this engine since it's creation
-	 * respectively the last call to {@linkplain #reset()}.
+	 * Get the number of bytes consumed by this engine since it's creation respectively the last call to
+	 * {@linkplain #reset()}.
 	 *
-	 * @return The number of bytes consumed by this engine since the last call
-	 *         to {@linkplain #reset()}.
+	 * @return The number of bytes consumed by this engine since the last call to {@linkplain #reset()}.
 	 */
 	public synchronized final long totalIn() {
 		return this.totalIn;
 	}
 
 	/**
-	 * Get the input processing rate (in bytes per second) of this engine based
-	 * upon the consumed bytes {@linkplain #totalIn()} and the processing time
-	 * {@linkplain #processingTime()}.
+	 * Get the input processing rate (in bytes per second) of this engine based upon the consumed bytes
+	 * {@linkplain #totalIn()} and the processing time {@linkplain #processingTime()}.
 	 *
 	 * @return The input processing rate.
 	 */
@@ -79,20 +76,18 @@ public abstract class Compression {
 	}
 
 	/**
-	 * Get the number of bytes emitted by this engine since it's creation
-	 * respectively the last call to {@linkplain #reset()}.
+	 * Get the number of bytes emitted by this engine since it's creation respectively the last call to
+	 * {@linkplain #reset()}.
 	 *
-	 * @return The number of bytes emitted by this engine since the last call to
-	 *         {@linkplain #reset()}.
+	 * @return The number of bytes emitted by this engine since the last call to {@linkplain #reset()}.
 	 */
 	public synchronized final long totalOut() {
 		return this.totalOut;
 	}
 
 	/**
-	 * Get the output processing rate (in bytes per second) of this engine based
-	 * upon the emitted bytes {@linkplain #totalOut()} and the processing time
-	 * {@linkplain #processingTime()}.
+	 * Get the output processing rate (in bytes per second) of this engine based upon the emitted bytes
+	 * {@linkplain #totalOut()} and the processing time {@linkplain #processingTime()}.
 	 *
 	 * @return The output processing rate.
 	 */
@@ -103,28 +98,23 @@ public abstract class Compression {
 	/**
 	 * Record the start time every time engine processing begins.
 	 * <p>
-	 * Derived class have to call this function to make sure engine statistics
-	 * are properly tracked.
+	 * Derived class have to call this function to make sure engine statistics are properly tracked.
 	 * </p>
 	 *
-	 * @return The recorded start time, which should be submitted to the
-	 *         {@linkplain #endProcessing(long, long, long)} call when engine
-	 *         processing ends.
+	 * @return The recorded start time, which should be submitted to the {@linkplain #endProcessing(long, long, long)}
+	 *         call when engine processing ends.
 	 */
 	protected synchronized final long beginProcessing() {
 		return System.nanoTime();
 	}
 
 	/**
-	 * Record the processing time and input/ouput bytes time every time engine
-	 * processing ends.
+	 * Record the processing time and input/ouput bytes time every time engine processing ends.
 	 * <p>
-	 * Derived class have to call this function to make sure engine statistics
-	 * are properly tracked.
+	 * Derived class have to call this function to make sure engine statistics are properly tracked.
 	 * </p>
 	 *
-	 * @param beginTime The begin time as returned by
-	 *        {@linkplain #beginProcessing()}.
+	 * @param beginTime The begin time as returned by {@linkplain #beginProcessing()}.
 	 * @param in The number of consumed bytes.
 	 * @param out The number of emitted bytes.
 	 */

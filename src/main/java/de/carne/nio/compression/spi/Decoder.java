@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Holger de Carne and contributors, All Rights Reserved.
+ * Copyright (c) 2016-2017 Holger de Carne and contributors, All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser Public License as published by
@@ -31,10 +31,8 @@ public abstract class Decoder extends Compression {
 	 * Decode data.
 	 *
 	 * @param dst The {@linkplain ByteBuffer} receiving the decoded bytes.
-	 * @param src The {@linkplain ReadableByteChannel} providing the encoded
-	 *        bytes.
-	 * @return The number of decoded bytes or {@code -1} if the end of the
-	 *         encoded stream has been reached.
+	 * @param src The {@linkplain ReadableByteChannel} providing the encoded bytes.
+	 * @return The number of decoded bytes or {@code -1} if the end of the encoded stream has been reached.
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public abstract int decode(ByteBuffer dst, ReadableByteChannel src) throws IOException;

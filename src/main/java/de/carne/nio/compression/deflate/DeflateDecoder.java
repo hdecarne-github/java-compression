@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Holger de Carne and contributors, All Rights Reserved.
+ * Copyright (c) 2016-2017 Holger de Carne and contributors, All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser Public License as published by
@@ -33,9 +33,7 @@ import de.carne.nio.compression.common.LSBBytesBitRegister;
 import de.carne.nio.compression.spi.Decoder;
 
 /**
- * Deflate decoder:
- * <a href="https://en.wikipedia.org/wiki/DEFLATE">https://en.wikipedia.org/wiki
- * /DEFLATE</a>
+ * Deflate decoder: <a href="https://en.wikipedia.org/wiki/DEFLATE">https://en.wikipedia.org/wiki /DEFLATE</a>
  */
 public class DeflateDecoder extends Decoder implements DeflateName {
 

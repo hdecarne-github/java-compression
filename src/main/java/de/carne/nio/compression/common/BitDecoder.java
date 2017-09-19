@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Holger de Carne and contributors, All Rights Reserved.
+ * Copyright (c) 2016-2017 Holger de Carne and contributors, All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser Public License as published by
@@ -24,11 +24,10 @@ import java.nio.channels.ReadableByteChannel;
 import de.carne.nio.compression.util.Assert;
 
 /**
- * Utility class providing bit-level access to a
- * {@linkplain ReadableByteChannel}'s data.
+ * Utility class providing bit-level access to a {@linkplain ReadableByteChannel}'s data.
  * <p>
- * The actual bit access is done via a {@linkplain BitRegister} instance.
- * Multiple bit registers can be used in parallel.
+ * The actual bit access is done via a {@linkplain BitRegister} instance. Multiple bit registers can be used in
+ * parallel.
  * </p>
  */
 public final class BitDecoder {
@@ -51,8 +50,7 @@ public final class BitDecoder {
 	 * Construct {@code BitDecoder}.
 	 *
 	 * @param registers The bit registers to use.
-	 * @param trailingBytes The optional bytes to feed after the underlying
-	 *        reader has reached EOF.
+	 * @param trailingBytes The optional bytes to feed after the underlying reader has reached EOF.
 	 */
 	public BitDecoder(BitRegister[] registers, byte... trailingBytes) {
 		Assert.notNull(registers, "registers");
@@ -194,8 +192,7 @@ public final class BitDecoder {
 	 *
 	 * @param src The source channel to read from.
 	 * @param dst The {@linkplain ByteBuffer} to read into.
-	 * @return The number of read bytes or {@code -1} if the channel reached
-	 *         end-of-stream.
+	 * @return The number of read bytes or {@code -1} if the channel reached end-of-stream.
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public int readBytes(ReadableByteChannel src, ByteBuffer dst) throws IOException {
@@ -229,8 +226,7 @@ public final class BitDecoder {
 	}
 
 	/**
-	 * Perform a direct byte-aligned read of a single byte and discard the
-	 * corresponding bits.
+	 * Perform a direct byte-aligned read of a single byte and discard the corresponding bits.
 	 *
 	 * @param src The source channel to read from.
 	 * @return The read byte {@code -1} if the channel reached end-of-stream.

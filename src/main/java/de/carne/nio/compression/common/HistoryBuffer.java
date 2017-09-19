@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 Holger de Carne and contributors, All Rights Reserved.
+ * Copyright (c) 2016-2017 Holger de Carne and contributors, All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser Public License as published by
@@ -48,7 +48,7 @@ public final class HistoryBuffer {
 
 	/**
 	 * Get the history buffer size.
-	 * 
+	 *
 	 * @return The history buffer size.
 	 */
 	public int getSize() {
@@ -76,14 +76,11 @@ public final class HistoryBuffer {
 	}
 
 	/**
-	 * Read a number of bytes from a channel and put them into the history
-	 * buffer.
+	 * Read a number of bytes from a channel and put them into the history buffer.
 	 *
-	 * @param bitDecoder The {@linkplain BitDecoder} to use for reading the
-	 *        bytes.
+	 * @param bitDecoder The {@linkplain BitDecoder} to use for reading the bytes.
 	 * @param src The {@linkplain ReadableByteChannel} to read the bytes from.
-	 * @param length The number of bytes to read and to put into the history
-	 *        buffer.
+	 * @param length The number of bytes to read and to put into the history buffer.
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public void putBytes(BitDecoder bitDecoder, ReadableByteChannel src, int length) throws IOException {
