@@ -1,4 +1,4 @@
-#### de.carne.nio.compression
+### de.carne.nio.compression
 
 [![Build Status](https://travis-ci.org/hdecarne/java-compression.svg?branch=master)](https://travis-ci.org/hdecarne/java-compression)
 [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=de.carne:java-compression)](https://sonarcloud.io/dashboard/index/de.carne:java-compression)
