@@ -21,6 +21,10 @@ package de.carne.nio.compression.util;
  */
 public final class Assert {
 
+	private Assert() {
+		// Prevent instantiation
+	}
+
 	/**
 	 * Check whether an argument is not {@code null}.
 	 *
@@ -28,7 +32,7 @@ public final class Assert {
 	 * @param name The argument's name.
 	 * @throws NullPointerException if the argument is {@code null}.
 	 */
-	public static void notNull(Object object, String name) throws NullPointerException {
+	public static void notNull(Object object, String name) {
 		if (object == null) {
 			throw new NullPointerException("Argumrent " + name + " is null");
 		}
@@ -41,7 +45,7 @@ public final class Assert {
 	 * @param name The argument's name.
 	 * @throws IllegalArgumentException if the array is empty.
 	 */
-	public static void notEmpty(int length, String name) throws IllegalArgumentException {
+	public static void notEmpty(int length, String name) {
 		if (length == 0) {
 			throw new IllegalArgumentException("Argument " + name + " is empty");
 		}
@@ -55,7 +59,7 @@ public final class Assert {
 	 * @param value The argument's value.
 	 * @throws IllegalArgumentException if the assumption is not valid.
 	 */
-	public static void isValid(boolean valid, String name, int value) throws IllegalArgumentException {
+	public static void isValid(boolean valid, String name, int value) {
 		if (!valid) {
 			throw new IllegalArgumentException("Invalid argument " + name + ": " + value);
 		}
@@ -69,7 +73,7 @@ public final class Assert {
 	 * @param value The argument's value.
 	 * @throws IllegalArgumentException if the assumption is not valid.
 	 */
-	public static void isValid(boolean valid, String name, long value) throws IllegalArgumentException {
+	public static void isValid(boolean valid, String name, long value) {
 		if (!valid) {
 			throw new IllegalArgumentException("Invalid argument " + name + ": " + value);
 		}
@@ -83,7 +87,7 @@ public final class Assert {
 	 * @param value The state variable's value.
 	 * @throws IllegalStateException if we are not in an expected state.
 	 */
-	public static void inState(boolean state, String name, int value) throws IllegalStateException {
+	public static void inState(boolean state, String name, int value) {
 		if (!state) {
 			throw new IllegalStateException("Unexpected state: " + name + " " + value);
 		}
@@ -99,8 +103,7 @@ public final class Assert {
 	 * @param value2 The 2nd state variable's value.
 	 * @throws IllegalStateException if we are not in an expected state.
 	 */
-	public static void inState(boolean state, String name1, int value1, String name2, int value2)
-			throws IllegalStateException {
+	public static void inState(boolean state, String name1, int value1, String name2, int value2) {
 		if (!state) {
 			throw new IllegalStateException("Unexpected state: " + name1 + " " + value1 + ", " + name2 + " " + value2);
 		}

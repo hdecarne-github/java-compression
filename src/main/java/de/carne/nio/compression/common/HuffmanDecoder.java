@@ -29,10 +29,10 @@ public final class HuffmanDecoder {
 
 	private static final int LENGTHS_TABLE_BITS = 9;
 
-	private final int limits[];
-	private final int positions[];
-	private final int symbols[];
-	byte lengths[];
+	private final int[] limits;
+	private final int[] positions;
+	private final int[] symbols;
+	byte[] lengths;
 
 	/**
 	 * Construct {@code HuffmanDecoder}.
@@ -59,8 +59,8 @@ public final class HuffmanDecoder {
 	public void setCodeLengths(byte[] codeLengths) throws IOException {
 		int maxBits = this.limits.length - 1;
 		int maxSymbols = this.symbols.length;
-		int lengthCounts[] = new int[maxBits + 1];
-		int positions2[] = new int[maxBits + 1];
+		int[] lengthCounts = new int[maxBits + 1];
+		int[] positions2 = new int[maxBits + 1];
 
 		for (int symbol = 0; symbol < maxSymbols; symbol++) {
 			int length = codeLengths[symbol] & 0xff;

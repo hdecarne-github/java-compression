@@ -51,7 +51,7 @@ public abstract class Compression {
 	 *
 	 * @return The time (in milliseconds) spent in this engine since the last call to {@linkplain #reset()}.
 	 */
-	public synchronized final long processingTime() {
+	public final synchronized long processingTime() {
 		return this.processingNanos / 1000000L;
 	}
 
@@ -61,7 +61,7 @@ public abstract class Compression {
 	 *
 	 * @return The number of bytes consumed by this engine since the last call to {@linkplain #reset()}.
 	 */
-	public synchronized final long totalIn() {
+	public final synchronized long totalIn() {
 		return this.totalIn;
 	}
 
@@ -71,7 +71,7 @@ public abstract class Compression {
 	 *
 	 * @return The input processing rate.
 	 */
-	public synchronized final long rateIn() {
+	public final synchronized long rateIn() {
 		return (this.processingNanos >= 1000000L ? (this.totalIn * 1000L) / (this.processingNanos / 1000000L) : 0L);
 	}
 
@@ -81,7 +81,7 @@ public abstract class Compression {
 	 *
 	 * @return The number of bytes emitted by this engine since the last call to {@linkplain #reset()}.
 	 */
-	public synchronized final long totalOut() {
+	public final synchronized long totalOut() {
 		return this.totalOut;
 	}
 
@@ -91,7 +91,7 @@ public abstract class Compression {
 	 *
 	 * @return The output processing rate.
 	 */
-	public synchronized final long rateOut() {
+	public final synchronized long rateOut() {
 		return (this.processingNanos >= 1000000L ? (this.totalOut * 1000L) / (this.processingNanos / 1000000L) : 0L);
 	}
 
@@ -104,7 +104,7 @@ public abstract class Compression {
 	 * @return The recorded start time, which should be submitted to the {@linkplain #endProcessing(long, long, long)}
 	 *         call when engine processing ends.
 	 */
-	protected synchronized final long beginProcessing() {
+	protected final synchronized long beginProcessing() {
 		return System.nanoTime();
 	}
 
@@ -118,7 +118,7 @@ public abstract class Compression {
 	 * @param in The number of consumed bytes.
 	 * @param out The number of emitted bytes.
 	 */
-	protected synchronized final void endProcessing(long beginTime, long in, long out) {
+	protected final synchronized void endProcessing(long beginTime, long in, long out) {
 		long currentNanos = System.nanoTime();
 
 		Assert.isValid(in >= 0, "in", in);

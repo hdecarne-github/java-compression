@@ -61,7 +61,7 @@ public class DeflateDecoder extends Decoder implements DeflateName {
 	 * Construct {@code DeflateDecoder}.
 	 */
 	public DeflateDecoder() {
-		this(Collections.EMPTY_SET);
+		this(Collections.emptySet());
 	}
 
 	/**
@@ -168,7 +168,7 @@ public class DeflateDecoder extends Decoder implements DeflateName {
 			decodeRemaining -= decodeLen;
 		}
 
-		boolean done1 = !(decodeRemaining > 0);
+		boolean done1 = decodeRemaining <= 0;
 
 		while (!done1) {
 			if (this.readTables) {
@@ -188,9 +188,9 @@ public class DeflateDecoder extends Decoder implements DeflateName {
 					this.storedBlockSize -= writeBufferLen;
 					this.readTables = this.storedBlockSize == 0;
 					decodeRemaining -= writeBufferLen;
-					done1 = !(decodeRemaining > 0);
+					done1 = decodeRemaining <= 0;
 				} else {
-					boolean done2 = !(decodeRemaining > 0);
+					boolean done2 = decodeRemaining <= 0;
 
 					while (!done2) {
 						int symbol = this.mainDecoder.decodeSymbol(src, this.bitDecoder, 0);
@@ -200,7 +200,7 @@ public class DeflateDecoder extends Decoder implements DeflateName {
 						} else if (symbol < 0x100) {
 							this.historyBuffer.putByte((byte) symbol);
 							decodeRemaining--;
-							done2 = !(decodeRemaining > 0);
+							done2 = decodeRemaining <= 0;
 						} else if (symbol == Deflate.SYMBOL_END_OF_BLOCK) {
 							this.readTables = true;
 							done2 = true;
@@ -231,7 +231,7 @@ public class DeflateDecoder extends Decoder implements DeflateName {
 							decodeRemaining -= decodeLen2;
 							decodeLen1 -= decodeLen2;
 							if (decodeLen1 == 0) {
-								done2 = !(decodeRemaining > 0);
+								done2 = decodeRemaining <= 0;
 							} else {
 								this.blockRemaining = decodeLen1;
 								this.rep0Dist = dist;
@@ -241,7 +241,7 @@ public class DeflateDecoder extends Decoder implements DeflateName {
 							throw new InvalidDataException(symbol);
 						}
 					}
-					done1 = !(decodeRemaining > 0);
+					done1 = decodeRemaining <= 0;
 				}
 			}
 		}

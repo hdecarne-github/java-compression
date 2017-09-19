@@ -21,7 +21,7 @@ package de.carne.nio.compression.deflate;
  */
 final class DeflateLevels {
 
-	public byte[] levels = new byte[Deflate.FIXED_MAIN_TABLE_SIZE + Deflate.FIXED_DIST_TABLE_SIZE];
+	public final byte[] levels = new byte[Deflate.FIXED_MAIN_TABLE_SIZE + Deflate.FIXED_DIST_TABLE_SIZE];
 	public final byte[] litLenLevels = new byte[Deflate.FIXED_MAIN_TABLE_SIZE];
 	public final byte[] distLevels = new byte[Deflate.FIXED_DIST_TABLE_SIZE];
 
