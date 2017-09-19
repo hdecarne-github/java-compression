@@ -1,5 +1,5 @@
 ### de.carne.nio.compression
-This project provides pure Java based implementations of several common compression algorithms. Main goal is to provide decoding support to the [FileScanner](http://filescanner.org) project.
+This project provides pure Java based implementations of several common compression algorithms. Main goal is to provide decoding support to the [FileScanner](http://www.filescanner.org) project.
 
 Most of the algorithms are ported from [7zip](http://7zip.org). However instead of providing an high-level API for accessing archives this library provides the low level tools and bolts to handle encoded data streams.
 

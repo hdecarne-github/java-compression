@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/hdecarne/java-compression.svg?branch=master)](https://travis-ci.org/hdecarne/java-compression)
 [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=de.carne:java-compression)](https://sonarcloud.io/dashboard/index/de.carne:java-compression)
 
-This project provides pure Java based implementations of several common compression algorithms. Main goal is to provide decoding support to the [FileScanner](https://filescanner.org) project.
+This project provides pure Java based implementations of several common compression algorithms. Main goal is to provide decoding support to the [FileScanner](https://www.filescanner.org) project.
 
 Most of the algorithms are ported from [7zip](http://7zip.org). However instead of providing an high-level API for accessing archives this library provides the low level tools and bolts to handle encoded data streams.
 
