@@ -4,13 +4,20 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.5")
+		classpath("com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3")
 	}
 }
 
 apply plugin: 'java-library'
 apply plugin: 'jacoco'
 apply plugin: "org.sonarqube"
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
 apply plugin: 'eclipse'
+
+def property(name) {
+	return (project.hasProperty(name) ? project.property(name) : 'undefined')
+}
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -21,6 +28,11 @@ repositories {
 
 dependencies {
 	testImplementation("junit:junit:4.12")
+}
+
+test {
+	// Application test may leave VM in a non working state; hence restart on every test
+	forkEvery = 1
 }
 
 jacoco {
@@ -37,6 +49,70 @@ jacocoTestReport {
 }
 
 sonarqube {
+}
+
+task sourceJar(type: Jar) {
+	from sourceSets.main.allJava
+	classifier "sources"
+}
+
+task javadocJar(type: Jar) {
+	from javadoc
+	classifier = 'javadoc'
+}
+
+def pomConfig = {
+	description projectDescription
+	name project.name
+	url projectUrl
+	licenses {
+		license {
+			name projectLicense
+            url projectLicenseUrl
+            distribution 'repo'
+        }
+    }
+    developers {
+        developer {
+            id developerId
+            name developerName
+            email developerEmail
+        }
+    }
+    scm {
+       url projectScmUrl
+    }
+}
+
+publishing {
+	publications {
+		BintrayPublication(MavenPublication) {
+			from components.java
+			artifact sourceJar
+			artifact javadocJar
+			pom.withXml {
+				asNode().children().last() + pomConfig
+			}
+		}
+	}
+}
+
+bintray {
+	user = property('bintrayUser')
+	key = property('bintrayKey')
+	publications = [ 'BintrayPublication' ]
+	pkg {
+		repo = property('bintrayRepo')
+		name = project.name
+		licenses = [ projectLicenseId ]
+		vcsUrl = projectScmUrl
+		version {
+			gpg {
+				sign = true
+				passphrase = property('bintrayGpgPassphrase')
+            }
+		}
+	}
 }
 
 eclipse {
