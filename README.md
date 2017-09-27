@@ -1,8 +1,8 @@
 ### Java compression library
 
-[ ![Download](https://api.bintray.com/packages/hdecarne/maven/java-compression/images/download.svg) ](https://bintray.com/hdecarne/maven/java-compression/_latestVersion)
+[![Download](https://api.bintray.com/packages/hdecarne/maven/java-compression/images/download.svg) ](https://bintray.com/hdecarne/maven/java-compression/_latestVersion)
 [![Build Status](https://travis-ci.org/hdecarne/java-compression.svg?branch=master)](https://travis-ci.org/hdecarne/java-compression)
-[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=de.carne:java-compression)](https://sonarcloud.io/dashboard/index/de.carne:java-compression)
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=de.carne.common:java-compression)](https://sonarcloud.io/dashboard/index/de.carne.common:java-compression)
 
 This project provides pure Java based implementations of several common compression algorithms. Main goal is to provide decoding support to the [FileScanner](https://www.filescanner.org) project.
 
