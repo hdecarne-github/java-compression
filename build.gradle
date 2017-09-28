@@ -62,9 +62,6 @@ task javadocJar(type: Jar) {
 }
 
 def pomConfig = {
-	description projectDescription
-	name project.name
-	url projectUrl
 	licenses {
 		license {
 			name projectLicense
@@ -91,7 +88,12 @@ publishing {
 			artifact sourceJar
 			artifact javadocJar
 			pom.withXml {
-				asNode().children().last() + pomConfig
+				def root = asNode()
+				
+                root.appendNode('description', projectDescription)
+                root.appendNode('name', project.name)
+                root.appendNode('url', projectUrl)
+                root.children().last() + pomConfig
 			}
 		}
 	}
@@ -104,8 +106,11 @@ bintray {
 	pkg {
 		repo = property('bintrayRepo')
 		name = project.name
-		licenses = [ projectLicenseId ]
+		desc = projectDescription
+		websiteUrl = projectUrl
+		issueTrackerUrl = projectIssueTrackerUrl
 		vcsUrl = projectScmUrl
+		licenses = [ projectLicenseId ]
 		version {
 			gpg {
 				sign = true
