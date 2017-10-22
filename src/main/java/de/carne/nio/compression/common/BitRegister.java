@@ -17,7 +17,7 @@
 package de.carne.nio.compression.common;
 
 /**
- * Package private base class for the various bit register types.
+ * Base class for the various bit register types.
  */
 public abstract class BitRegister {
 
@@ -27,7 +27,7 @@ public abstract class BitRegister {
 	public static final int MAX_BIT_COUNT = 32;
 
 	/**
-	 * Bit store.
+	 * Bit register.
 	 */
 	protected long register = 0;
 
@@ -37,7 +37,7 @@ public abstract class BitRegister {
 	protected int bitCount = 0;
 
 	BitRegister() {
-		// Not meant to be subclassed outside this package.
+		// Not meant to be sub-classed outside this package.
 	}
 
 	/**

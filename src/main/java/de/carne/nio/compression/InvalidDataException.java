@@ -23,10 +23,10 @@ import java.io.IOException;
  */
 public class InvalidDataException extends IOException {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 8521323840663502987L;
 
 	/**
-	 * Construct {@code InvalidDataException}.
+	 * Construct {@linkplain InvalidDataException}.
 	 *
 	 * @param data The data causing this exception.
 	 */
@@ -35,22 +35,22 @@ public class InvalidDataException extends IOException {
 	}
 
 	private static final String formatMessage(Number... data) {
-		StringBuilder buffer = new StringBuilder();
+		StringBuilder messageBuilder = new StringBuilder();
 
-		buffer.append("Invalid data");
+		messageBuilder.append("Invalid data");
+
+		String nextSeparator = ": ";
+
 		for (Number value : data) {
-			if (value == data[0]) {
-				buffer.append(": ");
-			} else {
-				buffer.append(", ");
-			}
+			messageBuilder.append(nextSeparator);
+			nextSeparator = ", ";
 			if (value instanceof Byte) {
-				buffer.append(String.format("%02X", value.byteValue()));
+				messageBuilder.append(String.format("%02X", value.byteValue()));
 			} else {
-				buffer.append(value);
+				messageBuilder.append(value);
 			}
 		}
-		return buffer.toString();
+		return messageBuilder.toString();
 	}
 
 }

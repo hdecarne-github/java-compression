@@ -16,24 +16,23 @@
  */
 package de.carne.nio.compression;
 
-import java.io.IOException;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PACKAGE;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.CLASS;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
 /**
- * This exception is thrown when not all requested data bytes could be read.
+ * This element's sub-elements are assumed to be never {@code null} ({@linkplain NonNull}).
  */
-public class IncompleteReadException extends IOException {
+@Documented
+@Retention(CLASS)
+@Target({ TYPE, METHOD, PACKAGE })
+public @interface NonNullByDefault {
 
-	private static final long serialVersionUID = 7837528255415857515L;
-
-	/**
-	 * Construct {@linkplain IncompleteReadException}.
-	 *
-	 * @param requested The number of bytes requested.
-	 * @param read The actual number of bytes read.
-	 */
-	public IncompleteReadException(int requested, int read) {
-		super(String.format("Failed to read the requested number of bytes: Requested = %1$d; Read = %2$d", requested,
-				read));
-	}
+	// Just for code analysis.
 
 }

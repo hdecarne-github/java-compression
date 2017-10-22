@@ -16,7 +16,7 @@
  */
 package de.carne.nio.compression.common;
 
-import de.carne.nio.compression.util.Assert;
+import de.carne.nio.compression.Check;
 
 /**
  * Bit register for LSB byte-wise data access.
@@ -25,7 +25,7 @@ public final class LSBBytesBitRegister extends BitRegister {
 
 	@Override
 	public int feedBits(byte b) {
-		Assert.inState(this.bitCount < MAX_BIT_COUNT, "bitCount", this.bitCount);
+		Check.assertTrue(this.bitCount < MAX_BIT_COUNT, "Invalid bit count: %1$d", this.bitCount);
 
 		this.register |= (b & 0xff) << this.bitCount;
 		this.bitCount += 8;
@@ -34,8 +34,8 @@ public final class LSBBytesBitRegister extends BitRegister {
 
 	@Override
 	public int peekBits(int count) {
-		Assert.isValid(count >= 0, "count", count);
-		Assert.inState((this.bitCount + count) < (MAX_BIT_COUNT + 8), "bitCount", this.bitCount, "count", count);
+		Check.assertTrue((count >= 0) && (this.bitCount + count) < (MAX_BIT_COUNT + 8), "Invalid bit access %1$d +%2$d",
+				this.bitCount, count);
 
 		int bits;
 
@@ -54,8 +54,8 @@ public final class LSBBytesBitRegister extends BitRegister {
 
 	@Override
 	public int discardBits(int count) {
-		Assert.isValid(count >= 0, "count", count);
-		Assert.inState((this.bitCount + count) < (MAX_BIT_COUNT + 8), "bitCount", this.bitCount, "count", count);
+		Check.assertTrue((count >= 0) && (this.bitCount + count) < (MAX_BIT_COUNT + 8), "Invalid bit access %1$d +%2$d",
+				this.bitCount, count);
 
 		this.register >>>= count;
 		this.bitCount -= count;

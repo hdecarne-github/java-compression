@@ -20,9 +20,9 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 
+import de.carne.nio.compression.Check;
 import de.carne.nio.compression.IncompleteReadException;
 import de.carne.nio.compression.InvalidDataException;
-import de.carne.nio.compression.util.Assert;
 
 /**
  * History buffer as used for Deflate processing.
@@ -40,7 +40,7 @@ public final class HistoryBuffer {
 	 * @param size The history buffer size.
 	 */
 	public HistoryBuffer(int size) {
-		Assert.isValid(size > 0, "size", size);
+		Check.assertTrue(size > 0, "Invalid size: %1$d", size);
 
 		this.buffer = new byte[size];
 		clear();

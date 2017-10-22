@@ -16,23 +16,19 @@
  */
 package de.carne.nio.compression;
 
-import de.carne.nio.compression.util.Assert;
-
 /**
- * Basic interface for compression engines.
+ * Base class for all compression engines.
  */
 public abstract class Compression {
 
 	private long processingNanos = 0L;
-
 	private long totalIn = 0L;
-
 	private long totalOut = 0L;
 
 	/**
 	 * Get the compression name.
 	 *
-	 * @return The he compression name.
+	 * @return The compression name.
 	 */
 	public abstract String name();
 
@@ -69,7 +65,7 @@ public abstract class Compression {
 	 * Get the input processing rate (in bytes per second) of this engine based upon the consumed bytes
 	 * {@linkplain #totalIn()} and the processing time {@linkplain #processingTime()}.
 	 *
-	 * @return The input processing rate.
+	 * @return The input processing rate (in bytes per second).
 	 */
 	public final synchronized long rateIn() {
 		return (this.processingNanos >= 1000000L ? (this.totalIn * 1000L) / (this.processingNanos / 1000000L) : 0L);
@@ -89,40 +85,38 @@ public abstract class Compression {
 	 * Get the output processing rate (in bytes per second) of this engine based upon the emitted bytes
 	 * {@linkplain #totalOut()} and the processing time {@linkplain #processingTime()}.
 	 *
-	 * @return The output processing rate.
+	 * @return The output processing rate (in bytes per second).
 	 */
 	public final synchronized long rateOut() {
 		return (this.processingNanos >= 1000000L ? (this.totalOut * 1000L) / (this.processingNanos / 1000000L) : 0L);
 	}
 
 	/**
-	 * Record the start time every time engine processing begins.
+	 * Record the start time of a processing step.
 	 * <p>
-	 * Derived class have to call this function to make sure engine statistics are properly tracked.
-	 * </p>
+	 * Derived classes have to call this function to make sure engine statistics are properly recorded.
 	 *
-	 * @return The recorded start time, which should be submitted to the {@linkplain #endProcessing(long, long, long)}
-	 *         call when engine processing ends.
+	 * @return The recorded start time, which has to be submitted to {@linkplain #endProcessing(long, long, long)} when
+	 *         the processing step is finished.
 	 */
 	protected final synchronized long beginProcessing() {
 		return System.nanoTime();
 	}
 
 	/**
-	 * Record the processing time and input/ouput bytes time every time engine processing ends.
+	 * Record the processing time and input/output bytes at the end of a processing step.
 	 * <p>
-	 * Derived class have to call this function to make sure engine statistics are properly tracked.
-	 * </p>
+	 * Derived classes have to call this function to make sure engine statistics are properly recorded.
 	 *
 	 * @param beginTime The begin time as returned by {@linkplain #beginProcessing()}.
 	 * @param in The number of consumed bytes.
 	 * @param out The number of emitted bytes.
 	 */
 	protected final synchronized void endProcessing(long beginTime, long in, long out) {
-		long currentNanos = System.nanoTime();
+		Check.assertTrue(in >= 0, "Invalid in: %1$d", in);
+		Check.assertTrue(out >= 0, "Invalid out: %1$d", out);
 
-		Assert.isValid(in >= 0, "in", in);
-		Assert.isValid(out >= 0, "out", out);
+		long currentNanos = System.nanoTime();
 
 		this.processingNanos += currentNanos - beginTime;
 		this.totalIn += in;

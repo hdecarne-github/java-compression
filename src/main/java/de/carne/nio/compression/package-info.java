@@ -14,26 +14,5 @@
  * You should have received a copy of the GNU Lesser Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+@NonNullByDefault
 package de.carne.nio.compression;
-
-import java.io.IOException;
-
-/**
- * This exception is thrown when not all requested data bytes could be read.
- */
-public class IncompleteReadException extends IOException {
-
-	private static final long serialVersionUID = 7837528255415857515L;
-
-	/**
-	 * Construct {@linkplain IncompleteReadException}.
-	 *
-	 * @param requested The number of bytes requested.
-	 * @param read The actual number of bytes read.
-	 */
-	public IncompleteReadException(int requested, int read) {
-		super(String.format("Failed to read the requested number of bytes: Requested = %1$d; Read = %2$d", requested,
-				read));
-	}
-
-}

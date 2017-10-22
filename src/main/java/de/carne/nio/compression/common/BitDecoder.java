@@ -21,14 +21,12 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 
-import de.carne.nio.compression.util.Assert;
+import de.carne.nio.compression.Check;
 
 /**
- * Utility class providing bit-level access to a {@linkplain ReadableByteChannel}'s data.
+ * Utility class providing bit-level access to {@linkplain ReadableByteChannel}.
  * <p>
- * The actual bit access is done via a {@linkplain BitRegister} instance. Multiple bit registers can be used in
- * parallel.
- * </p>
+ * The actual bit access is done via on or more {@linkplain BitRegister} instances.
  */
 public final class BitDecoder {
 
@@ -38,32 +36,18 @@ public final class BitDecoder {
 	private long totalInBits;
 
 	/**
-	 * Construct {@code BitDecoder}.
+	 * Construct {@linkplain BitDecoder}.
 	 *
-	 * @param registers The bit registers to use.
-	 */
-	public BitDecoder(BitRegister[] registers) {
-		this(registers, null);
-	}
-
-	/**
-	 * Construct {@code BitDecoder}.
-	 *
-	 * @param registers The bit registers to use.
+	 * @param registers The [@linkplain BitRegister}s to use for bit access.
 	 * @param trailingBytes The optional bytes to feed after the underlying reader has reached EOF.
 	 */
 	public BitDecoder(BitRegister[] registers, byte... trailingBytes) {
-		Assert.notNull(registers, "registers");
-		Assert.notEmpty(registers.length, "registers");
+		Check.assertTrue(registers.length > 0, "Empty registers");
 
 		this.registers = new BitRegister[registers.length];
 		System.arraycopy(registers, 0, this.registers, 0, registers.length);
-		if (trailingBytes != null) {
-			this.trailingBytes = new byte[trailingBytes.length];
-			System.arraycopy(trailingBytes, 0, this.trailingBytes, 0, trailingBytes.length);
-		} else {
-			this.trailingBytes = new byte[0];
-		}
+		this.trailingBytes = new byte[trailingBytes.length];
+		System.arraycopy(trailingBytes, 0, this.trailingBytes, 0, trailingBytes.length);
 		init();
 	}
 
@@ -91,21 +75,20 @@ public final class BitDecoder {
 	}
 
 	/**
-	 * Get the total number of decoded bytes.
+	 * Get the total number of bytes decoded.
 	 *
-	 * @return The total number of decoded bytes.
+	 * @return The total number of bytes decoded.
 	 */
 	public long totalIn() {
 		return (this.totalInBits + 7) >>> 3;
 	}
 
 	/**
-	 * Decode a number of bits from the source channel without discarding them.
+	 * Decode a number of bits from a {@linkplain ReadableByteChannel} without discarding them.
 	 * <p>
 	 * This function uses the register {@code 0} for bit decoding.
-	 * </p>
 	 *
-	 * @param src The source channel to decode from.
+	 * @param src The {@linkplain ReadableByteChannel} to decode from.
 	 * @param count The number of bits to decode.
 	 * @return The decoded bits.
 	 * @throws IOException if an I/O error occurs.
@@ -115,30 +98,29 @@ public final class BitDecoder {
 	}
 
 	/**
-	 * Decode a number of bits from the source channel without discarding them.
+	 * Decode a number of bits from a {@linkplain ReadableByteChannel} without discarding them.
 	 *
-	 * @param src The source channel to decode from.
+	 * @param src The {@linkplain ReadableByteChannel} to decode from.
 	 * @param count The number of bits to decode.
 	 * @param registerIndex The register to use for bit decoding.
 	 * @return The decoded bits.
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public int peekBits(ReadableByteChannel src, int count, int registerIndex) throws IOException {
-		Assert.notNull(src, "src");
-		Assert.isValid(count >= 0, "count", count);
-		Assert.isValid(0 <= registerIndex && registerIndex < this.registers.length, "registerIndex", registerIndex);
+		Check.assertTrue(count >= 0, "Invalid bit count: %1$d", count);
+		Check.assertTrue(0 <= registerIndex && registerIndex < this.registers.length, "Invalid register index: %1$d",
+				registerIndex);
 
 		feedBytes(src, count);
 		return this.registers[registerIndex].peekBits(count);
 	}
 
 	/**
-	 * Decode a number of bits from the source channel and discard them.
+	 * Decode a number of bits from a {@linkplain ReadableByteChannel} and discard them.
 	 * <p>
 	 * This function uses the register {@code 0} for bit decoding.
-	 * </p>
 	 *
-	 * @param src The source channel to decode from.
+	 * @param src The {@linkplain ReadableByteChannel} to decode from.
 	 * @param count The number of bits to decode.
 	 * @return The decoded bits.
 	 * @throws IOException if an I/O error occurs.
@@ -148,7 +130,7 @@ public final class BitDecoder {
 	}
 
 	/**
-	 * Decode a number of bits from the source channel and discard them.
+	 * Decode a number of bits from a {@linkplain ReadableByteChannel} and discard them.
 	 *
 	 * @param src The source channel to decode from.
 	 * @param count The number of bits to decode.
@@ -157,10 +139,6 @@ public final class BitDecoder {
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public int decodeBits(ReadableByteChannel src, int count, int registerIndex) throws IOException {
-		Assert.notNull(src, "src");
-		Assert.isValid(count >= 0, "count", count);
-		Assert.isValid(0 <= registerIndex && registerIndex < this.registers.length, "registerIndex", registerIndex);
-
 		int bits = peekBits(src, count, registerIndex);
 
 		this.totalInBits += count;
@@ -188,17 +166,13 @@ public final class BitDecoder {
 	 * Perform a direct byte-aligned read and discard the corresponding bits.
 	 * <p>
 	 * This function allows optimized access bulk reading data.
-	 * </p>
 	 *
-	 * @param src The source channel to read from.
+	 * @param src The {@linkplain ReadableByteChannel} to read from.
 	 * @param dst The {@linkplain ByteBuffer} to read into.
-	 * @return The number of read bytes or {@code -1} if the channel reached end-of-stream.
+	 * @return The number of read bytes or {@code -1} if the channel has reached EOF.
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public int readBytes(ReadableByteChannel src, ByteBuffer dst) throws IOException {
-		Assert.notNull(src, "src");
-		Assert.notNull(dst, "dst");
-
 		alignToByte();
 
 		BitRegister register0 = this.registers[0];
@@ -228,13 +202,11 @@ public final class BitDecoder {
 	/**
 	 * Perform a direct byte-aligned read of a single byte and discard the corresponding bits.
 	 *
-	 * @param src The source channel to read from.
-	 * @return The read byte {@code -1} if the channel reached end-of-stream.
+	 * @param src The {@linkplain ReadableByteChannel} to read from.
+	 * @return The read byte or {@code -1} if the channel has reached EOF.
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public int readByte(ReadableByteChannel src) throws IOException {
-		Assert.notNull(src, "src");
-
 		alignToByte();
 
 		BitRegister register0 = this.registers[0];
@@ -271,11 +243,7 @@ public final class BitDecoder {
 				src.read(readBuffer);
 				readBuffer.flip();
 				while (readBuffer.hasRemaining()) {
-					byte b = readBuffer.get();
-
-					for (BitRegister register : this.registers) {
-						register.feedBits(b);
-					}
+					feedByte(readBuffer.get());
 					feedBytesRemainingCount--;
 				}
 			}
@@ -284,14 +252,16 @@ public final class BitDecoder {
 					throw new EOFException("Unable to read remaining bytes: " + feedBytesRemainingCount);
 				}
 
-				byte b = this.trailingBytes[this.trailingBytesIndex];
-
-				for (BitRegister register : this.registers) {
-					register.feedBits(b);
-				}
+				feedByte(this.trailingBytes[this.trailingBytesIndex]);
 				this.trailingBytesIndex++;
 				feedBytesRemainingCount--;
 			}
+		}
+	}
+
+	private void feedByte(byte b) {
+		for (BitRegister register : this.registers) {
+			register.feedBits(b);
 		}
 	}
 

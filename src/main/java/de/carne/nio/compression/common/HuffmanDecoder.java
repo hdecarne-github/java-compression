@@ -19,8 +19,8 @@ package de.carne.nio.compression.common;
 import java.io.IOException;
 import java.nio.channels.ReadableByteChannel;
 
+import de.carne.nio.compression.Check;
 import de.carne.nio.compression.InvalidDataException;
-import de.carne.nio.compression.util.Assert;
 
 /**
  * Huffman symbol decoding support.
@@ -41,8 +41,8 @@ public final class HuffmanDecoder {
 	 * @param maxSymbols Maximum number of symbols.
 	 */
 	public HuffmanDecoder(int maxBits, int maxSymbols) {
-		Assert.isValid(maxBits > 0, "maxBits", maxBits);
-		Assert.isValid(maxSymbols > 0, "maxSymbols", maxSymbols);
+		Check.assertTrue(maxBits > 0, "Invalid max bits: %1$d", maxBits);
+		Check.assertTrue(maxSymbols > 0, "Invalid max symbols: %1$d", maxSymbols);
 
 		this.limits = new int[maxBits + 1];
 		this.positions = new int[maxBits + 1];
