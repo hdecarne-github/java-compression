@@ -27,10 +27,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Random;
+import java.util.ServiceLoader;
 
 import org.junit.Assert;
 
 import de.carne.nio.compression.spi.Decoder;
+import de.carne.nio.compression.spi.DecoderFactory;
 import de.carne.nio.compression.spi.Encoder;
 
 /**
@@ -55,6 +57,17 @@ public abstract class CompressionTest {
 
 		this.encoder = encoder;
 		this.decoder = decoder;
+	}
+
+	protected void runDecoderTest(String decoderName) {
+		ServiceLoader<DecoderFactory> decoderFactories = ServiceLoader.load(DecoderFactory.class);
+		Decoder decoder = null;
+
+		for (DecoderFactory decoderFactory : decoderFactories) {
+			if (decoderFactory.decoderName().equals(decoderName)) {
+
+			}
+		}
 	}
 
 	/**
