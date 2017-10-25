@@ -19,13 +19,22 @@ package de.carne.nio.compression.spi;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
-
-import de.carne.nio.compression.Compression;
+import java.util.Properties;
 
 /**
  * Base class for compression decoders
  */
 public abstract class Decoder extends Compression {
+
+	/**
+	 * Construct {@linkplain Decoder}.
+	 *
+	 * @param name The compression name.
+	 * @param properties The decoder properties.
+	 */
+	protected Decoder(String name, Properties properties) {
+		super(name, properties);
+	}
 
 	/**
 	 * Decode data.

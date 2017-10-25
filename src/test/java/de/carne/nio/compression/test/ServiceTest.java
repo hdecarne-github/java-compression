@@ -23,7 +23,7 @@ import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.carne.nio.compression.deflate.DeflateName;
+import de.carne.nio.compression.deflate.DeflateFactory;
 import de.carne.nio.compression.spi.DecoderFactory;
 import de.carne.nio.compression.spi.EncoderFactory;
 
@@ -41,7 +41,7 @@ public class ServiceTest {
 	private static Set<String> DECODER_NAMES = new HashSet<>();
 
 	static {
-		DECODER_NAMES.add(DeflateName.NAME);
+		DECODER_NAMES.add(DeflateFactory.COMPRESSION_NAME);
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class ServiceTest {
 		Set<String> encoderNames = new HashSet<>();
 
 		for (EncoderFactory encoderFactory : encoderFactories) {
-			encoderNames.add(encoderFactory.encoderName());
+			encoderNames.add(encoderFactory.compressionName());
 		}
 		Assert.assertEquals(ENCODER_NAMES.size(), encoderNames.size());
 		for (String encoderName : encoderNames) {
@@ -70,7 +70,7 @@ public class ServiceTest {
 		Set<String> decoderNames = new HashSet<>();
 
 		for (DecoderFactory decoderFactory : decoderFactories) {
-			decoderNames.add(decoderFactory.decoderName());
+			decoderNames.add(decoderFactory.compressionName());
 		}
 		Assert.assertEquals(DECODER_NAMES.size(), decoderNames.size());
 		for (String decoderName : decoderNames) {

@@ -14,16 +14,18 @@
  * You should have received a copy of the GNU Lesser Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.nio.compression.deflate;
+package de.carne.nio.compression.spi;
 
 /**
- * Deflate compression name.
+ * Basic interface for all compression factories.
  */
-public interface DeflateName {
+public interface CompressionFactory {
 
 	/**
-	 * Deflate compression name.
+	 * Get the compression name.
+	 *
+	 * @return The compression name.
 	 */
-	public static final String NAME = "Deflate compression";
+	String compressionName();
 
 }

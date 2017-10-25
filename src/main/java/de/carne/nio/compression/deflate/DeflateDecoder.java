@@ -21,6 +21,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 
 import de.carne.nio.compression.InvalidDataException;
@@ -35,7 +36,7 @@ import de.carne.nio.compression.spi.Decoder;
 /**
  * Deflate decoder: <a href="https://en.wikipedia.org/wiki/DEFLATE">https://en.wikipedia.org/wiki /DEFLATE</a>
  */
-public class DeflateDecoder extends Decoder implements DeflateName {
+public class DeflateDecoder extends Decoder {
 
 	private final HashSet<DeflateMode> modes;
 	private final BitDecoder bitDecoder = new BitDecoder(new BitRegister[] {
@@ -70,6 +71,8 @@ public class DeflateDecoder extends Decoder implements DeflateName {
 	 * @param modes Decoder modes to use.
 	 */
 	public DeflateDecoder(Set<DeflateMode> modes) {
+		super(DeflateFactory.COMPRESSION_NAME, new Properties());
+
 		assert modes != null;
 
 		this.modes = new HashSet<>(modes);
@@ -353,11 +356,6 @@ public class DeflateDecoder extends Decoder implements DeflateName {
 				}
 			}
 		}
-	}
-
-	@Override
-	public String name() {
-		return NAME;
 	}
 
 	@Override

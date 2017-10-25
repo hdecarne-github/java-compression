@@ -16,16 +16,35 @@
  */
 package de.carne.nio.compression.deflate;
 
+import java.util.Properties;
+
+import de.carne.nio.compression.CompressionInitializationException;
+import de.carne.nio.compression.spi.Decoder;
 import de.carne.nio.compression.spi.DecoderFactory;
 
 /**
- * Deflate factory
+ * Deflate compression factory
  */
-public class DeflateFactory implements DecoderFactory, DeflateName {
+public class DeflateFactory implements DecoderFactory {
+
+	/**
+	 * The compression name.
+	 */
+	public static final String COMPRESSION_NAME = "Deflate compression";
 
 	@Override
-	public String decoderName() {
-		return NAME;
+	public String compressionName() {
+		return COMPRESSION_NAME;
+	}
+
+	@Override
+	public Properties defaultDecoderProperties() {
+		return new Properties();
+	}
+
+	@Override
+	public Decoder newDecoder(Properties properties) throws CompressionInitializationException {
+		return new DeflateDecoder();
 	}
 
 }

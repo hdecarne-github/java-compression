@@ -16,184 +16,92 @@
  */
 package de.carne.nio.compression.test;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.nio.channels.ByteChannel;
-import java.nio.channels.ClosedChannelException;
+import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Random;
+import java.nio.channels.WritableByteChannel;
 import java.util.ServiceLoader;
 
 import org.junit.Assert;
 
 import de.carne.nio.compression.spi.Decoder;
 import de.carne.nio.compression.spi.DecoderFactory;
-import de.carne.nio.compression.spi.Encoder;
 
 /**
  * Base class for compression tests.
  */
 public abstract class CompressionTest {
 
-	private final int TEST_SOURCE_SIZE = 0x10000;
-
-	private final Encoder encoder;
-
-	private final Decoder decoder;
-
 	/**
-	 * Construct {@code CompressionTest}.
+	 * Test decoder output.
 	 *
-	 * @param encoder The encoder to test (may be {@code null}).
-	 * @param decoder The decoder to test.
+	 * @param compressionName The compression name to test the decoder for.
+	 * @param encodedDataUrl The {@linkplain URL} to the encoded test data.
+	 * @param decodedDataUrl The {@linkplain URL} to the decoded test data.
+	 * @throws IOException if an I/O error occurs.
 	 */
-	public CompressionTest(Encoder encoder, Decoder decoder) {
-		assert decoder != null;
-
-		this.encoder = encoder;
-		this.decoder = decoder;
-	}
-
-	protected void runDecoderTest(String decoderName) {
+	protected void runDecoderTest(String compressionName, URL encodedDataUrl, URL decodedDataUrl) throws IOException {
 		ServiceLoader<DecoderFactory> decoderFactories = ServiceLoader.load(DecoderFactory.class);
 		Decoder decoder = null;
 
 		for (DecoderFactory decoderFactory : decoderFactories) {
-			if (decoderFactory.decoderName().equals(decoderName)) {
-
+			if (decoderFactory.compressionName().equals(compressionName)) {
+				decoder = decoderFactory.newDecoder();
+				break;
 			}
 		}
+
+		Assert.assertNotNull(decoder);
+
+		byte[] encodedData = loadData(encodedDataUrl);
+		byte[] decodedData = loadData(decodedDataUrl);
+		byte[] decoderResult = decodeData(decoder, encodedData);
+
+		Assert.assertArrayEquals(decodedData, decoderResult);
 	}
 
-	/**
-	 * Perform encode/decode run and compare the results.
-	 * <p>
-	 * If no encoder has been provided the necessary test data chunks (SOURCE.bin and ENCODED.bin) are read from the
-	 * test classe's package directory.
-	 * </p>
-	 */
-	protected void runEncodeDecodeTest() {
-		ByteBuffer source;
-		ByteBuffer encoded;
-		ByteBuffer decoded;
+	private byte[] loadData(URL dataUrl) throws IOException {
+		ByteArrayOutputStream dataBytes = new ByteArrayOutputStream();
+		byte[] buffer = new byte[4096];
 
-		if (this.encoder != null) {
-			source = ByteBuffer.allocate(this.TEST_SOURCE_SIZE);
+		try (InputStream dataStream = dataUrl.openStream()) {
+			while (true) {
+				int read = dataStream.read(buffer);
 
-			Random random = new Random();
-			byte[] randomBytes = new byte[1024];
-
-			while (source.hasRemaining()) {
-				random.nextBytes(randomBytes);
-				source.put(randomBytes);
-			}
-			source.flip();
-			// TODO: Do real encoding
-			encoded = readResource("ENCODED.bin");
-		} else {
-			source = readResource("SOURCE.bin");
-			encoded = readResource("ENCODED.bin");
-		}
-		decoded = ByteBuffer.allocate(source.capacity() + 10);
-		try (ReadableByteChannel encodedChannel = new ByteBufferChannel(encoded)) {
-			while (this.decoder.decode(decoded, encodedChannel) > 0) {
-				// Nothing to do here
-			}
-			decoded.flip();
-		} catch (IOException e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		}
-		Assert.assertTrue(source.equals(decoded));
-	}
-
-	private ByteBuffer readResource(String name) {
-		ByteBuffer resourceBuffer = null;
-
-		try {
-			URL resourceURL = getClass().getResource(name);
-			Path resourcePath = Paths.get(resourceURL.toURI());
-			long resourceSize = Files.size(resourcePath);
-
-			resourceBuffer = ByteBuffer.allocate((int) resourceSize);
-			try (ByteChannel channel = Files.newByteChannel(resourcePath)) {
-				channel.read(resourceBuffer);
-			}
-			resourceBuffer.flip();
-		} catch (IOException | URISyntaxException e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		}
-		return resourceBuffer;
-	}
-
-	private static class ByteBufferChannel implements ByteChannel {
-
-		private boolean isOpen = true;
-
-		private final ByteBuffer writeBuffer;
-		private final ByteBuffer readBuffer;
-
-		public ByteBufferChannel(ByteBuffer buffer) {
-			this.writeBuffer = buffer;
-			this.readBuffer = this.writeBuffer.asReadOnlyBuffer();
-		}
-
-		@Override
-		public int read(ByteBuffer dst) throws IOException {
-			ensureOpen();
-
-			int read;
-
-			if (this.readBuffer.hasRemaining()) {
-				read = 0;
-				while (dst.hasRemaining() && this.readBuffer.hasRemaining()) {
-					dst.put(this.readBuffer.get());
-					read++;
+				if (read < 0) {
+					break;
 				}
-			} else {
-				read = -1;
-			}
-			return read;
-		}
-
-		@Override
-		public boolean isOpen() {
-			return this.isOpen;
-		}
-
-		@Override
-		public void close() throws IOException {
-			this.isOpen = false;
-		}
-
-		@Override
-		public int write(ByteBuffer src) throws IOException {
-			ensureOpen();
-			if (!this.writeBuffer.hasRemaining()) {
-				throw new IOException("Writte buffer exhausted");
-			}
-
-			int written = 0;
-
-			while (src.hasRemaining() && this.writeBuffer.hasRemaining()) {
-				this.writeBuffer.put(src.get());
-				written++;
-			}
-			return written;
-		}
-
-		private void ensureOpen() throws IOException {
-			if (!this.isOpen) {
-				throw new ClosedChannelException();
+				dataBytes.write(buffer, 0, read);
 			}
 		}
+		return dataBytes.toByteArray();
+	}
 
+	private byte[] decodeData(Decoder decoder, byte[] encodedData) throws IOException {
+		ReadableByteChannel encodedChannel = Channels.newChannel(new ByteArrayInputStream(encodedData));
+		ByteArrayOutputStream decodedBytes = new ByteArrayOutputStream();
+		WritableByteChannel decodedChannel = Channels.newChannel(decodedBytes);
+		ByteBuffer decodeBuffer = ByteBuffer.allocate(4096);
+
+		while (true) {
+			decodeBuffer.rewind();
+
+			int decoded = decoder.decode(decodeBuffer, encodedChannel);
+
+			if (decoded < 0) {
+				break;
+			}
+			decodeBuffer.flip();
+			decodedChannel.write(decodeBuffer);
+
+			Assert.assertFalse(decodeBuffer.hasRemaining());
+		}
+		return decodedBytes.toByteArray();
 	}
 
 }

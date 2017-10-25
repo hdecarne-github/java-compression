@@ -16,16 +16,139 @@
  */
 package de.carne.nio.compression.spi;
 
+import java.util.Properties;
+
+import de.carne.nio.compression.Check;
+
 /**
- * Basic interface for all factory interfaces.
+ * Base class for all compression engines.
  */
-public interface Compression {
+public abstract class Compression {
+
+	private final String name;
+	private final Properties properties;
+	private long processingNanos = 0L;
+	private long totalIn = 0L;
+	private long totalOut = 0L;
+
+	/**
+	 * Construct {@linkplain Compression}.
+	 *
+	 * @param name The compression name.
+	 * @param properties The engine properties.
+	 */
+	protected Compression(String name, Properties properties) {
+		this.name = name;
+		this.properties = properties;
+	}
 
 	/**
 	 * Get the compression name.
-	 * 
+	 *
 	 * @return The compression name.
 	 */
-	String compressionName();
+	public final String name() {
+		return this.name;
+	}
+
+	/**
+	 * Get the compression properties.
+	 *
+	 * @return The compression properties.
+	 */
+	public final Properties properties() {
+		return this.properties;
+	}
+
+	/**
+	 * Reset the compression engine to it's initial state.
+	 */
+	public synchronized void reset() {
+		this.processingNanos = 0L;
+		this.totalIn = 0L;
+		this.totalOut = 0L;
+	}
+
+	/**
+	 * Get the time (in milliseconds) spent in this engine since it's creation respectively the last call to
+	 * {@linkplain #reset()}.
+	 *
+	 * @return The time (in milliseconds) spent in this engine since the last call to {@linkplain #reset()}.
+	 */
+	public final synchronized long processingTime() {
+		return this.processingNanos / 1000000L;
+	}
+
+	/**
+	 * Get the number of bytes consumed by this engine since it's creation respectively the last call to
+	 * {@linkplain #reset()}.
+	 *
+	 * @return The number of bytes consumed by this engine since the last call to {@linkplain #reset()}.
+	 */
+	public final synchronized long totalIn() {
+		return this.totalIn;
+	}
+
+	/**
+	 * Get the input processing rate (in bytes per second) of this engine based upon the consumed bytes
+	 * {@linkplain #totalIn()} and the processing time {@linkplain #processingTime()}.
+	 *
+	 * @return The input processing rate (in bytes per second).
+	 */
+	public final synchronized long rateIn() {
+		return (this.processingNanos >= 1000000L ? (this.totalIn * 1000L) / (this.processingNanos / 1000000L) : 0L);
+	}
+
+	/**
+	 * Get the number of bytes emitted by this engine since it's creation respectively the last call to
+	 * {@linkplain #reset()}.
+	 *
+	 * @return The number of bytes emitted by this engine since the last call to {@linkplain #reset()}.
+	 */
+	public final synchronized long totalOut() {
+		return this.totalOut;
+	}
+
+	/**
+	 * Get the output processing rate (in bytes per second) of this engine based upon the emitted bytes
+	 * {@linkplain #totalOut()} and the processing time {@linkplain #processingTime()}.
+	 *
+	 * @return The output processing rate (in bytes per second).
+	 */
+	public final synchronized long rateOut() {
+		return (this.processingNanos >= 1000000L ? (this.totalOut * 1000L) / (this.processingNanos / 1000000L) : 0L);
+	}
+
+	/**
+	 * Record the start time of a processing step.
+	 * <p>
+	 * Derived classes have to call this function to make sure engine statistics are properly recorded.
+	 *
+	 * @return The recorded start time, which has to be submitted to {@linkplain #endProcessing(long, long, long)} when
+	 *         the processing step is finished.
+	 */
+	protected final synchronized long beginProcessing() {
+		return System.nanoTime();
+	}
+
+	/**
+	 * Record the processing time and input/output bytes at the end of a processing step.
+	 * <p>
+	 * Derived classes have to call this function to make sure engine statistics are properly recorded.
+	 *
+	 * @param beginTime The begin time as returned by {@linkplain #beginProcessing()}.
+	 * @param in The number of consumed bytes.
+	 * @param out The number of emitted bytes.
+	 */
+	protected final synchronized void endProcessing(long beginTime, long in, long out) {
+		Check.assertTrue(in >= 0, "Invalid in: %1$d", in);
+		Check.assertTrue(out >= 0, "Invalid out: %1$d", out);
+
+		long currentNanos = System.nanoTime();
+
+		this.processingNanos += currentNanos - beginTime;
+		this.totalIn += in;
+		this.totalOut += out;
+	}
 
 }

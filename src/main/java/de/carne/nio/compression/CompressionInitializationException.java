@@ -14,33 +14,34 @@
  * You should have received a copy of the GNU Lesser Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.nio.compression.test.deflate;
+package de.carne.nio.compression;
 
 import java.io.IOException;
-import java.net.URL;
-
-import org.junit.Test;
-
-import de.carne.nio.compression.deflate.DeflateDecoder;
-import de.carne.nio.compression.deflate.DeflateFactory;
-import de.carne.nio.compression.test.CompressionTest;
 
 /**
- * Test Deflate compression enging.
+ * This exception is thrown when a compression engine could not be initialized (e.g. due to invalid properties).
  */
-public class DeflateTest extends CompressionTest {
+public class CompressionInitializationException extends IOException {
 
-	private static final URL ENCODED_DATA_URL = DeflateTest.class.getResource("ENCODED.bin");
-	private static final URL DECODED_DATA_URL = DeflateTest.class.getResource("DECODED.bin");
+	private static final long serialVersionUID = 4437492225453303130L;
 
 	/**
-	 * Test {@linkplain DeflateDecoder} with standard options.
+	 * Construct {@linkplain CompressionInitializationException}.
 	 *
-	 * @throws IOException if an I/O error occurs.
+	 * @param message The exception message.
 	 */
-	@Test
-	public void testDeflate() throws IOException {
-		runDecoderTest(DeflateFactory.COMPRESSION_NAME, ENCODED_DATA_URL, DECODED_DATA_URL);
+	public CompressionInitializationException(String message) {
+		super(message);
+	}
+
+	/**
+	 * Construct {@linkplain CompressionInitializationException}.
+	 *
+	 * @param message The exception message.
+	 * @param cause The exception cause.
+	 */
+	public CompressionInitializationException(String message, Throwable cause) {
+		super(message, cause);
 	}
 
 }
