@@ -19,21 +19,29 @@ package de.carne.nio.compression;
 import java.io.IOException;
 
 /**
- * This exception is thrown when not all requested data bytes could be read.
+ * Base class for all exceptions thrown by the compression packages.
  */
-public class IncompleteReadException extends IOException {
+public abstract class CompressionException extends IOException {
 
-	private static final long serialVersionUID = 7837528255415857515L;
+	private static final long serialVersionUID = -3831126706488268850L;
 
 	/**
-	 * Construct {@linkplain IncompleteReadException}.
+	 * Construct {@linkplain CompressionException}.
 	 *
-	 * @param requested The number of bytes requested.
-	 * @param read The actual number of bytes read.
+	 * @param message The exception message.
 	 */
-	public IncompleteReadException(int requested, int read) {
-		super(String.format("Failed to read the requested number of bytes: Requested = %1$d; Read = %2$d", requested,
-				read));
+	protected CompressionException(String message) {
+		super(message);
+	}
+
+	/**
+	 * Construct {@linkplain CompressionException}.
+	 *
+	 * @param message The exception message.
+	 * @param cause The exception cause.
+	 */
+	protected CompressionException(String message, Throwable cause) {
+		super(message, cause);
 	}
 
 }

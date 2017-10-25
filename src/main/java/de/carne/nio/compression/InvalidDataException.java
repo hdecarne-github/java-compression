@@ -16,12 +16,10 @@
  */
 package de.carne.nio.compression;
 
-import java.io.IOException;
-
 /**
  * This exception is thrown when some unexpected or invalid data is encountered.
  */
-public class InvalidDataException extends IOException {
+public class InvalidDataException extends CompressionException {
 
 	private static final long serialVersionUID = 8521323840663502987L;
 
@@ -45,7 +43,7 @@ public class InvalidDataException extends IOException {
 			messageBuilder.append(nextSeparator);
 			nextSeparator = ", ";
 			if (value instanceof Byte) {
-				messageBuilder.append(String.format("%02X", value.byteValue()));
+				messageBuilder.append(String.format("0x%02x", value.byteValue()));
 			} else {
 				messageBuilder.append(value);
 			}

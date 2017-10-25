@@ -21,7 +21,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 
 import de.carne.nio.compression.Check;
-import de.carne.nio.compression.IncompleteReadException;
+import de.carne.nio.compression.InsufficientDataException;
 import de.carne.nio.compression.InvalidDataException;
 
 /**
@@ -92,7 +92,7 @@ public final class HistoryBuffer {
 			int read = bitDecoder.readBytes(src, readBuffer);
 
 			if (read < readLength) {
-				throw new IncompleteReadException(readLength, read);
+				throw new InsufficientDataException(readLength, read);
 			}
 			this.bufferBeginPos = (this.bufferBeginPos + readLength) % this.buffer.length;
 			this.bufferCopyLimit = Math.min(this.bufferCopyLimit + readLength, this.buffer.length);

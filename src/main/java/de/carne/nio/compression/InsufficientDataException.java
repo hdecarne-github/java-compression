@@ -17,29 +17,21 @@
 package de.carne.nio.compression;
 
 /**
- * This exception is thrown when a compression engine could not be initialized (e.g. due to invalid properties).
+ * This exception is thrown when not all requested data bytes could be read.
  */
-public class CompressionInitializationException extends CompressionException {
+public class InsufficientDataException extends CompressionException {
 
-	private static final long serialVersionUID = 4437492225453303130L;
-
-	/**
-	 * Construct {@linkplain CompressionInitializationException}.
-	 *
-	 * @param message The exception message.
-	 */
-	public CompressionInitializationException(String message) {
-		super(message);
-	}
+	private static final long serialVersionUID = 7837528255415857515L;
 
 	/**
-	 * Construct {@linkplain CompressionInitializationException}.
+	 * Construct {@linkplain InsufficientDataException}.
 	 *
-	 * @param message The exception message.
-	 * @param cause The exception cause.
+	 * @param requested The number of bytes requested.
+	 * @param read The actual number of bytes read.
 	 */
-	public CompressionInitializationException(String message, Throwable cause) {
-		super(message, cause);
+	public InsufficientDataException(int requested, int read) {
+		super(String.format("Failed to read the requested number of bytes: Requested = %1$d; Read = %2$d", requested,
+				read));
 	}
 
 }
