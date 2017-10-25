@@ -88,6 +88,8 @@ public abstract class CompressionTest {
 		WritableByteChannel decodedChannel = Channels.newChannel(decodedBytes);
 		ByteBuffer decodeBuffer = ByteBuffer.allocate(4096);
 
+		System.out.println("Testing decoder: " + decoder.name() + "...");
+		decoder.reset();
 		while (true) {
 			decodeBuffer.rewind();
 
@@ -101,7 +103,18 @@ public abstract class CompressionTest {
 
 			Assert.assertFalse(decodeBuffer.hasRemaining());
 		}
-		return decodedBytes.toByteArray();
+		System.out.println("Total in (bytes)  : " + decoder.totalIn());
+		System.out.println("Total out (bytes) : " + decoder.totalOut());
+		System.out.println("Rate in (bytes/s) : " + decoder.rateIn());
+		System.out.println("Rate out (bytes/s): " + decoder.rateOut());
+
+		byte[] decodedData = decodedBytes.toByteArray();
+
+		Assert.assertEquals(encodedData.length, decoder.totalIn());
+		Assert.assertEquals(decodedData.length, decoder.totalOut());
+		Assert.assertTrue(decoder.rateIn() > 0);
+		Assert.assertTrue(decoder.rateOut() > 0);
+		return decodedData;
 	}
 
 }
