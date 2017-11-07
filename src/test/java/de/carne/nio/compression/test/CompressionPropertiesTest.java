@@ -42,6 +42,8 @@ public class CompressionPropertiesTest extends CompressionProperties {
 			CompressionPropertyType.BOOLEAN);
 	private static final CompressionProperty AN_ENUM = new CompressionProperty("AN_ENUM", CompressionPropertyType.ENUM);
 	private static final CompressionProperty BN_ENUM = new CompressionProperty("BN_ENUM", CompressionPropertyType.ENUM);
+	private static final CompressionProperty UNDEFINED = new CompressionProperty("UNDEFINED",
+			CompressionPropertyType.BOOLEAN);
 
 	/**
 	 * Construct {@linkplain CompressionPropertiesTest}.
@@ -111,6 +113,14 @@ public class CompressionPropertiesTest extends CompressionProperties {
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetEnumPropertyFailure() {
 		setEnumProperty(AN_ENUM, BnEnum.C);
+	}
+
+	/**
+	 * Test {@linkplain CompressionProperties#getBooleanProperty(CompressionProperty)}.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetBooleanPropertyFailure() {
+		getBooleanProperty(UNDEFINED);
 	}
 
 }
