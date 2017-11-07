@@ -16,9 +16,8 @@
  */
 package de.carne.nio.compression.spi;
 
-import java.util.Properties;
-
 import de.carne.nio.compression.CompressionInitializationException;
+import de.carne.nio.compression.CompressionProperties;
 
 /**
  * Interface for compression encoder factories.
@@ -30,7 +29,7 @@ public interface EncoderFactory extends CompressionFactory {
 	 *
 	 * @return The default {@linkplain Encoder} properties.
 	 */
-	Properties defaultEncoderProperties();
+	CompressionProperties defaultEncoderProperties();
 
 	/**
 	 * Create a new {@linkplain Encoder} instance with the given encoder properties.
@@ -40,7 +39,7 @@ public interface EncoderFactory extends CompressionFactory {
 	 * @throws CompressionInitializationException if the {@linkplain Encoder} initializer fails.
 	 * @see #defaultEncoderProperties()
 	 */
-	Encoder newEncoder(Properties properties) throws CompressionInitializationException;
+	Encoder newEncoder(CompressionProperties properties) throws CompressionInitializationException;
 
 	/**
 	 * Create a new {@linkplain Encoder} instance with default properties.

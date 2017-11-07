@@ -17,33 +17,23 @@
 package de.carne.nio.compression.deflate;
 
 /**
- * Supported Deflate modes.
+ * Deflate data stream format.
  */
-public enum DeflateMode {
+public enum DeflateFormat {
 
 	/**
-	 * Process zlib data stream (only for decoding).
+	 * Default stream format.
 	 */
-	FORMAT_ZLIB,
+	DEFAULT,
 
 	/**
-	 * Process NSIS data stream (only for decoding).
+	 * ZLIB stream format.
 	 */
-	FORMAT_NSIS,
+	ZLIB,
 
 	/**
-	 * Use 64k history.
+	 * NSIS stream format.
 	 */
-	OPTION_HISTORY64K,
-
-	/**
-	 * Do not reset history during encoding/decoding.
-	 */
-	OPTION_KEEP_HISTORY,
-
-	/**
-	 * Restart block processing after EOS.
-	 */
-	OPTION_RESTART_AFTER_EOS
+	NSIS
 
 }

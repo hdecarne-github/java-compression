@@ -16,9 +16,8 @@
  */
 package de.carne.nio.compression.deflate;
 
-import java.util.Properties;
-
 import de.carne.nio.compression.CompressionInitializationException;
+import de.carne.nio.compression.CompressionProperties;
 import de.carne.nio.compression.spi.Decoder;
 import de.carne.nio.compression.spi.DecoderFactory;
 
@@ -38,12 +37,12 @@ public class DeflateFactory implements DecoderFactory {
 	}
 
 	@Override
-	public Properties defaultDecoderProperties() {
-		return new Properties();
+	public CompressionProperties defaultDecoderProperties() {
+		return new DeflateDecoderProperties();
 	}
 
 	@Override
-	public Decoder newDecoder(Properties properties) throws CompressionInitializationException {
+	public Decoder newDecoder(CompressionProperties properties) throws CompressionInitializationException {
 		return new DeflateDecoder();
 	}
 

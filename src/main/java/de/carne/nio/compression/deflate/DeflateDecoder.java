@@ -19,10 +19,7 @@ package de.carne.nio.compression.deflate;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Properties;
-import java.util.Set;
 
 import de.carne.nio.compression.InvalidDataException;
 import de.carne.nio.compression.common.BitDecoder;
@@ -38,7 +35,7 @@ import de.carne.nio.compression.spi.Decoder;
  */
 public class DeflateDecoder extends Decoder {
 
-	private final HashSet<DeflateMode> modes;
+	private final DeflateDecoderProperties properties;
 	private final BitDecoder bitDecoder = new BitDecoder(new BitRegister[] {
 
 			new LSBBitstreamBitRegister(),
@@ -62,22 +59,19 @@ public class DeflateDecoder extends Decoder {
 	 * Construct {@code DeflateDecoder}.
 	 */
 	public DeflateDecoder() {
-		this(Collections.emptySet());
+		this(new DeflateDecoderProperties());
 	}
 
 	/**
 	 * Construct {@code DeflateDecoder}.
 	 *
-	 * @param modes Decoder modes to use.
+	 * @param properties Decoder properties to use.
 	 */
-	public DeflateDecoder(Set<DeflateMode> modes) {
+	public DeflateDecoder(DeflateDecoderProperties properties) {
 		super(DeflateFactory.COMPRESSION_NAME, new Properties());
-
-		assert modes != null;
-
-		this.modes = new HashSet<>(modes);
+		this.properties = properties;
 		this.historyBuffer = new HistoryBuffer(
-				this.modes.contains(DeflateMode.OPTION_HISTORY64K) ? Deflate.HISTORY_SIZE_64 : Deflate.HISTORY_SIZE_32);
+				this.properties.getHistory64Property() ? Deflate.HISTORY_SIZE_64 : Deflate.HISTORY_SIZE_32);
 		init();
 	}
 
@@ -110,7 +104,7 @@ public class DeflateDecoder extends Decoder {
 			if (this.blockRemaining != -1) {
 				long decodeStart = this.bitDecoder.totalIn();
 
-				if (decodeStart == 0L && this.modes.contains(DeflateMode.FORMAT_ZLIB)) {
+				if (decodeStart == 0L && this.properties.getFormatProperty() == DeflateFormat.ZLIB) {
 					processZLibHeader(src);
 				}
 				emitted += this.historyBuffer.flush(dst);
@@ -123,17 +117,17 @@ public class DeflateDecoder extends Decoder {
 					decodeRemaining = dst.remaining();
 				}
 				emitted += this.historyBuffer.flush(dst);
-				if (this.blockRemaining == -1) {
-					if (this.modes.contains(DeflateMode.FORMAT_ZLIB)) {
-						processZLibTrailer(src);
-					}
+				if (this.blockRemaining == -1 && this.properties.getFormatProperty() == DeflateFormat.ZLIB) {
+					processZLibTrailer(src);
 				}
 				decoded = (int) (this.bitDecoder.totalIn() - decodeStart);
-			} else if (this.modes.contains(DeflateMode.OPTION_RESTART_AFTER_EOS)) {
+			} else if (this.properties.getRestartAfterEosProperty()) {
 				this.blockRemaining = -2;
 				this.bitDecoder.clear();
 			}
-		} finally {
+		} finally
+
+		{
 			endProcessing(beginTime, Math.max(decoded, 0), emitted);
 		}
 		return decoded;
@@ -157,7 +151,7 @@ public class DeflateDecoder extends Decoder {
 		int decodeRemaining = len;
 
 		if (this.blockRemaining == -2) {
-			if (!this.modes.contains(DeflateMode.OPTION_KEEP_HISTORY)) {
+			if (!this.properties.getKeepHistroyProperty()) {
 				this.historyBuffer.clear();
 			}
 			this.readTables = true;
@@ -212,7 +206,7 @@ public class DeflateDecoder extends Decoder {
 
 							int decodeLen1;
 
-							if (this.modes.contains(DeflateMode.OPTION_HISTORY64K)) {
+							if (this.properties.getHistory64Property()) {
 								decodeLen1 = (Deflate.LEN_START_64[symbol] & 0xff) + Deflate.MATCH_MIN_LEN
 										+ this.bitDecoder.decodeBits(src, Deflate.LEN_DIRECT_BITS_64[symbol] & 0xff, 1);
 							} else {
@@ -262,7 +256,7 @@ public class DeflateDecoder extends Decoder {
 			this.bitDecoder.alignToByte();
 			this.storedBlockSize = this.bitDecoder.decodeBits(src, Deflate.STORED_BLOCK_LENGTH_FIELD_SIZE, 1);
 
-			if (!this.modes.contains(DeflateMode.FORMAT_NSIS)) {
+			if (this.properties.getFormatProperty() != DeflateFormat.NSIS) {
 				int storedBlockSizeCheck = this.bitDecoder.decodeBits(src, Deflate.STORED_BLOCK_LENGTH_FIELD_SIZE, 1);
 
 				if (((this.storedBlockSize ^ storedBlockSizeCheck) & 0xffff) != 0xffff) {
@@ -274,7 +268,7 @@ public class DeflateDecoder extends Decoder {
 			this.storedMode = false;
 			levels = new DeflateLevels();
 			levels.setFixedLevels();
-			this.numDistLevels = (this.modes.contains(DeflateMode.OPTION_HISTORY64K) ? Deflate.DIST_TABLE_SIZE_64
+			this.numDistLevels = (this.properties.getHistory64Property() ? Deflate.DIST_TABLE_SIZE_64
 					: Deflate.DIST_TABLE_SIZE_32);
 			this.mainDecoder.setCodeLengths(levels.litLenLevels);
 			this.distDecoder.setCodeLengths(levels.distLevels);
@@ -287,8 +281,7 @@ public class DeflateDecoder extends Decoder {
 
 			this.numDistLevels = this.bitDecoder.decodeBits(src, Deflate.NUM_DIST_CODES_FIELD_SIZE, 1)
 					+ Deflate.NUM_DIST_CODES_MIN;
-			if (!this.modes.contains(DeflateMode.OPTION_HISTORY64K)
-					&& this.numDistLevels > Deflate.DIST_TABLE_SIZE_32) {
+			if (!this.properties.getHistory64Property() && this.numDistLevels > Deflate.DIST_TABLE_SIZE_32) {
 				throw new InvalidDataException(this.numDistLevels);
 			}
 
@@ -356,14 +349,6 @@ public class DeflateDecoder extends Decoder {
 				}
 			}
 		}
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder buffer = new StringBuilder();
-
-		buffer.append(name()).append(' ').append(this.modes);
-		return buffer.toString();
 	}
 
 }

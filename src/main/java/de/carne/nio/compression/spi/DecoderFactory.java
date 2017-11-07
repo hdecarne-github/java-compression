@@ -16,9 +16,8 @@
  */
 package de.carne.nio.compression.spi;
 
-import java.util.Properties;
-
 import de.carne.nio.compression.CompressionInitializationException;
+import de.carne.nio.compression.CompressionProperties;
 
 /**
  * Interface for compression decoder factories.
@@ -30,7 +29,7 @@ public interface DecoderFactory extends CompressionFactory {
 	 *
 	 * @return The default {@linkplain Decoder} properties.
 	 */
-	Properties defaultDecoderProperties();
+	CompressionProperties defaultDecoderProperties();
 
 	/**
 	 * Create a new {@linkplain Decoder} instance with the given decoder properties.
@@ -40,7 +39,7 @@ public interface DecoderFactory extends CompressionFactory {
 	 * @throws CompressionInitializationException if the {@linkplain Decoder} initializer fails.
 	 * @see #defaultDecoderProperties()
 	 */
-	Decoder newDecoder(Properties properties) throws CompressionInitializationException;
+	Decoder newDecoder(CompressionProperties properties) throws CompressionInitializationException;
 
 	/**
 	 * Create a new {@linkplain Decoder} instance with default properties.
