@@ -34,7 +34,7 @@ public class DeflateDecoderProperties extends CompressionProperties {
 			CompressionPropertyType.BOOLEAN);
 
 	/**
-	 * Construct {@linkplain DeflateDecoderProperties} with default properties.
+	 * Construct {@linkplain DeflateDecoderProperties} with default values.
 	 */
 	public DeflateDecoderProperties() {
 		registerProperty(FORMAT, DeflateFormat.DEFAULT);
@@ -99,7 +99,7 @@ public class DeflateDecoderProperties extends CompressionProperties {
 
 	/**
 	 * Set the restart after EOS option.
-	 * 
+	 *
 	 * @param restartAfterEos The restart after EOS option.
 	 */
 	public void setRestartAfterEosProperty(boolean restartAfterEos) {
@@ -108,7 +108,7 @@ public class DeflateDecoderProperties extends CompressionProperties {
 
 	/**
 	 * Get the restart after EOS option.
-	 * 
+	 *
 	 * @return The restart after EOS option.
 	 */
 	public boolean getRestartAfterEosProperty() {
