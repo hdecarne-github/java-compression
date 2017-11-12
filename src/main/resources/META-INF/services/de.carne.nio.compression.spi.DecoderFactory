@@ -1,1 +1,3 @@
+de.carne.nio.compression.bzip2.Bzip2Factory
 de.carne.nio.compression.deflate.DeflateFactory
+de.carne.nio.compression.lzma.LzmaFactory

@@ -19,12 +19,15 @@ package de.carne.nio.compression.spi;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
-import java.util.Properties;
+
+import de.carne.nio.compression.CompressionProperties;
 
 /**
  * Base class for compression decoders
+ * 
+ * @param <T> The actual compression properties type.
  */
-public abstract class Decoder extends Compression {
+public abstract class Decoder<T extends CompressionProperties> extends Compression<T> {
 
 	/**
 	 * Construct {@linkplain Decoder}.
@@ -32,7 +35,7 @@ public abstract class Decoder extends Compression {
 	 * @param name The compression name.
 	 * @param properties The decoder properties.
 	 */
-	protected Decoder(String name, Properties properties) {
+	protected Decoder(String name, T properties) {
 		super(name, properties);
 	}
 

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.nio.compression.deflate;
+package de.carne.nio.compression.bzip2;
 
 import de.carne.nio.compression.Check;
 import de.carne.nio.compression.CompressionInitializationException;
@@ -23,14 +23,14 @@ import de.carne.nio.compression.spi.Decoder;
 import de.carne.nio.compression.spi.DecoderFactory;
 
 /**
- * Deflate compression factory
+ * Bzip2 compression factory
  */
-public class DeflateFactory implements DecoderFactory {
+public class Bzip2Factory implements DecoderFactory {
 
 	/**
 	 * The compression name.
 	 */
-	public static final String COMPRESSION_NAME = "Deflate compression";
+	public static final String COMPRESSION_NAME = "Bzip2 compression";
 
 	@Override
 	public String compressionName() {
@@ -39,12 +39,12 @@ public class DeflateFactory implements DecoderFactory {
 
 	@Override
 	public CompressionProperties defaultDecoderProperties() {
-		return new DeflateDecoderProperties();
+		return new Bzip2DecoderProperties();
 	}
 
 	@Override
 	public Decoder<?> newDecoder(CompressionProperties properties) throws CompressionInitializationException {
-		return new DeflateDecoder(Check.isInstanceOf(properties, DeflateDecoderProperties.class));
+		return new Bzip2Decoder(Check.isInstanceOf(properties, Bzip2DecoderProperties.class));
 	}
 
 }

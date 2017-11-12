@@ -40,6 +40,66 @@ public abstract class CompressionProperties implements Iterable<CompressionPrope
 	}
 
 	/**
+	 * Get a {@code byte} property.
+	 *
+	 * @param property The property to get.
+	 * @return The current property value.
+	 */
+	public final byte getByteProperty(CompressionProperty property) {
+		return ((Byte) getProperty(property, CompressionPropertyType.BYTE)).byteValue();
+	}
+
+	/**
+	 * Set a {@code byte} property.
+	 *
+	 * @param property The property to set.
+	 * @param value The property value to set.
+	 */
+	public final void setByteProperty(CompressionProperty property, byte value) {
+		setProperty(property, CompressionPropertyType.BYTE, Byte.valueOf(value));
+	}
+
+	/**
+	 * Get a {@code int} property.
+	 *
+	 * @param property The property to get.
+	 * @return The current property value.
+	 */
+	public final int getIntProperty(CompressionProperty property) {
+		return ((Integer) getProperty(property, CompressionPropertyType.INT)).intValue();
+	}
+
+	/**
+	 * Set a {@code int} property.
+	 *
+	 * @param property The property to set.
+	 * @param value The property value to set.
+	 */
+	public final void setIntProperty(CompressionProperty property, int value) {
+		setProperty(property, CompressionPropertyType.INT, Integer.valueOf(value));
+	}
+
+	/**
+	 * Get a {@code long} property.
+	 *
+	 * @param property The property to get.
+	 * @return The current property value.
+	 */
+	public final long getLongProperty(CompressionProperty property) {
+		return ((Long) getProperty(property, CompressionPropertyType.LONG)).longValue();
+	}
+
+	/**
+	 * Set a {@code byte} property.
+	 *
+	 * @param property The property to set.
+	 * @param value The property value to set.
+	 */
+	public final void setLongProperty(CompressionProperty property, long value) {
+		setProperty(property, CompressionPropertyType.LONG, Long.valueOf(value));
+	}
+
+	/**
 	 * Get a {@code boolean} property.
 	 *
 	 * @param property The property to get.

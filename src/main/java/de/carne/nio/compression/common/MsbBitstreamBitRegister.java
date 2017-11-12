@@ -14,37 +14,35 @@
  * You should have received a copy of the GNU Lesser Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.nio.compression.deflate;
+package de.carne.nio.compression.common;
 
 import de.carne.nio.compression.Check;
-import de.carne.nio.compression.CompressionInitializationException;
-import de.carne.nio.compression.CompressionProperties;
-import de.carne.nio.compression.spi.Decoder;
-import de.carne.nio.compression.spi.DecoderFactory;
 
 /**
- * Deflate compression factory
+ * Bit buffer decoding high bits first.
  */
-public class DeflateFactory implements DecoderFactory {
-
-	/**
-	 * The compression name.
-	 */
-	public static final String COMPRESSION_NAME = "Deflate compression";
+public class MsbBitstreamBitRegister extends BitRegister {
 
 	@Override
-	public String compressionName() {
-		return COMPRESSION_NAME;
+	public int feedBits(byte b) {
+		this.register = (this.register << 8) | (b & 0xff);
+		this.bitCount += 8;
+		return this.bitCount;
 	}
 
 	@Override
-	public CompressionProperties defaultDecoderProperties() {
-		return new DeflateDecoderProperties();
+	public int peekBits(int count) {
+		Check.assertTrue(0 <= count && count <= this.bitCount);
+
+		final int remains = this.bitCount - count;
+
+		return (count > 0 ? (int) ((this.register >>> remains) & (~(-1l << count))) : 0);
 	}
 
 	@Override
-	public Decoder<?> newDecoder(CompressionProperties properties) throws CompressionInitializationException {
-		return new DeflateDecoder(Check.isInstanceOf(properties, DeflateDecoderProperties.class));
+	public int discardBits(int count) {
+		this.bitCount -= count;
+		return this.bitCount;
 	}
 
 }

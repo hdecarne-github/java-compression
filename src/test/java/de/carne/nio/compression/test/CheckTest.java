@@ -59,6 +59,42 @@ public class CheckTest {
 	}
 
 	/**
+	 * Test {@linkplain Check#isInstanceOf(Object, Class)} with valid instance.
+	 */
+	@Test
+	public void testCheckIsInstanceOfPassed() {
+		String object = new String();
+
+		Assert.assertEquals(object, Check.isInstanceOf(object, CharSequence.class));
+	}
+
+	/**
+	 * Test {@linkplain Check#isInstanceOf(Object, Class, String, Object...)} with valid instance.
+	 */
+	@Test
+	public void testCheckIsInstanceOfMessagePassed() {
+		String object = new String();
+
+		Assert.assertEquals(object, Check.isInstanceOf(object, CharSequence.class, getClass().getSimpleName()));
+	}
+
+	/**
+	 * Test {@linkplain Check#isInstanceOf(Object, Class)} with invalid instance.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testCheckIsInstanceOfFailed() {
+		Check.isInstanceOf(this, CharSequence.class);
+	}
+
+	/**
+	 * Test {@linkplain Check#isInstanceOf(Object, Class, String, Object...)} with invalid instance.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testCheckIsInstanceOfMessageFailed() {
+		Check.isInstanceOf(this, CharSequence.class, getClass().getSimpleName());
+	}
+
+	/**
 	 * Test {@linkplain Check#assertTrue(boolean)} with {@code true} argument.
 	 */
 	@Test

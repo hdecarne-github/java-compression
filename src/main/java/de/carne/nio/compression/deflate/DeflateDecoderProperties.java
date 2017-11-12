@@ -93,7 +93,7 @@ public class DeflateDecoderProperties extends CompressionProperties {
 	 *
 	 * @return The keep history option.
 	 */
-	public boolean getKeepHistroyProperty() {
+	public boolean getKeepHistoryProperty() {
 		return getBooleanProperty(KEEP_HISTORY);
 	}
 

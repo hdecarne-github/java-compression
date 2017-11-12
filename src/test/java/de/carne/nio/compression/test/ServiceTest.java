@@ -23,7 +23,9 @@ import java.util.Set;
 import org.junit.Assert;
 import org.junit.Test;
 
+import de.carne.nio.compression.bzip2.Bzip2Factory;
 import de.carne.nio.compression.deflate.DeflateFactory;
+import de.carne.nio.compression.lzma.LzmaFactory;
 import de.carne.nio.compression.spi.DecoderFactory;
 import de.carne.nio.compression.spi.EncoderFactory;
 
@@ -41,7 +43,9 @@ public class ServiceTest {
 	private static Set<String> DECODER_NAMES = new HashSet<>();
 
 	static {
+		DECODER_NAMES.add(Bzip2Factory.COMPRESSION_NAME);
 		DECODER_NAMES.add(DeflateFactory.COMPRESSION_NAME);
+		DECODER_NAMES.add(LzmaFactory.COMPRESSION_NAME);
 	}
 
 	/**

@@ -16,17 +16,18 @@
  */
 package de.carne.nio.compression.spi;
 
-import java.util.Properties;
-
 import de.carne.nio.compression.Check;
+import de.carne.nio.compression.CompressionProperties;
 
 /**
  * Base class for all compression engines.
+ *
+ * @param <T> The actual compression properties type.
  */
-public abstract class Compression {
+public abstract class Compression<T extends CompressionProperties> {
 
 	private final String name;
-	private final Properties properties;
+	private final T properties;
 	private long processingNanos = 0L;
 	private long totalIn = 0L;
 	private long totalOut = 0L;
@@ -37,7 +38,7 @@ public abstract class Compression {
 	 * @param name The compression name.
 	 * @param properties The engine properties.
 	 */
-	protected Compression(String name, Properties properties) {
+	protected Compression(String name, T properties) {
 		this.name = name;
 		this.properties = properties;
 	}
@@ -56,7 +57,7 @@ public abstract class Compression {
 	 *
 	 * @return The compression properties.
 	 */
-	public final Properties properties() {
+	public final T properties() {
 		return this.properties;
 	}
 

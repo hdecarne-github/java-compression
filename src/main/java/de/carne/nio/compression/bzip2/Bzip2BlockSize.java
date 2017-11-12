@@ -14,36 +14,61 @@
  * You should have received a copy of the GNU Lesser Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.nio.compression;
+package de.carne.nio.compression.bzip2;
 
 /**
- * Compression property value types.
+ * Bzip2 block size parameter.
  */
-public enum CompressionPropertyType {
+public enum Bzip2BlockSize {
 
 	/**
-	 * Property value of type {code byte}.
+	 * Block size 0.
 	 */
-	BYTE,
+	SIZE0,
 
 	/**
-	 * Property value of type {@code int}.
+	 * Block size 1.
 	 */
-	INT,
+	SIZE1,
 
 	/**
-	 * Property value of type {@code long}.
+	 * Block size 2.
 	 */
-	LONG,
+	SIZE2,
 
 	/**
-	 * Property value of type {@code boolean}.
+	 * Block size 3.
 	 */
-	BOOLEAN,
+	SIZE3,
 
 	/**
-	 * Property value of type {@linkplain Enum}.
+	 * Block size 4.
 	 */
-	ENUM
+	SIZE4,
+
+	/**
+	 * Block size 5.
+	 */
+	SIZE5,
+
+	/**
+	 * Block size 6.
+	 */
+	SIZE6,
+
+	/**
+	 * Block size 7.
+	 */
+	SIZE7,
+
+	/**
+	 * Block size 8.
+	 */
+	SIZE8,
+
+	/**
+	 * Block size 9.
+	 */
+	SIZE9
 
 }

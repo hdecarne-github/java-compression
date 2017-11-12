@@ -14,36 +14,7 @@
  * You should have received a copy of the GNU Lesser Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.carne.nio.compression;
+@NonNullByDefault
+package de.carne.nio.compression.test.lzma;
 
-/**
- * Compression property value types.
- */
-public enum CompressionPropertyType {
-
-	/**
-	 * Property value of type {code byte}.
-	 */
-	BYTE,
-
-	/**
-	 * Property value of type {@code int}.
-	 */
-	INT,
-
-	/**
-	 * Property value of type {@code long}.
-	 */
-	LONG,
-
-	/**
-	 * Property value of type {@code boolean}.
-	 */
-	BOOLEAN,
-
-	/**
-	 * Property value of type {@linkplain Enum}.
-	 */
-	ENUM
-
-}
+import de.carne.nio.compression.NonNullByDefault;

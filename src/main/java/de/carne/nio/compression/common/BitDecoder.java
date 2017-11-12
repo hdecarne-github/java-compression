@@ -38,6 +38,16 @@ public final class BitDecoder {
 	/**
 	 * Construct {@linkplain BitDecoder}.
 	 *
+	 * @param register The [@linkplain BitRegister} to use for bit access.
+	 * @param trailingBytes The optional bytes to feed after the underlying reader has reached EOF.
+	 */
+	public BitDecoder(BitRegister register, byte... trailingBytes) {
+		this(new BitRegister[] { register }, trailingBytes);
+	}
+
+	/**
+	 * Construct {@linkplain BitDecoder}.
+	 *
 	 * @param registers The [@linkplain BitRegister}s to use for bit access.
 	 * @param trailingBytes The optional bytes to feed after the underlying reader has reached EOF.
 	 */

@@ -19,7 +19,6 @@ package de.carne.nio.compression.deflate;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
-import java.util.Properties;
 
 import de.carne.nio.compression.InvalidDataException;
 import de.carne.nio.compression.common.BitDecoder;
@@ -33,9 +32,8 @@ import de.carne.nio.compression.spi.Decoder;
 /**
  * Deflate decoder: <a href="https://en.wikipedia.org/wiki/DEFLATE">https://en.wikipedia.org/wiki /DEFLATE</a>
  */
-public class DeflateDecoder extends Decoder {
+public class DeflateDecoder extends Decoder<DeflateDecoderProperties> {
 
-	private final DeflateDecoderProperties properties;
 	private final BitDecoder bitDecoder = new BitDecoder(new BitRegister[] {
 
 			new LSBBitstreamBitRegister(),
@@ -68,10 +66,9 @@ public class DeflateDecoder extends Decoder {
 	 * @param properties Decoder properties to use.
 	 */
 	public DeflateDecoder(DeflateDecoderProperties properties) {
-		super(DeflateFactory.COMPRESSION_NAME, new Properties());
-		this.properties = properties;
+		super(DeflateFactory.COMPRESSION_NAME, properties);
 		this.historyBuffer = new HistoryBuffer(
-				this.properties.getHistory64Property() ? Deflate.HISTORY_SIZE_64 : Deflate.HISTORY_SIZE_32);
+				properties().getHistory64Property() ? Deflate.HISTORY_SIZE_64 : Deflate.HISTORY_SIZE_32);
 		init();
 	}
 
@@ -96,6 +93,8 @@ public class DeflateDecoder extends Decoder {
 
 	@Override
 	public int decode(ByteBuffer dst, ReadableByteChannel src) throws IOException {
+		DeflateFormat deflateFormat = properties().getFormatProperty();
+		boolean restartAfterEos = properties().getRestartAfterEosProperty();
 		long beginTime = beginProcessing();
 		int decoded = -1;
 		int emitted = 0;
@@ -104,7 +103,7 @@ public class DeflateDecoder extends Decoder {
 			if (this.blockRemaining != -1) {
 				long decodeStart = this.bitDecoder.totalIn();
 
-				if (decodeStart == 0L && this.properties.getFormatProperty() == DeflateFormat.ZLIB) {
+				if (decodeStart == 0L && deflateFormat == DeflateFormat.ZLIB) {
 					processZLibHeader(src);
 				}
 				emitted += this.historyBuffer.flush(dst);
@@ -117,17 +116,15 @@ public class DeflateDecoder extends Decoder {
 					decodeRemaining = dst.remaining();
 				}
 				emitted += this.historyBuffer.flush(dst);
-				if (this.blockRemaining == -1 && this.properties.getFormatProperty() == DeflateFormat.ZLIB) {
+				if (this.blockRemaining == -1 && deflateFormat == DeflateFormat.ZLIB) {
 					processZLibTrailer(src);
 				}
 				decoded = (int) (this.bitDecoder.totalIn() - decodeStart);
-			} else if (this.properties.getRestartAfterEosProperty()) {
+			} else if (restartAfterEos) {
 				this.blockRemaining = -2;
 				this.bitDecoder.clear();
 			}
-		} finally
-
-		{
+		} finally {
 			endProcessing(beginTime, Math.max(decoded, 0), emitted);
 		}
 		return decoded;
@@ -148,10 +145,12 @@ public class DeflateDecoder extends Decoder {
 	}
 
 	private void decodeBlock(ReadableByteChannel src, int len) throws IOException {
+		boolean history64 = properties().getHistory64Property();
+		boolean keepHistory = properties().getKeepHistoryProperty();
 		int decodeRemaining = len;
 
 		if (this.blockRemaining == -2) {
-			if (!this.properties.getKeepHistroyProperty()) {
+			if (!keepHistory) {
 				this.historyBuffer.clear();
 			}
 			this.readTables = true;
@@ -206,7 +205,7 @@ public class DeflateDecoder extends Decoder {
 
 							int decodeLen1;
 
-							if (this.properties.getHistory64Property()) {
+							if (history64) {
 								decodeLen1 = (Deflate.LEN_START_64[symbol] & 0xff) + Deflate.MATCH_MIN_LEN
 										+ this.bitDecoder.decodeBits(src, Deflate.LEN_DIRECT_BITS_64[symbol] & 0xff, 1);
 							} else {
@@ -247,6 +246,8 @@ public class DeflateDecoder extends Decoder {
 	private void readTables(ReadableByteChannel src) throws IOException {
 		this.finalBlock = (this.bitDecoder.decodeBits(src, Deflate.FINAL_BLOCK_FIELD_SIZE, 1) != 0);
 
+		DeflateFormat deflateFormat = properties().getFormatProperty();
+		boolean history64 = properties().getHistory64Property();
 		int blockType = this.bitDecoder.decodeBits(src, Deflate.BLOCK_TYPE_FIELD_SIZE, 1);
 		DeflateLevels levels;
 
@@ -256,7 +257,7 @@ public class DeflateDecoder extends Decoder {
 			this.bitDecoder.alignToByte();
 			this.storedBlockSize = this.bitDecoder.decodeBits(src, Deflate.STORED_BLOCK_LENGTH_FIELD_SIZE, 1);
 
-			if (this.properties.getFormatProperty() != DeflateFormat.NSIS) {
+			if (deflateFormat != DeflateFormat.NSIS) {
 				int storedBlockSizeCheck = this.bitDecoder.decodeBits(src, Deflate.STORED_BLOCK_LENGTH_FIELD_SIZE, 1);
 
 				if (((this.storedBlockSize ^ storedBlockSizeCheck) & 0xffff) != 0xffff) {
@@ -268,8 +269,7 @@ public class DeflateDecoder extends Decoder {
 			this.storedMode = false;
 			levels = new DeflateLevels();
 			levels.setFixedLevels();
-			this.numDistLevels = (this.properties.getHistory64Property() ? Deflate.DIST_TABLE_SIZE_64
-					: Deflate.DIST_TABLE_SIZE_32);
+			this.numDistLevels = (history64 ? Deflate.DIST_TABLE_SIZE_64 : Deflate.DIST_TABLE_SIZE_32);
 			this.mainDecoder.setCodeLengths(levels.litLenLevels);
 			this.distDecoder.setCodeLengths(levels.distLevels);
 			break;
@@ -281,7 +281,7 @@ public class DeflateDecoder extends Decoder {
 
 			this.numDistLevels = this.bitDecoder.decodeBits(src, Deflate.NUM_DIST_CODES_FIELD_SIZE, 1)
 					+ Deflate.NUM_DIST_CODES_MIN;
-			if (!this.properties.getHistory64Property() && this.numDistLevels > Deflate.DIST_TABLE_SIZE_32) {
+			if (!history64 && this.numDistLevels > Deflate.DIST_TABLE_SIZE_32) {
 				throw new InvalidDataException(this.numDistLevels);
 			}
 

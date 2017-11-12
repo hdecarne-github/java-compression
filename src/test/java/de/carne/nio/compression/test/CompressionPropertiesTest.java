@@ -36,6 +36,10 @@ public class CompressionPropertiesTest extends CompressionProperties {
 		A, B, C
 	}
 
+	private static final CompressionProperty BYTE_ONE = new CompressionProperty("BYTE_ONE",
+			CompressionPropertyType.BYTE);
+	private static final CompressionProperty LONG_ONE = new CompressionProperty("LONG_ONE",
+			CompressionPropertyType.LONG);
 	private static final CompressionProperty BOOLEAN_FALSE = new CompressionProperty("BOOLEAN_FALSE",
 			CompressionPropertyType.BOOLEAN);
 	private static final CompressionProperty BOOLEAN_TRUE = new CompressionProperty("BOOLEAN_TRUE",
@@ -49,10 +53,64 @@ public class CompressionPropertiesTest extends CompressionProperties {
 	 * Construct {@linkplain CompressionPropertiesTest}.
 	 */
 	public CompressionPropertiesTest() {
+		registerProperty(BYTE_ONE, Byte.valueOf((byte) 1));
+		registerProperty(LONG_ONE, Long.valueOf(1l));
 		registerProperty(BOOLEAN_FALSE, Boolean.FALSE);
 		registerProperty(BOOLEAN_TRUE, Boolean.TRUE);
 		registerProperty(AN_ENUM, AnEnum.B);
 		registerProperty(BN_ENUM, BnEnum.B);
+	}
+
+	/**
+	 * Test {@linkplain CompressionProperties#getByteProperty(CompressionProperty)}.
+	 */
+	@Test
+	public void testGetByteProperty() {
+		Assert.assertEquals(1, getByteProperty(BYTE_ONE));
+	}
+
+	/**
+	 * Test {@linkplain CompressionProperties#setByteProperty(CompressionProperty, byte)}.
+	 */
+	@Test
+	public void testSetByteProperty() {
+		setByteProperty(BYTE_ONE, (byte) 2);
+		Assert.assertEquals(2, getByteProperty(BYTE_ONE));
+		setByteProperty(BYTE_ONE, (byte) 1);
+	}
+
+	/**
+	 * Test {@linkplain CompressionProperties#setByteProperty(CompressionProperty, byte)}.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetBytePropertyFailure() {
+		setByteProperty(AN_ENUM, Byte.MIN_VALUE);
+	}
+
+	/**
+	 * Test {@linkplain CompressionProperties#getLongProperty(CompressionProperty)}.
+	 */
+	@Test
+	public void testGetLongProperty() {
+		Assert.assertEquals(1l, getLongProperty(LONG_ONE));
+	}
+
+	/**
+	 * Test {@linkplain CompressionProperties#setLongProperty(CompressionProperty, long)}.
+	 */
+	@Test
+	public void testSetLongProperty() {
+		setLongProperty(LONG_ONE, 2l);
+		Assert.assertEquals(2l, getLongProperty(LONG_ONE));
+		setLongProperty(LONG_ONE, 2l);
+	}
+
+	/**
+	 * Test {@linkplain CompressionProperties#setLongProperty(CompressionProperty, long)}.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetLongPropertyFailure() {
+		setLongProperty(AN_ENUM, Long.MIN_VALUE);
 	}
 
 	/**
