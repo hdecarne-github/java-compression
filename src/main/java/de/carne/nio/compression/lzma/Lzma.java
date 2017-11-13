@@ -21,15 +21,26 @@ package de.carne.nio.compression.lzma;
  */
 final class Lzma {
 
+	private Lzma() {
+		// Prevent instantiation
+	}
+
 	static final int NUM_REP_DISTANCES = 4;
 	static final int NUM_STATES = 12;
 
-	static int stateInit() {
-		return 0;
-	}
+	static final int STATE_INIT = 0;
 
 	static int stateUpdateChar(int index) {
-		return (index < 4 ? 0 : (index < 10 ? index - 3 : index - 6));
+		int updateChar;
+
+		if (index < 4) {
+			updateChar = 0;
+		} else if (index < 10) {
+			updateChar = index - 3;
+		} else {
+			updateChar = index - 6;
+		}
+		return updateChar;
 	}
 
 	static int stateUpdateMatch(int index) {

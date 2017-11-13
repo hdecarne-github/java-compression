@@ -145,7 +145,7 @@ public class LzmaDecoder extends Decoder<LzmaDecoderProperties> {
 	public int decode(ByteBuffer dst, ReadableByteChannel src) throws IOException {
 		long beginTime = beginProcessing();
 		int decoded = -1;
-		int dstRemainingStart = dst.remaining();
+		long dstRemainingStart = dst.remaining();
 
 		try {
 			if (this.state != State.EOF) {
@@ -155,11 +155,13 @@ public class LzmaDecoder extends Decoder<LzmaDecoderProperties> {
 					switch (this.state) {
 					case BEGIN:
 						this.rangeDecoder.beginDecode(src);
-						this.lzmaState = Lzma.stateInit();
+						this.lzmaState = Lzma.STATE_INIT;
 						this.rep0 = this.rep1 = this.rep2 = this.rep3 = 0;
 						this.currentPos = 0;
 						this.prevByte = 0;
 						this.state = State.DECODE;
+						decodeChunk(dst, src);
+						break;
 					case DECODE:
 						decodeChunk(dst, src);
 						break;
@@ -251,11 +253,7 @@ public class LzmaDecoder extends Decoder<LzmaDecoderProperties> {
 									numDirectBits - Lzma.NUM_ALIGN_BITS) << Lzma.NUM_ALIGN_BITS;
 							this.rep0 += this.posAlignDecoder.reverseDecode(src, this.rangeDecoder);
 							if (this.rep0 < 0) {
-								if (this.rep0 == -1) {
-									this.state = State.EOFFLUSH;
-								} else {
-									this.state = State.EOFFLUSH;
-								}
+								this.state = State.EOFFLUSH;
 							}
 						}
 					} else {

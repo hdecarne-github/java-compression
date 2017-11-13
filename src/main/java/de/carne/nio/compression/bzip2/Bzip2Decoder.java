@@ -46,13 +46,13 @@ public class Bzip2Decoder extends Decoder<Bzip2DecoderProperties> {
 	private boolean blockRandomized;
 	private int blockOrigPtr;
 	@Nullable
-	private int mtfTable[];
+	private int[] mtfTable;
 	@Nullable
-	private byte selectors[];
+	private byte[] selectors;
 	@Nullable
-	private HuffmanDecoder decoders[];
+	private HuffmanDecoder[] decoders;
 	@Nullable
-	private int counters[];
+	private int[] counters;
 	private int decodePosition;
 	private int decodePrevious;
 	private int decodeRepeatCount;
@@ -100,7 +100,7 @@ public class Bzip2Decoder extends Decoder<Bzip2DecoderProperties> {
 	public int decode(ByteBuffer dst, ReadableByteChannel src) throws IOException {
 		long beginTime = beginProcessing();
 		int decoded = 0;
-		int dstRemainingStart = dst.remaining();
+		long dstRemainingStart = dst.remaining();
 
 		try {
 			decoded = decode0(dst, src);
@@ -153,7 +153,7 @@ public class Bzip2Decoder extends Decoder<Bzip2DecoderProperties> {
 				throw new InvalidDataException(this.blockOrigPtr);
 			}
 
-			final boolean inUse[] = new boolean[16];
+			final boolean[] inUse = new boolean[16];
 
 			for (int inUseIndex = 0; inUseIndex < inUse.length; inUseIndex++) {
 				inUse[inUseIndex] = this.bitDecoder.decodeBits(src, 1) != 0;
@@ -163,11 +163,9 @@ public class Bzip2Decoder extends Decoder<Bzip2DecoderProperties> {
 			int mtfCount = 0;
 
 			for (int mtf = 0; mtf < 0x100; mtf++) {
-				if (inUse[mtf >> 4]) {
-					if (this.bitDecoder.decodeBits(src, 1) != 0) {
-						this.mtfTable[mtfCount >> 2] |= (mtf << ((mtfCount & 3) << 3));
-						mtfCount++;
-					}
+				if (inUse[mtf >> 4] && this.bitDecoder.decodeBits(src, 1) != 0) {
+					this.mtfTable[mtfCount >> 2] |= (mtf << ((mtfCount & 3) << 3));
+					mtfCount++;
 				}
 			}
 			if (mtfCount == 0) {
@@ -187,7 +185,7 @@ public class Bzip2Decoder extends Decoder<Bzip2DecoderProperties> {
 				throw new InvalidDataException(selectorCount);
 			}
 
-			final byte mtfPositions[] = new byte[huffmanCount];
+			final byte[] mtfPositions = new byte[huffmanCount];
 
 			for (byte mtfPositionIndex = 0; mtfPositionIndex < mtfPositions.length; mtfPositionIndex++) {
 				mtfPositions[mtfPositionIndex] = mtfPositionIndex;
@@ -213,7 +211,7 @@ public class Bzip2Decoder extends Decoder<Bzip2DecoderProperties> {
 			}
 			this.decoders = new HuffmanDecoder[huffmanCount];
 			for (int huffmanIndex = 0; huffmanIndex < this.decoders.length; huffmanIndex++) {
-				final byte lengths[] = new byte[Bzip2.MAX_HUFFMAN_SYMBOL_COUNT];
+				final byte[] lengths = new byte[Bzip2.MAX_HUFFMAN_SYMBOL_COUNT];
 				int length = this.bitDecoder.decodeBits(src, 5);
 				int lengthsIndex = 0;
 
@@ -427,7 +425,7 @@ public class Bzip2Decoder extends Decoder<Bzip2DecoderProperties> {
 		if ((limit & 1) != 0) {
 			next = this.mtfTable[0];
 			this.mtfTable[0] = (next << 8) | previous;
-			previous = (next >>> (3 << 3));
+			previous = (next >>> 24);
 			index = 1;
 			limit--;
 		}
@@ -436,8 +434,8 @@ public class Bzip2Decoder extends Decoder<Bzip2DecoderProperties> {
 			final int mtf1 = this.mtfTable[index + 1];
 
 			this.mtfTable[index] = (mtf0 << 8) | previous;
-			this.mtfTable[index + 1] = (mtf1 << 8) | (mtf0 >>> (3 << 3));
-			previous = (mtf1 >>> (3 << 3));
+			this.mtfTable[index + 1] = (mtf1 << 8) | (mtf0 >>> 24);
+			previous = (mtf1 >>> 24);
 			index += 2;
 		}
 		next = this.mtfTable[index];
