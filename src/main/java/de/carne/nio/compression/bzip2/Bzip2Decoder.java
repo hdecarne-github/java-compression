@@ -76,10 +76,10 @@ public class Bzip2Decoder extends Decoder<Bzip2DecoderProperties> {
 	public Bzip2Decoder(Bzip2DecoderProperties properties) {
 		super(Bzip2Factory.COMPRESSION_NAME, properties);
 		this.blockSizeLimit = properties.getBlockSizeProperty().ordinal() * Bzip2.BLOCK_SIZE_UNIT;
-		init();
+		reset0();
 	}
 
-	private void init() {
+	private void reset0() {
 		this.bitDecoder.reset();
 		this.combinedCRCReg = 0;
 		this.crcTestsPassed = true;
@@ -93,7 +93,7 @@ public class Bzip2Decoder extends Decoder<Bzip2DecoderProperties> {
 	@Override
 	public synchronized void reset() {
 		super.reset();
-		init();
+		reset0();
 	}
 
 	@Override
@@ -103,25 +103,32 @@ public class Bzip2Decoder extends Decoder<Bzip2DecoderProperties> {
 		int dstRemainingStart = dst.remaining();
 
 		try {
-			switch (this.state) {
-			case BLOCKBEGIN:
-				decoded = blockBegin(src) + decode(dst, src);
-				break;
-			case BLOCKDECODEA:
-			case BLOCKDECODEB:
-			case BLOCKDECODEC:
-				if (this.blockRandomized) {
-					blockDecodeR(dst);
-				} else {
-					blockDecode(dst);
-				}
-				break;
-			case EOF:
-				decoded = -1;
-				break;
-			}
+			decoded = decode0(dst, src);
 		} finally {
-			endProcessing(beginTime, Math.max(decoded, 0), dst.remaining() - dstRemainingStart);
+			endProcessing(beginTime, Math.max(decoded, 0), dstRemainingStart - dst.remaining());
+		}
+		return decoded;
+	}
+
+	private int decode0(ByteBuffer dst, ReadableByteChannel src) throws IOException {
+		int decoded = 0;
+
+		switch (this.state) {
+		case BLOCKBEGIN:
+			decoded = blockBegin(src) + decode0(dst, src);
+			break;
+		case BLOCKDECODEA:
+		case BLOCKDECODEB:
+		case BLOCKDECODEC:
+			if (this.blockRandomized) {
+				blockDecodeR(dst);
+			} else {
+				blockDecode(dst);
+			}
+			break;
+		case EOF:
+			decoded = -1;
+			break;
 		}
 		return decoded;
 	}

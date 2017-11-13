@@ -114,10 +114,10 @@ public class LzmaDecoder extends Decoder<LzmaDecoderProperties> {
 		this.outBuffer = new byte[Math.max(this.dictionarySizeCheck, (1 << 12))];
 		this.totalOutLimit = (properties.getDecodedSizeProperty() >= 0 ? properties.getDecodedSizeProperty()
 				: Long.MAX_VALUE);
-		init();
+		reset0();
 	}
 
-	private void init() {
+	private void reset0() {
 		LzmaRangeDecoder.initBitModels(this.isMatchDecoders);
 		LzmaRangeDecoder.initBitModels(this.isRep0LongDecoders);
 		LzmaRangeDecoder.initBitModels(this.isRepDecoders);
@@ -176,7 +176,7 @@ public class LzmaDecoder extends Decoder<LzmaDecoderProperties> {
 				decoded = (int) (this.totalOut - totalOutStart);
 			}
 		} finally {
-			endProcessing(beginTime, Math.max(decoded, 0), dst.remaining() - dstRemainingStart);
+			endProcessing(beginTime, Math.max(decoded, 0), dstRemainingStart - dst.remaining());
 		}
 		return decoded;
 	}

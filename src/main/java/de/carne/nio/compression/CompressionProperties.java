@@ -16,6 +16,7 @@
  */
 package de.carne.nio.compression;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -154,7 +155,7 @@ public abstract class CompressionProperties implements Iterable<CompressionPrope
 
 	@Override
 	public Iterator<CompressionProperty> iterator() {
-		return this.properties.keySet().iterator();
+		return Collections.unmodifiableSet(this.properties.keySet()).iterator();
 	}
 
 	private Object getProperty(CompressionProperty property, CompressionPropertyType type) {

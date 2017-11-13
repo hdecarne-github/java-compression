@@ -69,10 +69,10 @@ public class DeflateDecoder extends Decoder<DeflateDecoderProperties> {
 		super(DeflateFactory.COMPRESSION_NAME, properties);
 		this.historyBuffer = new HistoryBuffer(
 				properties().getHistory64Property() ? Deflate.HISTORY_SIZE_64 : Deflate.HISTORY_SIZE_32);
-		init();
+		reset0();
 	}
 
-	private void init() {
+	private void reset0() {
 		this.bitDecoder.reset();
 		this.historyBuffer.clear();
 		this.blockRemaining = -2;
@@ -88,7 +88,7 @@ public class DeflateDecoder extends Decoder<DeflateDecoderProperties> {
 	@Override
 	public synchronized void reset() {
 		super.reset();
-		init();
+		reset0();
 	}
 
 	@Override
