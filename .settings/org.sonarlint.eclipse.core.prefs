@@ -2,4 +2,5 @@ autoEnabled=true
 eclipse.preferences.version=1
 extraProperties=
 moduleKey=de.carne.common\:java-compression
+projectKey=de.carne.common\:java-compression
 serverId=SonarCloud/hdecarne-github
