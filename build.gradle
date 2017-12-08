@@ -134,6 +134,6 @@ bintray {
 eclipse {
 	classpath {
 		downloadSources = true
-		defaultOutputDir = file("eclipse-build")
+		downloadJavadoc = true
 	}
 }
