@@ -21,13 +21,10 @@ import de.carne.nio.compression.CompressionProperties;
 
 /**
  * Base class for all compression engines.
- *
- * @param <T> The actual compression properties type.
  */
-public abstract class Compression<T extends CompressionProperties> {
+public abstract class Compression {
 
 	private final String name;
-	private final T properties;
 	private long processingNanos = 0L;
 	private long totalIn = 0L;
 	private long totalOut = 0L;
@@ -36,11 +33,9 @@ public abstract class Compression<T extends CompressionProperties> {
 	 * Construct {@linkplain Compression}.
 	 *
 	 * @param name The compression name.
-	 * @param properties The engine properties.
 	 */
-	protected Compression(String name, T properties) {
+	protected Compression(String name) {
 		this.name = name;
-		this.properties = properties;
 	}
 
 	/**
@@ -57,9 +52,7 @@ public abstract class Compression<T extends CompressionProperties> {
 	 *
 	 * @return The compression properties.
 	 */
-	public final T properties() {
-		return this.properties;
-	}
+	public abstract CompressionProperties properties();
 
 	/**
 	 * Reset the compression engine to it's initial state.

@@ -20,16 +20,19 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 
+import de.carne.nio.compression.CompressionProperties;
 import de.carne.nio.compression.spi.Decoder;
 
 /**
  * Decoder for LZMA compressed data.
  */
-public class LzmaDecoder extends Decoder<LzmaDecoderProperties> {
+public class LzmaDecoder extends Decoder {
 
 	private enum State {
 		BEGIN, DECODE, COPYFLUSH, EOFFLUSH, EOF
 	}
+
+	private final LzmaDecoderProperties properties;
 
 	private final byte lzmaProperties;
 
@@ -82,12 +85,13 @@ public class LzmaDecoder extends Decoder<LzmaDecoderProperties> {
 	 * @param properties The decoder properties to use.
 	 */
 	public LzmaDecoder(LzmaDecoderProperties properties) {
-		super(LzmaFactory.COMPRESSION_NAME, properties);
+		super(LzmaFactory.COMPRESSION_NAME);
+		this.properties = properties;
 		for (int decoderIndex = 0; decoderIndex < this.posSlotDecoder.length; decoderIndex++) {
 			this.posSlotDecoder[decoderIndex] = new LzmaBitTreeDecoder(Lzma.NUM_POS_SLOT_BITS);
 		}
 
-		this.lzmaProperties = properties.getLcLpBpProperty();
+		this.lzmaProperties = this.properties.getLcLpBpProperty();
 
 		final int lzmaPropertiesValue = this.lzmaProperties & 0xFF;
 		final int lc = lzmaPropertiesValue % 9;
@@ -139,6 +143,17 @@ public class LzmaDecoder extends Decoder<LzmaDecoderProperties> {
 		this.copyLength = 0;
 		this.totalOut = 0;
 		this.state = State.BEGIN;
+	}
+
+	@Override
+	public CompressionProperties properties() {
+		return this.properties;
+	}
+
+	@Override
+	public synchronized void reset() {
+		super.reset();
+		reset0();
 	}
 
 	@Override

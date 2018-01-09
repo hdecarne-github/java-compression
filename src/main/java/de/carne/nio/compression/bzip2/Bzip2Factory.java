@@ -43,7 +43,7 @@ public class Bzip2Factory implements DecoderFactory {
 	}
 
 	@Override
-	public Decoder<?> newDecoder(CompressionProperties properties) throws CompressionInitializationException {
+	public Decoder newDecoder(CompressionProperties properties) throws CompressionInitializationException {
 		return new Bzip2Decoder(Check.isInstanceOf(properties, Bzip2DecoderProperties.class));
 	}
 

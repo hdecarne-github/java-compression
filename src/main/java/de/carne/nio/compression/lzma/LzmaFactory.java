@@ -43,7 +43,7 @@ public class LzmaFactory implements DecoderFactory {
 	}
 
 	@Override
-	public Decoder<?> newDecoder(CompressionProperties properties) throws CompressionInitializationException {
+	public Decoder newDecoder(CompressionProperties properties) throws CompressionInitializationException {
 		return new LzmaDecoder(Check.isInstanceOf(properties, LzmaDecoderProperties.class));
 	}
 

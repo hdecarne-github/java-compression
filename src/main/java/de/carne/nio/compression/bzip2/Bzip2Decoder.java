@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 
+import de.carne.nio.compression.CompressionProperties;
 import de.carne.nio.compression.InvalidDataException;
 import de.carne.nio.compression.Nullable;
 import de.carne.nio.compression.common.BitDecoder;
@@ -30,12 +31,13 @@ import de.carne.nio.compression.spi.Decoder;
 /**
  * Decoder for bzip2 compressed data.
  */
-public class Bzip2Decoder extends Decoder<Bzip2DecoderProperties> {
+public class Bzip2Decoder extends Decoder {
 
 	private enum State {
 		BLOCKBEGIN, BLOCKDECODEA, BLOCKDECODEB, BLOCKDECODEC, EOF
 	}
 
+	private final Bzip2DecoderProperties properties;
 	private final BitDecoder bitDecoder = new BitDecoder(new MsbBitstreamBitRegister());
 	private final int blockSizeLimit;
 	private int blockSize;
@@ -74,8 +76,9 @@ public class Bzip2Decoder extends Decoder<Bzip2DecoderProperties> {
 	 * @param properties The decoder properties.
 	 */
 	public Bzip2Decoder(Bzip2DecoderProperties properties) {
-		super(Bzip2Factory.COMPRESSION_NAME, properties);
-		this.blockSizeLimit = properties.getBlockSizeProperty().ordinal() * Bzip2.BLOCK_SIZE_UNIT;
+		super(Bzip2Factory.COMPRESSION_NAME);
+		this.properties = properties;
+		this.blockSizeLimit = this.properties.getBlockSizeProperty().ordinal() * Bzip2.BLOCK_SIZE_UNIT;
 		reset0();
 	}
 
@@ -88,6 +91,11 @@ public class Bzip2Decoder extends Decoder<Bzip2DecoderProperties> {
 		this.decoders = null;
 		this.counters = null;
 		this.state = State.BLOCKBEGIN;
+	}
+
+	@Override
+	public CompressionProperties properties() {
+		return this.properties;
 	}
 
 	@Override

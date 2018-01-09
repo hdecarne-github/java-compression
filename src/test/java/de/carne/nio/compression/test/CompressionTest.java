@@ -53,7 +53,7 @@ public abstract class CompressionTest {
 	 */
 	protected void runDecoderTest(String compressionName, URL encodedDataUrl, URL decodedDataUrl) throws IOException {
 		ServiceLoader<DecoderFactory> decoderFactories = ServiceLoader.load(DecoderFactory.class);
-		Decoder<?> decoder = null;
+		Decoder decoder = null;
 
 		for (DecoderFactory decoderFactory : decoderFactories) {
 			if (decoderFactory.compressionName().equals(compressionName)) {
@@ -88,7 +88,7 @@ public abstract class CompressionTest {
 		return dataBytes.toByteArray();
 	}
 
-	private byte[] decodeData(Decoder<?> decoder, byte[] encodedData) throws IOException {
+	private byte[] decodeData(Decoder decoder, byte[] encodedData) throws IOException {
 		ReadableByteChannel encodedChannel = Channels.newChannel(new ByteArrayInputStream(encodedData));
 		ByteArrayOutputStream decodedBytes = new ByteArrayOutputStream();
 		WritableByteChannel decodedChannel = Channels.newChannel(decodedBytes);

@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 
+import de.carne.nio.compression.CompressionProperties;
 import de.carne.nio.compression.InvalidDataException;
 import de.carne.nio.compression.common.BitDecoder;
 import de.carne.nio.compression.common.BitRegister;
@@ -32,8 +33,9 @@ import de.carne.nio.compression.spi.Decoder;
 /**
  * Deflate decoder: <a href="https://en.wikipedia.org/wiki/DEFLATE">https://en.wikipedia.org/wiki /DEFLATE</a>
  */
-public class DeflateDecoder extends Decoder<DeflateDecoderProperties> {
+public class DeflateDecoder extends Decoder {
 
+	private final DeflateDecoderProperties properties;
 	private final BitDecoder bitDecoder = new BitDecoder(new BitRegister[] {
 
 			new LSBBitstreamBitRegister(),
@@ -66,9 +68,10 @@ public class DeflateDecoder extends Decoder<DeflateDecoderProperties> {
 	 * @param properties Decoder properties to use.
 	 */
 	public DeflateDecoder(DeflateDecoderProperties properties) {
-		super(DeflateFactory.COMPRESSION_NAME, properties);
+		super(DeflateFactory.COMPRESSION_NAME);
+		this.properties = properties;
 		this.historyBuffer = new HistoryBuffer(
-				properties().getHistory64Property() ? Deflate.HISTORY_SIZE_64 : Deflate.HISTORY_SIZE_32);
+				this.properties.getHistory64Property() ? Deflate.HISTORY_SIZE_64 : Deflate.HISTORY_SIZE_32);
 		reset0();
 	}
 
@@ -86,6 +89,11 @@ public class DeflateDecoder extends Decoder<DeflateDecoderProperties> {
 	}
 
 	@Override
+	public CompressionProperties properties() {
+		return this.properties;
+	}
+
+	@Override
 	public synchronized void reset() {
 		super.reset();
 		reset0();
@@ -93,8 +101,8 @@ public class DeflateDecoder extends Decoder<DeflateDecoderProperties> {
 
 	@Override
 	public int decode(ByteBuffer dst, ReadableByteChannel src) throws IOException {
-		DeflateFormat deflateFormat = properties().getFormatProperty();
-		boolean restartAfterEos = properties().getRestartAfterEosProperty();
+		DeflateFormat deflateFormat = this.properties.getFormatProperty();
+		boolean restartAfterEos = this.properties.getRestartAfterEosProperty();
 		long beginTime = beginProcessing();
 		int decoded = -1;
 		int emitted = 0;
@@ -145,8 +153,8 @@ public class DeflateDecoder extends Decoder<DeflateDecoderProperties> {
 	}
 
 	private void decodeBlock(ReadableByteChannel src, int len) throws IOException {
-		boolean history64 = properties().getHistory64Property();
-		boolean keepHistory = properties().getKeepHistoryProperty();
+		boolean history64 = this.properties.getHistory64Property();
+		boolean keepHistory = this.properties.getKeepHistoryProperty();
 		int decodeRemaining = len;
 
 		if (this.blockRemaining == -2) {
@@ -246,8 +254,8 @@ public class DeflateDecoder extends Decoder<DeflateDecoderProperties> {
 	private void readTables(ReadableByteChannel src) throws IOException {
 		this.finalBlock = (this.bitDecoder.decodeBits(src, Deflate.FINAL_BLOCK_FIELD_SIZE, 1) != 0);
 
-		DeflateFormat deflateFormat = properties().getFormatProperty();
-		boolean history64 = properties().getHistory64Property();
+		DeflateFormat deflateFormat = this.properties.getFormatProperty();
+		boolean history64 = this.properties.getHistory64Property();
 		int blockType = this.bitDecoder.decodeBits(src, Deflate.BLOCK_TYPE_FIELD_SIZE, 1);
 		DeflateLevels levels;
 

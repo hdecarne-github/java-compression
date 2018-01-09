@@ -39,7 +39,7 @@ public interface DecoderFactory extends CompressionFactory {
 	 * @throws CompressionInitializationException if the {@linkplain Decoder} initializer fails.
 	 * @see #defaultDecoderProperties()
 	 */
-	Decoder<?> newDecoder(CompressionProperties properties) throws CompressionInitializationException;
+	Decoder newDecoder(CompressionProperties properties) throws CompressionInitializationException;
 
 	/**
 	 * Create a new {@linkplain Decoder} instance with default properties.
@@ -48,7 +48,7 @@ public interface DecoderFactory extends CompressionFactory {
 	 * @throws CompressionInitializationException if the {@linkplain Decoder} initializer fails.
 	 * @see #defaultDecoderProperties()
 	 */
-	default Decoder<?> newDecoder() throws CompressionInitializationException {
+	default Decoder newDecoder() throws CompressionInitializationException {
 		return newDecoder(defaultDecoderProperties());
 	}
 

@@ -20,23 +20,18 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 
-import de.carne.nio.compression.CompressionProperties;
-
 /**
  * Base class for compression decoders
- * 
- * @param <T> The actual compression properties type.
  */
-public abstract class Decoder<T extends CompressionProperties> extends Compression<T> {
+public abstract class Decoder extends Compression {
 
 	/**
 	 * Construct {@linkplain Decoder}.
 	 *
 	 * @param name The compression name.
-	 * @param properties The decoder properties.
 	 */
-	protected Decoder(String name, T properties) {
-		super(name, properties);
+	protected Decoder(String name) {
+		super(name);
 	}
 
 	/**

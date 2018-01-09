@@ -39,7 +39,7 @@ public interface EncoderFactory extends CompressionFactory {
 	 * @throws CompressionInitializationException if the {@linkplain Encoder} initializer fails.
 	 * @see #defaultEncoderProperties()
 	 */
-	Encoder<?> newEncoder(CompressionProperties properties) throws CompressionInitializationException;
+	Encoder newEncoder(CompressionProperties properties) throws CompressionInitializationException;
 
 	/**
 	 * Create a new {@linkplain Encoder} instance with default properties.
@@ -48,7 +48,7 @@ public interface EncoderFactory extends CompressionFactory {
 	 * @throws CompressionInitializationException if the {@linkplain Encoder} initializer fails.
 	 * @see #defaultEncoderProperties()
 	 */
-	default Encoder<?> newEncoder() throws CompressionInitializationException {
+	default Encoder newEncoder() throws CompressionInitializationException {
 		return newEncoder(defaultEncoderProperties());
 	}
 
