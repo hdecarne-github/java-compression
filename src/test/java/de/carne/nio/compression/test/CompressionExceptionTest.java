@@ -16,8 +16,8 @@
  */
 package de.carne.nio.compression.test;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.carne.nio.compression.CompressionException;
 import de.carne.nio.compression.CompressionInitializationException;
@@ -27,53 +27,27 @@ import de.carne.nio.compression.InvalidDataException;
 /**
  * Test {@linkplain CompressionException} and derived classes.
  */
-public class CompressionExceptionTest {
+class CompressionExceptionTest {
 
-	/**
-	 * Test {@linkplain CompressionInitializationException}.
-	 *
-	 * @throws CompressionException
-	 */
-	@Test(expected = CompressionInitializationException.class)
-	public void testCompressionInitializationException1() throws CompressionException {
-		throw new CompressionInitializationException(getClass().getSimpleName());
+	@Test
+	void testCompressionInitializationException1() {
+		Assertions.assertEquals("CompressionExceptionTest",
+				new CompressionInitializationException(getClass().getSimpleName()).getMessage());
+		Assertions.assertEquals("CompressionExceptionTest",
+				new CompressionInitializationException(getClass().getSimpleName(), new NullPointerException())
+						.getMessage());
 	}
 
-	/**
-	 * Test {@linkplain CompressionInitializationException}.
-	 *
-	 * @throws CompressionException
-	 */
-	@Test(expected = CompressionInitializationException.class)
-	public void testCompressionInitializationException2() throws CompressionException {
-		throw new CompressionInitializationException(getClass().getSimpleName(), new NullPointerException());
+	@Test
+	void testInsufficientDataException() {
+		Assertions.assertEquals("Failed to read the requested number of bytes: Requested = 42; Read = 41",
+				new InsufficientDataException(42, 41).getMessage());
 	}
 
-	/**
-	 * Test {@linkplain InsufficientDataException}.
-	 *
-	 * @throws CompressionException
-	 */
-	@Test(expected = InsufficientDataException.class)
-	public void testInsufficientDataException() throws CompressionException {
-		InsufficientDataException exception = new InsufficientDataException(42, 41);
-
-		Assert.assertEquals("Failed to read the requested number of bytes: Requested = 42; Read = 41",
-				exception.getMessage());
-		throw exception;
-	}
-
-	/**
-	 * Test {@linkplain InvalidDataException}.
-	 *
-	 * @throws CompressionException
-	 */
-	@Test(expected = InvalidDataException.class)
-	public void testInvalidDataException() throws CompressionException {
-		InvalidDataException exception = new InvalidDataException(Byte.valueOf((byte) 42), 43);
-
-		Assert.assertEquals("Invalid data: 0x2a, 43", exception.getMessage());
-		throw exception;
+	@Test
+	void testInvalidDataException() {
+		Assertions.assertEquals("Invalid data: 0x2a, 43",
+				new InvalidDataException(Byte.valueOf((byte) 42), 43).getMessage());
 	}
 
 }

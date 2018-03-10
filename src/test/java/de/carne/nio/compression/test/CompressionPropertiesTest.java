@@ -16,8 +16,8 @@
  */
 package de.carne.nio.compression.test;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.carne.nio.compression.CompressionProperties;
 import de.carne.nio.compression.CompressionProperty;
@@ -26,7 +26,7 @@ import de.carne.nio.compression.CompressionPropertyType;
 /**
  * Test {@linkplain CompressionProperties} class.
  */
-public class CompressionPropertiesTest extends CompressionProperties {
+class CompressionPropertiesTest extends CompressionProperties {
 
 	private static enum AnEnum {
 		A, B, C
@@ -49,10 +49,7 @@ public class CompressionPropertiesTest extends CompressionProperties {
 	private static final CompressionProperty UNDEFINED = new CompressionProperty("UNDEFINED",
 			CompressionPropertyType.BOOLEAN);
 
-	/**
-	 * Construct {@linkplain CompressionPropertiesTest}.
-	 */
-	public CompressionPropertiesTest() {
+	CompressionPropertiesTest() {
 		registerProperty(BYTE_ONE, Byte.valueOf((byte) 1));
 		registerProperty(LONG_ONE, Long.valueOf(1l));
 		registerProperty(BOOLEAN_FALSE, Boolean.FALSE);
@@ -61,124 +58,75 @@ public class CompressionPropertiesTest extends CompressionProperties {
 		registerProperty(BN_ENUM, BnEnum.B);
 	}
 
-	/**
-	 * Test {@linkplain CompressionProperties#getByteProperty(CompressionProperty)}.
-	 */
 	@Test
-	public void testGetByteProperty() {
-		Assert.assertEquals(1, getByteProperty(BYTE_ONE));
+	void testGetByteProperty() {
+		Assertions.assertEquals(1, getByteProperty(BYTE_ONE));
 	}
 
-	/**
-	 * Test {@linkplain CompressionProperties#setByteProperty(CompressionProperty, byte)}.
-	 */
 	@Test
-	public void testSetByteProperty() {
+	void testSetByteProperty() {
 		setByteProperty(BYTE_ONE, (byte) 2);
-		Assert.assertEquals(2, getByteProperty(BYTE_ONE));
+		Assertions.assertEquals(2, getByteProperty(BYTE_ONE));
 		setByteProperty(BYTE_ONE, (byte) 1);
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			setByteProperty(AN_ENUM, Byte.MIN_VALUE);
+		});
 	}
 
-	/**
-	 * Test {@linkplain CompressionProperties#setByteProperty(CompressionProperty, byte)}.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testSetBytePropertyFailure() {
-		setByteProperty(AN_ENUM, Byte.MIN_VALUE);
-	}
-
-	/**
-	 * Test {@linkplain CompressionProperties#getLongProperty(CompressionProperty)}.
-	 */
 	@Test
-	public void testGetLongProperty() {
-		Assert.assertEquals(1l, getLongProperty(LONG_ONE));
+	void testGetLongProperty() {
+		Assertions.assertEquals(1l, getLongProperty(LONG_ONE));
 	}
 
-	/**
-	 * Test {@linkplain CompressionProperties#setLongProperty(CompressionProperty, long)}.
-	 */
 	@Test
-	public void testSetLongProperty() {
+	void testSetLongProperty() {
 		setLongProperty(LONG_ONE, 2l);
-		Assert.assertEquals(2l, getLongProperty(LONG_ONE));
+		Assertions.assertEquals(2l, getLongProperty(LONG_ONE));
 		setLongProperty(LONG_ONE, 2l);
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			setLongProperty(AN_ENUM, Long.MIN_VALUE);
+		});
 	}
 
-	/**
-	 * Test {@linkplain CompressionProperties#setLongProperty(CompressionProperty, long)}.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testSetLongPropertyFailure() {
-		setLongProperty(AN_ENUM, Long.MIN_VALUE);
-	}
-
-	/**
-	 * Test {@linkplain CompressionProperties#getBooleanProperty(CompressionProperty)}.
-	 */
 	@Test
-	public void testGetBooleanProperty() {
-		Assert.assertFalse(getBooleanProperty(BOOLEAN_FALSE));
-		Assert.assertTrue(getBooleanProperty(BOOLEAN_TRUE));
+	void testGetBooleanProperty() {
+		Assertions.assertFalse(getBooleanProperty(BOOLEAN_FALSE));
+		Assertions.assertTrue(getBooleanProperty(BOOLEAN_TRUE));
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			getBooleanProperty(UNDEFINED);
+		});
 	}
 
-	/**
-	 * Test {@linkplain CompressionProperties#setBooleanProperty(CompressionProperty, boolean)}.
-	 */
 	@Test
-	public void testSetBooleanProperty() {
+	void testSetBooleanProperty() {
 		setBooleanProperty(BOOLEAN_FALSE, true);
-		Assert.assertTrue(getBooleanProperty(BOOLEAN_FALSE));
+		Assertions.assertTrue(getBooleanProperty(BOOLEAN_FALSE));
 		setBooleanProperty(BOOLEAN_FALSE, false);
 		setBooleanProperty(BOOLEAN_TRUE, false);
-		Assert.assertFalse(getBooleanProperty(BOOLEAN_TRUE));
+		Assertions.assertFalse(getBooleanProperty(BOOLEAN_TRUE));
 		setBooleanProperty(BOOLEAN_TRUE, true);
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			setBooleanProperty(AN_ENUM, true);
+		});
 	}
 
-	/**
-	 * Test {@linkplain CompressionProperties#setBooleanProperty(CompressionProperty, boolean)}.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testSetBooleanPropertyFailure() {
-		setBooleanProperty(AN_ENUM, true);
-	}
-
-	/**
-	 * Test {@linkplain CompressionProperties#getEnumProperty(CompressionProperty)}.
-	 */
 	@Test
-	public void testGetEnumProperty() {
-		Assert.assertEquals(AnEnum.B, getEnumProperty(AN_ENUM));
-		Assert.assertEquals(BnEnum.B, getEnumProperty(BN_ENUM));
+	void testGetEnumProperty() {
+		Assertions.assertEquals(AnEnum.B, getEnumProperty(AN_ENUM));
+		Assertions.assertEquals(BnEnum.B, getEnumProperty(BN_ENUM));
 	}
 
-	/**
-	 * Test {@linkplain CompressionProperties#setEnumProperty(CompressionProperty, Enum)}.
-	 */
 	@Test
-	public void testSetEnumProperty() {
+	void testSetEnumProperty() {
 		setEnumProperty(AN_ENUM, AnEnum.C);
-		Assert.assertEquals(AnEnum.C, getEnumProperty(AN_ENUM));
+		Assertions.assertEquals(AnEnum.C, getEnumProperty(AN_ENUM));
 		setEnumProperty(AN_ENUM, AnEnum.B);
 		setEnumProperty(BN_ENUM, BnEnum.A);
-		Assert.assertEquals(BnEnum.A, getEnumProperty(BN_ENUM));
+		Assertions.assertEquals(BnEnum.A, getEnumProperty(BN_ENUM));
 		setEnumProperty(BN_ENUM, BnEnum.B);
-	}
-
-	/**
-	 * Test {@linkplain CompressionProperties#setEnumProperty(CompressionProperty, Enum)}.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testSetEnumPropertyFailure() {
-		setEnumProperty(AN_ENUM, BnEnum.C);
-	}
-
-	/**
-	 * Test {@linkplain CompressionProperties#getBooleanProperty(CompressionProperty)}.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testGetBooleanPropertyFailure() {
-		getBooleanProperty(UNDEFINED);
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			setEnumProperty(AN_ENUM, BnEnum.C);
+		});
 	}
 
 }

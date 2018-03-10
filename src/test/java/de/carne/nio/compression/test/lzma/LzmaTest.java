@@ -19,27 +19,21 @@ package de.carne.nio.compression.test.lzma;
 import java.io.IOException;
 import java.net.URL;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import de.carne.nio.compression.lzma.LzmaDecoder;
 import de.carne.nio.compression.lzma.LzmaFactory;
 import de.carne.nio.compression.test.CompressionTest;
 
 /**
  * Test LZMA compression engine.
  */
-public class LzmaTest extends CompressionTest {
+class LzmaTest extends CompressionTest {
 
 	private static final URL ENCODED_DATA_URL = LzmaTest.class.getResource("ENCODED.bin");
 	private static final URL DECODED_DATA_URL = LzmaTest.class.getResource("DECODED.bin");
 
-	/**
-	 * Test {@linkplain LzmaDecoder} with standard options.
-	 *
-	 * @throws IOException if an I/O error occurs.
-	 */
 	@Test
-	public void testLzma() throws IOException {
+	void testLzma() throws IOException {
 		runDecoderTest(LzmaFactory.COMPRESSION_NAME, ENCODED_DATA_URL, DECODED_DATA_URL);
 	}
 

@@ -19,27 +19,21 @@ package de.carne.nio.compression.test.deflate;
 import java.io.IOException;
 import java.net.URL;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import de.carne.nio.compression.deflate.DeflateDecoder;
 import de.carne.nio.compression.deflate.DeflateFactory;
 import de.carne.nio.compression.test.CompressionTest;
 
 /**
  * Test Deflate compression enging.
  */
-public class DeflateTest extends CompressionTest {
+class DeflateTest extends CompressionTest {
 
 	private static final URL ENCODED_DATA_URL = DeflateTest.class.getResource("ENCODED.bin");
 	private static final URL DECODED_DATA_URL = DeflateTest.class.getResource("DECODED.bin");
 
-	/**
-	 * Test {@linkplain DeflateDecoder} with standard options.
-	 *
-	 * @throws IOException if an I/O error occurs.
-	 */
 	@Test
-	public void testDeflate() throws IOException {
+	void testDeflate() throws IOException {
 		runDecoderTest(DeflateFactory.COMPRESSION_NAME, ENCODED_DATA_URL, DECODED_DATA_URL);
 	}
 

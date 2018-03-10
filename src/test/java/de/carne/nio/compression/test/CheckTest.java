@@ -16,130 +16,74 @@
  */
 package de.carne.nio.compression.test;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.carne.nio.compression.Check;
 
 /**
  * Test {@linkplain Check} class.
  */
-public class CheckTest {
+class CheckTest {
 
-	/**
-	 * Test {@linkplain Check#notNull(Object)} with non {@code null} argument.
-	 */
 	@Test
-	public void testCheckNotNullPassed() {
-		Assert.assertNotNull(Check.notNull(this));
+	void testCheckNotNullPassed() {
+		Assertions.assertNotNull(Check.notNull(this));
+		Assertions.assertNotNull(Check.notNull(this, getClass().getSimpleName()));
 	}
 
-	/**
-	 * Test {@linkplain Check#notNull(Object, String, Object...)} with non {@code null} argument.
-	 */
 	@Test
-	public void testCheckNotNullMessagePassed() {
-		Assert.assertNotNull(Check.notNull(this, getClass().getSimpleName()));
+	void testCheckNotNullFailed() {
+		Assertions.assertThrows(NullPointerException.class, () -> {
+			Check.notNull(null);
+		});
+		Assertions.assertThrows(NullPointerException.class, () -> {
+			Check.notNull(null, getClass().getSimpleName());
+		});
 	}
 
-	/**
-	 * Test {@linkplain Check#notNull(Object)} with {@code null} argument.
-	 */
-	@Test(expected = NullPointerException.class)
-	public void testCheckNotNullFailed() {
-		Check.notNull(null);
-	}
-
-	/**
-	 * Test {@linkplain Check#notNull(Object, String, Object...)} with {@code null} argument.
-	 */
-	@Test(expected = NullPointerException.class)
-	public void testCheckNotNullMessageFailed() {
-		Check.notNull(null, getClass().getSimpleName());
-	}
-
-	/**
-	 * Test {@linkplain Check#isInstanceOf(Object, Class)} with valid instance.
-	 */
 	@Test
-	public void testCheckIsInstanceOfPassed() {
+	void testCheckIsInstanceOfPassed() {
 		String object = new String();
 
-		Assert.assertEquals(object, Check.isInstanceOf(object, CharSequence.class));
+		Assertions.assertEquals(object, Check.isInstanceOf(object, CharSequence.class));
+		Assertions.assertEquals(object, Check.isInstanceOf(object, CharSequence.class, getClass().getSimpleName()));
 	}
 
-	/**
-	 * Test {@linkplain Check#isInstanceOf(Object, Class, String, Object...)} with valid instance.
-	 */
 	@Test
-	public void testCheckIsInstanceOfMessagePassed() {
-		String object = new String();
-
-		Assert.assertEquals(object, Check.isInstanceOf(object, CharSequence.class, getClass().getSimpleName()));
+	void testCheckIsInstanceOfFailed() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			Check.isInstanceOf(this, CharSequence.class);
+		});
+		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+			Check.isInstanceOf(this, CharSequence.class, getClass().getSimpleName());
+		});
 	}
 
-	/**
-	 * Test {@linkplain Check#isInstanceOf(Object, Class)} with invalid instance.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testCheckIsInstanceOfFailed() {
-		Check.isInstanceOf(this, CharSequence.class);
-	}
-
-	/**
-	 * Test {@linkplain Check#isInstanceOf(Object, Class, String, Object...)} with invalid instance.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testCheckIsInstanceOfMessageFailed() {
-		Check.isInstanceOf(this, CharSequence.class, getClass().getSimpleName());
-	}
-
-	/**
-	 * Test {@linkplain Check#assertTrue(boolean)} with {@code true} argument.
-	 */
 	@Test
-	public void testCheckAssertTruePassed() {
+	void testCheckAssertTruePassed() {
 		Check.assertTrue(true);
-	}
-
-	/**
-	 * Test {@linkplain Check#assertTrue(boolean, String, Object...)} with {@code true} argument.
-	 */
-	@Test
-	public void testCheckAssertTrueMessagePassed() {
 		Check.assertTrue(true, getClass().getSimpleName());
 	}
 
-	/**
-	 * Test {@linkplain Check#assertTrue(boolean)} with {@code false} argument.
-	 */
-	@Test(expected = IllegalStateException.class)
-	public void testCheckAssertTrueFailed() {
-		Check.assertTrue(false);
+	@Test
+	void testCheckAssertTrueFailed() {
+		Assertions.assertThrows(IllegalStateException.class, () -> {
+			Check.assertTrue(false);
+		});
+		Assertions.assertThrows(IllegalStateException.class, () -> {
+			Check.assertTrue(false, getClass().getSimpleName());
+		});
 	}
 
-	/**
-	 * Test {@linkplain Check#assertTrue(boolean, String, Object...)} with {@code false} argument.
-	 */
-	@Test(expected = IllegalStateException.class)
-	public void testCheckAssertTrueMessageFailed() {
-		Check.assertTrue(false, getClass().getSimpleName());
-	}
-
-	/**
-	 * Test {@linkplain Check#fail()}.
-	 */
-	@Test(expected = IllegalStateException.class)
-	public void testCheckFail() {
-		Check.fail();
-	}
-
-	/**
-	 * Test {@linkplain Check#fail(String, Object...)}.
-	 */
-	@Test(expected = IllegalStateException.class)
-	public void testCheckFailMessage() {
-		Check.fail(getClass().getSimpleName());
+	@Test
+	void testCheckFail() {
+		Assertions.assertThrows(IllegalStateException.class, () -> {
+			Check.fail();
+		});
+		Assertions.assertThrows(IllegalStateException.class, () -> {
+			Check.fail(getClass().getSimpleName());
+		});
 	}
 
 }

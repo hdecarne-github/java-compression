@@ -30,7 +30,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ServiceLoader;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 import de.carne.nio.compression.CompressionProperties;
 import de.carne.nio.compression.CompressionProperty;
@@ -62,13 +62,13 @@ public abstract class CompressionTest {
 			}
 		}
 
-		Assert.assertNotNull(decoder);
+		Assertions.assertNotNull(decoder);
 
 		byte[] encodedData = loadData(encodedDataUrl);
 		byte[] decodedData = loadData(decodedDataUrl);
 		byte[] decoderResult = decodeData(decoder, encodedData);
 
-		Assert.assertArrayEquals(decodedData, decoderResult);
+		Assertions.assertArrayEquals(decodedData, decoderResult);
 	}
 
 	private byte[] loadData(URL dataUrl) throws IOException {
@@ -126,7 +126,7 @@ public abstract class CompressionTest {
 				System.out.println(decoderProperties.getEnumProperty(decoderProperty));
 				break;
 			default:
-				Assert.fail("Unexpected decoder property type: " + decoderPropertyType);
+				Assertions.fail("Unexpected decoder property type: " + decoderPropertyType);
 			}
 		}
 		while (true) {
@@ -140,7 +140,7 @@ public abstract class CompressionTest {
 			decodeBuffer.flip();
 			decodedChannel.write(decodeBuffer);
 
-			Assert.assertFalse(decodeBuffer.hasRemaining());
+			Assertions.assertFalse(decodeBuffer.hasRemaining());
 		}
 		System.out.println("Total in (bytes)  : " + decoder.totalIn());
 		System.out.println("Total out (bytes) : " + decoder.totalOut());
@@ -149,10 +149,10 @@ public abstract class CompressionTest {
 
 		byte[] decodedData = decodedBytes.toByteArray();
 
-		// Assert.assertEquals(encodedData.length, decoder.totalIn());
-		Assert.assertEquals(decodedData.length, decoder.totalOut());
-		Assert.assertTrue(decoder.rateIn() > 0);
-		Assert.assertTrue(decoder.rateOut() > 0);
+		// Assertions.assertEquals(encodedData.length, decoder.totalIn());
+		Assertions.assertEquals(decodedData.length, decoder.totalOut());
+		Assertions.assertTrue(decoder.rateIn() > 0);
+		Assertions.assertTrue(decoder.rateOut() > 0);
 		return decodedData;
 	}
 

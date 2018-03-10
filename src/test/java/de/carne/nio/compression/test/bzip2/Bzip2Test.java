@@ -19,27 +19,21 @@ package de.carne.nio.compression.test.bzip2;
 import java.io.IOException;
 import java.net.URL;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import de.carne.nio.compression.bzip2.Bzip2Decoder;
 import de.carne.nio.compression.bzip2.Bzip2Factory;
 import de.carne.nio.compression.test.CompressionTest;
 
 /**
  * Test Bzip2 compression engine.
  */
-public class Bzip2Test extends CompressionTest {
+class Bzip2Test extends CompressionTest {
 
 	private static final URL ENCODED_DATA_URL = Bzip2Test.class.getResource("ENCODED.bin");
 	private static final URL DECODED_DATA_URL = Bzip2Test.class.getResource("DECODED.bin");
 
-	/**
-	 * Test {@linkplain Bzip2Decoder} with standard options.
-	 *
-	 * @throws IOException if an I/O error occurs.
-	 */
 	@Test
-	public void testBzip2() throws IOException {
+	void testBzip2() throws IOException {
 		runDecoderTest(Bzip2Factory.COMPRESSION_NAME, ENCODED_DATA_URL, DECODED_DATA_URL);
 	}
 

@@ -20,8 +20,8 @@ import java.util.HashSet;
 import java.util.ServiceLoader;
 import java.util.Set;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import de.carne.nio.compression.bzip2.Bzip2Factory;
 import de.carne.nio.compression.deflate.DeflateFactory;
@@ -32,7 +32,7 @@ import de.carne.nio.compression.spi.EncoderFactory;
 /**
  * Test encode and encoder service definitions.
  */
-public class ServiceTest {
+class ServiceTest {
 
 	private static Set<String> ENCODER_NAMES = new HashSet<>();
 
@@ -48,37 +48,31 @@ public class ServiceTest {
 		DECODER_NAMES.add(LzmaFactory.COMPRESSION_NAME);
 	}
 
-	/**
-	 * Test encoder services.
-	 */
 	@Test
-	public void testEncodeServices() {
+	void testEncodeServices() {
 		ServiceLoader<EncoderFactory> encoderFactories = ServiceLoader.load(EncoderFactory.class);
 		Set<String> encoderNames = new HashSet<>();
 
 		for (EncoderFactory encoderFactory : encoderFactories) {
 			encoderNames.add(encoderFactory.compressionName());
 		}
-		Assert.assertEquals(ENCODER_NAMES.size(), encoderNames.size());
+		Assertions.assertEquals(ENCODER_NAMES.size(), encoderNames.size());
 		for (String encoderName : encoderNames) {
-			Assert.assertTrue(ENCODER_NAMES.contains(encoderName));
+			Assertions.assertTrue(ENCODER_NAMES.contains(encoderName));
 		}
 	}
 
-	/**
-	 * Test decoder services.
-	 */
 	@Test
-	public void testDecodeServices() {
+	void testDecodeServices() {
 		ServiceLoader<DecoderFactory> decoderFactories = ServiceLoader.load(DecoderFactory.class);
 		Set<String> decoderNames = new HashSet<>();
 
 		for (DecoderFactory decoderFactory : decoderFactories) {
 			decoderNames.add(decoderFactory.compressionName());
 		}
-		Assert.assertEquals(DECODER_NAMES.size(), decoderNames.size());
+		Assertions.assertEquals(DECODER_NAMES.size(), decoderNames.size());
 		for (String decoderName : decoderNames) {
-			Assert.assertTrue(DECODER_NAMES.contains(decoderName));
+			Assertions.assertTrue(DECODER_NAMES.contains(decoderName));
 		}
 	}
 
