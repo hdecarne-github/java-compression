@@ -14,10 +14,10 @@ def snapshotBuild = project.version.endsWith("-SNAPSHOT")
 
 def resolveProperty(propertyName, envName) {
 	def resolved = (project.hasProperty(propertyName) ? project.property(propertyName) : System.getenv(envName));
-	
+
 	if(resolved == null) {
 		throw new GradleException("Missing property/environment variable: '${propertyName}'/'${envName}")
-	} 
+	}
 	return resolved; 
 }
 
@@ -33,6 +33,12 @@ dependencies {
 	testImplementation("org.junit.jupiter:junit-jupiter-api:5.1.0")
 	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.1.0")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.0.1")
+}
+
+jar {
+	manifest {
+		attributes "Automatic-Module-Name": automaticModuleName
+	}
 }
 
 test {
