@@ -25,7 +25,7 @@ import de.carne.nio.compression.deflate.DeflateFactory;
 import de.carne.nio.compression.test.CompressionTest;
 
 /**
- * Test Deflate compression enging.
+ * Test Deflate compression engine.
  */
 class DeflateTest extends CompressionTest {
 
