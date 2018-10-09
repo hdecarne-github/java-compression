@@ -17,4 +17,4 @@
 @NonNullByDefault
 package de.carne.nio.compression.test;
 
-import de.carne.nio.compression.NonNullByDefault;
+import org.eclipse.jdt.annotation.NonNullByDefault;

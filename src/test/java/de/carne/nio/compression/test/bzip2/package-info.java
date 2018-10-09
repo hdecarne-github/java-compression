@@ -17,4 +17,4 @@
 @NonNullByDefault
 package de.carne.nio.compression.test.bzip2;
 
-import de.carne.nio.compression.NonNullByDefault;
+import org.eclipse.jdt.annotation.NonNullByDefault;

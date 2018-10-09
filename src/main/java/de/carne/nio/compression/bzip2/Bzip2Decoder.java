@@ -20,9 +20,10 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import de.carne.nio.compression.CompressionProperties;
 import de.carne.nio.compression.InvalidDataException;
-import de.carne.nio.compression.Nullable;
 import de.carne.nio.compression.common.BitDecoder;
 import de.carne.nio.compression.common.HuffmanDecoder;
 import de.carne.nio.compression.common.MsbBitstreamBitRegister;
@@ -47,14 +48,11 @@ public class Bzip2Decoder extends Decoder {
 	private boolean crcTestsPassed;
 	private boolean blockRandomized;
 	private int blockOrigPtr;
+	private int @Nullable [] mtfTable;
+	private byte @Nullable [] selectors;
 	@Nullable
-	private int[] mtfTable;
-	@Nullable
-	private byte[] selectors;
-	@Nullable
-	private HuffmanDecoder[] decoders;
-	@Nullable
-	private int[] counters;
+	private HuffmanDecoder @Nullable [] decoders;
+	private int @Nullable [] counters;
 	private int decodePosition;
 	private int decodePrevious;
 	private int decodeRepeatCount;

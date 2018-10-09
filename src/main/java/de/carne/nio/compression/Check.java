@@ -16,6 +16,9 @@
  */
 package de.carne.nio.compression;
 
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * Utility class providing code check related functions.
  */
@@ -33,6 +36,7 @@ public final class Check {
 	 * @return The checked {@linkplain Object} (never {@code null}).
 	 * @throws NullPointerException if the submitted argument is {@code null}.
 	 */
+	@NonNull
 	public static <T> T notNull(@Nullable T object) {
 		if (object == null) {
 			throw new NullPointerException();
@@ -53,6 +57,7 @@ public final class Check {
 	 * @return The checked {@linkplain Object} (never {@code null}).
 	 * @throws NullPointerException if the submitted argument is {@code null}.
 	 */
+	@NonNull
 	public static <T> T notNull(@Nullable T object, String format, Object... args) {
 		if (object == null) {
 			throw new NullPointerException(String.format(format, args));

@@ -16,6 +16,8 @@
  */
 package de.carne.nio.compression;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * Property definition for a single property within a {@linkplain CompressionProperties} object.
  */
