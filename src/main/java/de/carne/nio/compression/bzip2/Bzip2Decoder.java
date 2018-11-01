@@ -50,7 +50,6 @@ public class Bzip2Decoder extends Decoder {
 	private int blockOrigPtr;
 	private int @Nullable [] mtfTable;
 	private byte @Nullable [] selectors;
-	@Nullable
 	private HuffmanDecoder @Nullable [] decoders;
 	private int @Nullable [] counters;
 	private int decodePosition;

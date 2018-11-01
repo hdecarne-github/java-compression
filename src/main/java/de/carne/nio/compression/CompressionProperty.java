@@ -16,6 +16,8 @@
  */
 package de.carne.nio.compression;
 
+import java.util.Objects;
+
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -67,7 +69,7 @@ public final class CompressionProperty implements Comparable<CompressionProperty
 
 	@Override
 	public int compareTo(@Nullable CompressionProperty o) {
-		return this.key.compareTo(Check.notNull(o).key);
+		return this.key.compareTo(Objects.requireNonNull(o).key);
 	}
 
 }

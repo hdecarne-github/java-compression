@@ -16,7 +16,6 @@
  */
 package de.carne.nio.compression;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -29,43 +28,6 @@ public final class Check {
 	}
 
 	/**
-	 * Check and ensure that an {@linkplain Object} is not {@code null}.
-	 *
-	 * @param <T> The actual object type.
-	 * @param object The {@linkplain Object} to check.
-	 * @return The checked {@linkplain Object} (never {@code null}).
-	 * @throws NullPointerException if the submitted argument is {@code null}.
-	 */
-	@NonNull
-	public static <T> T notNull(@Nullable T object) {
-		if (object == null) {
-			throw new NullPointerException();
-		}
-		return object;
-	}
-
-	/**
-	 * Check and ensure that an {@linkplain Object} is not {@code null}.
-	 * <p>
-	 * In case the check fails the {@linkplain String#format(String, Object...)} function is used to format the
-	 * exception message.
-	 *
-	 * @param <T> The actual object type.
-	 * @param object The {@linkplain Object} to check.
-	 * @param format The format of the message to issue if the check fails.
-	 * @param args The arguments to use for message formatting.
-	 * @return The checked {@linkplain Object} (never {@code null}).
-	 * @throws NullPointerException if the submitted argument is {@code null}.
-	 */
-	@NonNull
-	public static <T> T notNull(@Nullable T object, String format, Object... args) {
-		if (object == null) {
-			throw new NullPointerException(String.format(format, args));
-		}
-		return object;
-	}
-
-	/**
 	 * Check and ensure that an {@linkplain Object} is an instance of a specific type.
 	 *
 	 * @param <T> The type to ensure.
@@ -74,7 +36,10 @@ public final class Check {
 	 * @return The checked {@linkplain Object} (casted to the checked type}).
 	 * @throws IllegalArgumentException if the submitted argument is not an instance of the given type.
 	 */
-	public static <T> T isInstanceOf(Object object, Class<T> type) {
+	public static <T> T isInstanceOf(@Nullable Object object, Class<T> type) {
+		if (object == null) {
+			throw new NullPointerException();
+		}
 		if (!type.isAssignableFrom(object.getClass())) {
 			throw new IllegalArgumentException();
 		}
@@ -95,7 +60,10 @@ public final class Check {
 	 * @return The checked {@linkplain Object} (casted to the checked type}).
 	 * @throws IllegalArgumentException if the submitted argument is not an instance of the given type.
 	 */
-	public static <T> T isInstanceOf(Object object, Class<T> type, String format, Object... args) {
+	public static <T> T isInstanceOf(@Nullable Object object, Class<T> type, String format, Object... args) {
+		if (object == null) {
+			throw new NullPointerException(String.format(format, args));
+		}
 		if (!type.isAssignableFrom(object.getClass())) {
 			throw new IllegalArgumentException(String.format(format, args));
 		}

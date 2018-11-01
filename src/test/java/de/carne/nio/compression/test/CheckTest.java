@@ -27,22 +27,6 @@ import de.carne.nio.compression.Check;
 class CheckTest {
 
 	@Test
-	void testCheckNotNullPassed() {
-		Assertions.assertNotNull(Check.notNull(this));
-		Assertions.assertNotNull(Check.notNull(this, getClass().getSimpleName()));
-	}
-
-	@Test
-	void testCheckNotNullFailed() {
-		Assertions.assertThrows(NullPointerException.class, () -> {
-			Check.notNull(null);
-		});
-		Assertions.assertThrows(NullPointerException.class, () -> {
-			Check.notNull(null, getClass().getSimpleName());
-		});
-	}
-
-	@Test
 	void testCheckIsInstanceOfPassed() {
 		String object = new String();
 
