@@ -18,6 +18,7 @@ package de.carne.nio.compression.test.deflate;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 
 import org.junit.jupiter.api.Test;
 
@@ -29,8 +30,8 @@ import de.carne.nio.compression.test.CompressionTest;
  */
 class DeflateTest extends CompressionTest {
 
-	private static final URL ENCODED_DATA_URL = DeflateTest.class.getResource("ENCODED.bin");
-	private static final URL DECODED_DATA_URL = DeflateTest.class.getResource("DECODED.bin");
+	private static final URL ENCODED_DATA_URL = Objects.requireNonNull(DeflateTest.class.getResource("ENCODED.bin"));
+	private static final URL DECODED_DATA_URL = Objects.requireNonNull(DeflateTest.class.getResource("DECODED.bin"));
 
 	@Test
 	void testDeflate() throws IOException {

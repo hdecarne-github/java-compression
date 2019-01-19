@@ -18,6 +18,7 @@ package de.carne.nio.compression.test.bzip2;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 
 import org.junit.jupiter.api.Test;
 
@@ -29,8 +30,8 @@ import de.carne.nio.compression.test.CompressionTest;
  */
 class Bzip2Test extends CompressionTest {
 
-	private static final URL ENCODED_DATA_URL = Bzip2Test.class.getResource("ENCODED.bin");
-	private static final URL DECODED_DATA_URL = Bzip2Test.class.getResource("DECODED.bin");
+	private static final URL ENCODED_DATA_URL = Objects.requireNonNull(Bzip2Test.class.getResource("ENCODED.bin"));
+	private static final URL DECODED_DATA_URL = Objects.requireNonNull(Bzip2Test.class.getResource("DECODED.bin"));
 
 	@Test
 	void testBzip2() throws IOException {
