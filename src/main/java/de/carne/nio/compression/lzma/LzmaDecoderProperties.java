@@ -18,18 +18,16 @@ package de.carne.nio.compression.lzma;
 
 import de.carne.nio.compression.CompressionProperties;
 import de.carne.nio.compression.CompressionProperty;
-import de.carne.nio.compression.CompressionPropertyType;
 
 /**
  * {@linkplain LzmaDecoder} properties.
  */
 public class LzmaDecoderProperties extends CompressionProperties {
 
-	private static final CompressionProperty LCLPBP = new CompressionProperty("LCLPBP", CompressionPropertyType.BYTE);
+	private static final CompressionProperty LCLPBP = new CompressionProperty("LCLPBP", Byte.class);
 	private static final CompressionProperty DICTIONARY_SIZE = new CompressionProperty("DICTIONARY_SIZE",
-			CompressionPropertyType.INT);
-	private static final CompressionProperty DECODED_SIZE = new CompressionProperty("DECODED_SIZE",
-			CompressionPropertyType.LONG);
+			Integer.class);
+	private static final CompressionProperty DECODED_SIZE = new CompressionProperty("DECODED_SIZE", Long.class);
 
 	/**
 	 * Construct {@linkplain LzmaDecoderProperties} with default values.

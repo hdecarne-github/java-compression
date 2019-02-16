@@ -34,7 +34,6 @@ import org.junit.jupiter.api.Assertions;
 
 import de.carne.nio.compression.CompressionProperties;
 import de.carne.nio.compression.CompressionProperty;
-import de.carne.nio.compression.CompressionPropertyType;
 import de.carne.nio.compression.spi.Decoder;
 import de.carne.nio.compression.spi.DecoderFactory;
 
@@ -106,28 +105,10 @@ public abstract class CompressionTest {
 		}
 		Collections.sort(sortedProperties);
 		for (CompressionProperty decoderProperty : sortedProperties) {
-			CompressionPropertyType decoderPropertyType = decoderProperty.type();
+			Object decoderPropertyValue = decoderProperties.getProperty(decoderProperty);
 
-			System.out.print(" " + decoderProperty.key() + "(" + decoderPropertyType + "): ");
-			switch (decoderPropertyType) {
-			case BYTE:
-				System.out.println(decoderProperties.getByteProperty(decoderProperty));
-				break;
-			case INT:
-				System.out.println(decoderProperties.getIntProperty(decoderProperty));
-				break;
-			case LONG:
-				System.out.println(decoderProperties.getLongProperty(decoderProperty));
-				break;
-			case BOOLEAN:
-				System.out.println(decoderProperties.getBooleanProperty(decoderProperty));
-				break;
-			case ENUM:
-				System.out.println(decoderProperties.getEnumProperty(decoderProperty));
-				break;
-			default:
-				Assertions.fail("Unexpected decoder property type: " + decoderPropertyType);
-			}
+			System.out.print(
+					" " + decoderProperty.key() + "(" + decoderPropertyValue.getClass() + "): " + decoderPropertyValue);
 		}
 		while (true) {
 			decodeBuffer.rewind();

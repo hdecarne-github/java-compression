@@ -18,20 +18,17 @@ package de.carne.nio.compression.deflate;
 
 import de.carne.nio.compression.CompressionProperties;
 import de.carne.nio.compression.CompressionProperty;
-import de.carne.nio.compression.CompressionPropertyType;
 
 /**
  * {@linkplain DeflateDecoder} properties.
  */
 public class DeflateDecoderProperties extends CompressionProperties {
 
-	private static final CompressionProperty FORMAT = new CompressionProperty("FORMAT", CompressionPropertyType.ENUM);
-	private static final CompressionProperty HISTORY64 = new CompressionProperty("HISTORY64",
-			CompressionPropertyType.BOOLEAN);
-	private static final CompressionProperty KEEP_HISTORY = new CompressionProperty("KEEP_HISTORY",
-			CompressionPropertyType.BOOLEAN);
+	private static final CompressionProperty FORMAT = new CompressionProperty("FORMAT", DeflateFormat.class);
+	private static final CompressionProperty HISTORY64 = new CompressionProperty("HISTORY64", Boolean.class);
+	private static final CompressionProperty KEEP_HISTORY = new CompressionProperty("KEEP_HISTORY", Boolean.class);
 	private static final CompressionProperty RESTART_AFTER_EOS = new CompressionProperty("RESTART_AFTER_EOS",
-			CompressionPropertyType.BOOLEAN);
+			Boolean.class);
 
 	/**
 	 * Construct {@linkplain DeflateDecoderProperties} with default values.

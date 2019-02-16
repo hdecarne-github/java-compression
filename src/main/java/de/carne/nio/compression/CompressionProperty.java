@@ -26,34 +26,34 @@ import org.eclipse.jdt.annotation.Nullable;
 public final class CompressionProperty implements Comparable<CompressionProperty> {
 
 	private final String key;
-	private final CompressionPropertyType type;
+	private final Class<?> type;
 
 	/**
-	 * Construct {@linkplain CompressionProperty}.
+	 * Constructs a new {@linkplain CompressionProperty} instance.
 	 *
-	 * @param key The property key.
-	 * @param type The property type.
+	 * @param key the property key.
+	 * @param type the property type.
 	 */
-	public CompressionProperty(String key, CompressionPropertyType type) {
+	public CompressionProperty(String key, Class<?> type) {
 		this.key = key;
 		this.type = type;
 	}
 
 	/**
-	 * Get the property key.
+	 * Gets the property key.
 	 *
-	 * @return The property key.
+	 * @return the property key.
 	 */
 	public String key() {
 		return this.key;
 	}
 
 	/**
-	 * Get the property type.
+	 * Gets the property type.
 	 *
-	 * @return The property type.
+	 * @return the property type.
 	 */
-	public CompressionPropertyType type() {
+	public Class<?> type() {
 		return this.type;
 	}
 

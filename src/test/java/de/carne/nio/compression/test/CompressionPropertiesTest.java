@@ -21,33 +21,27 @@ import org.junit.jupiter.api.Test;
 
 import de.carne.nio.compression.CompressionProperties;
 import de.carne.nio.compression.CompressionProperty;
-import de.carne.nio.compression.CompressionPropertyType;
 
 /**
  * Test {@linkplain CompressionProperties} class.
  */
 class CompressionPropertiesTest extends CompressionProperties {
 
-	private static enum AnEnum {
+	private enum AnEnum {
 		A, B, C
 	}
 
-	private static enum BnEnum {
+	private enum BnEnum {
 		A, B, C
 	}
 
-	private static final CompressionProperty BYTE_ONE = new CompressionProperty("BYTE_ONE",
-			CompressionPropertyType.BYTE);
-	private static final CompressionProperty LONG_ONE = new CompressionProperty("LONG_ONE",
-			CompressionPropertyType.LONG);
-	private static final CompressionProperty BOOLEAN_FALSE = new CompressionProperty("BOOLEAN_FALSE",
-			CompressionPropertyType.BOOLEAN);
-	private static final CompressionProperty BOOLEAN_TRUE = new CompressionProperty("BOOLEAN_TRUE",
-			CompressionPropertyType.BOOLEAN);
-	private static final CompressionProperty AN_ENUM = new CompressionProperty("AN_ENUM", CompressionPropertyType.ENUM);
-	private static final CompressionProperty BN_ENUM = new CompressionProperty("BN_ENUM", CompressionPropertyType.ENUM);
-	private static final CompressionProperty UNDEFINED = new CompressionProperty("UNDEFINED",
-			CompressionPropertyType.BOOLEAN);
+	private static final CompressionProperty BYTE_ONE = new CompressionProperty("BYTE_ONE", Byte.class);
+	private static final CompressionProperty LONG_ONE = new CompressionProperty("LONG_ONE", Long.class);
+	private static final CompressionProperty BOOLEAN_FALSE = new CompressionProperty("BOOLEAN_FALSE", Boolean.class);
+	private static final CompressionProperty BOOLEAN_TRUE = new CompressionProperty("BOOLEAN_TRUE", Boolean.class);
+	private static final CompressionProperty AN_ENUM = new CompressionProperty("AN_ENUM", AnEnum.class);
+	private static final CompressionProperty BN_ENUM = new CompressionProperty("BN_ENUM", BnEnum.class);
+	private static final CompressionProperty UNDEFINED = new CompressionProperty("UNDEFINED", Boolean.class);
 
 	CompressionPropertiesTest() {
 		registerProperty(BYTE_ONE, Byte.valueOf((byte) 1));

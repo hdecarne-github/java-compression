@@ -21,136 +21,119 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 /**
  * Base class for declaration and definition of compression properties.
  */
-public abstract class CompressionProperties implements Iterable<CompressionProperty> {
+public abstract class CompressionProperties implements CompressionInfos {
 
 	private final Map<CompressionProperty, Object> properties = new HashMap<>();
 
 	/**
-	 * Register a property.
+	 * Registers a property.
 	 * <p>
 	 * Only registered properties can be later on set and retrieved.
+	 * </p>
 	 *
-	 * @param property The {@linkplain CompressionProperty} to register.
-	 * @param defaultValue The property's default value.
+	 * @param property the {@linkplain CompressionProperty} to register.
+	 * @param defaultValue the property's default value.
 	 */
 	protected final void registerProperty(CompressionProperty property, Object defaultValue) {
 		this.properties.put(property, defaultValue);
 	}
 
-	/**
-	 * Get a {@code byte} property.
-	 *
-	 * @param property The property to get.
-	 * @return The current property value.
-	 */
+	@Override
+	public Object getProperty(@NonNull CompressionProperty property) {
+		return getProperty(property, Object.class);
+	}
+
+	@Override
 	public final byte getByteProperty(CompressionProperty property) {
-		return ((Byte) getProperty(property, CompressionPropertyType.BYTE)).byteValue();
+		return getProperty(property, Byte.class).byteValue();
 	}
 
 	/**
-	 * Set a {@code byte} property.
+	 * Sets a {@code byte} property.
 	 *
-	 * @param property The property to set.
-	 * @param value The property value to set.
+	 * @param property the property to set.
+	 * @param value the property value to set.
 	 */
 	public final void setByteProperty(CompressionProperty property, byte value) {
-		setProperty(property, CompressionPropertyType.BYTE, Byte.valueOf(value));
+		setProperty(property, Byte.valueOf(value));
 	}
 
-	/**
-	 * Get a {@code int} property.
-	 *
-	 * @param property The property to get.
-	 * @return The current property value.
-	 */
+	@Override
 	public final int getIntProperty(CompressionProperty property) {
-		return ((Integer) getProperty(property, CompressionPropertyType.INT)).intValue();
+		return getProperty(property, Integer.class).intValue();
 	}
 
 	/**
-	 * Set a {@code int} property.
+	 * Sets a {@code int} property.
 	 *
-	 * @param property The property to set.
-	 * @param value The property value to set.
+	 * @param property the property to set.
+	 * @param value the property value to set.
 	 */
 	public final void setIntProperty(CompressionProperty property, int value) {
-		setProperty(property, CompressionPropertyType.INT, Integer.valueOf(value));
+		setProperty(property, Integer.valueOf(value));
 	}
 
-	/**
-	 * Get a {@code long} property.
-	 *
-	 * @param property The property to get.
-	 * @return The current property value.
-	 */
+	@Override
 	public final long getLongProperty(CompressionProperty property) {
-		return ((Long) getProperty(property, CompressionPropertyType.LONG)).longValue();
+		return getProperty(property, Long.class).longValue();
 	}
 
 	/**
-	 * Set a {@code byte} property.
+	 * Sets a {@code byte} property.
 	 *
-	 * @param property The property to set.
-	 * @param value The property value to set.
+	 * @param property the property to set.
+	 * @param value the property value to set.
 	 */
 	public final void setLongProperty(CompressionProperty property, long value) {
-		setProperty(property, CompressionPropertyType.LONG, Long.valueOf(value));
+		setProperty(property, Long.valueOf(value));
 	}
 
-	/**
-	 * Get a {@code boolean} property.
-	 *
-	 * @param property The property to get.
-	 * @return The current property value.
-	 */
+	@Override
 	public final boolean getBooleanProperty(CompressionProperty property) {
-		return ((Boolean) getProperty(property, CompressionPropertyType.BOOLEAN)).booleanValue();
+		return getProperty(property, Boolean.class).booleanValue();
 	}
 
 	/**
-	 * Set a {@code boolean} property.
+	 * Sets a {@code boolean} property.
 	 *
-	 * @param property The property to set.
-	 * @param value The property value to set.
+	 * @param property the property to set.
+	 * @param value the property value to set.
 	 */
 	public final void setBooleanProperty(CompressionProperty property, boolean value) {
-		setProperty(property, CompressionPropertyType.BOOLEAN, Boolean.valueOf(value));
+		setProperty(property, Boolean.valueOf(value));
 	}
 
-	/**
-	 * Get a {@linkplain Enum} property.
-	 *
-	 * @param property The property to get.
-	 * @return The current property value.
-	 */
+	@Override
 	@SuppressWarnings("squid:S1452")
 	public final Enum<?> getEnumProperty(CompressionProperty property) {
-		return (Enum<?>) getProperty(property, CompressionPropertyType.ENUM);
+		return getProperty(property, Enum.class);
 	}
 
 	/**
-	 * Get a {@linkplain Enum} property.
+	 * Gets a {@linkplain Enum} property.
 	 *
-	 * @param <E> The actual enum type.
-	 * @param property The property to get.
-	 * @param enumType The enum type.
-	 * @return The current property value.
+	 * @param <E> the actual enum type.
+	 * @param property the property to get.
+	 * @param enumType the enum type.
+	 * @return the current property value.
 	 */
 	protected final <E extends Enum<E>> E getEnumProperty(CompressionProperty property, Class<E> enumType) {
 		return Enum.valueOf(enumType, getEnumProperty(property).name());
 	}
 
 	/**
-	 * Set a {@linkplain Enum} property.
+	 * Sets a {@linkplain Enum} property.
 	 *
-	 * @param property The property to set.
-	 * @param value The property value to set.
+	 * @param property the property to set.
+	 * @param value the property value to set.
 	 */
 	public final void setEnumProperty(CompressionProperty property, Enum<?> value) {
-		setProperty(property, CompressionPropertyType.ENUM, value);
+		setProperty(property, value);
 	}
 
 	@Override
@@ -158,11 +141,11 @@ public abstract class CompressionProperties implements Iterable<CompressionPrope
 		return Collections.unmodifiableSet(this.properties.keySet()).iterator();
 	}
 
-	private Object getProperty(CompressionProperty property, CompressionPropertyType type) {
-		CompressionPropertyType propertyType = property.type();
+	private <T> T getProperty(CompressionProperty property, Class<T> type) {
+		Class<?> propertyType = property.type();
 		String propertyKey = property.key();
 
-		if (propertyType != type) {
+		if (!type.isAssignableFrom(propertyType)) {
 			throw new IllegalArgumentException("Property type mismatch while accessing property: " + propertyKey
 					+ " (property type: " + propertyType + "; access type: " + type);
 		}
@@ -172,16 +155,16 @@ public abstract class CompressionProperties implements Iterable<CompressionPrope
 		if (propertyValue == null) {
 			throw new IllegalArgumentException("Unknown property: " + propertyKey);
 		}
-		return propertyValue;
+		return type.cast(propertyValue);
 	}
 
-	private void setProperty(CompressionProperty property, CompressionPropertyType type, Object value) {
-		Class<?> oldValueClass = getProperty(property, type).getClass();
-		Class<?> newValueClass = value.getClass();
+	private <T> void setProperty(CompressionProperty property, @NonNull T value) {
+		Class<?> propertyType = property.type();
+		Class<?> valueType = value.getClass();
 
-		if (!oldValueClass.equals(newValueClass)) {
+		if (!propertyType.isAssignableFrom(valueType)) {
 			throw new IllegalArgumentException("Property type mismatch while accessing property: " + property.key()
-					+ " (property class: " + oldValueClass.getName() + "; access class: " + newValueClass.getName());
+					+ " (property class: " + propertyType + "; access class: " + valueType);
 		}
 		this.properties.put(property, value);
 	}

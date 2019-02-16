@@ -18,15 +18,13 @@ package de.carne.nio.compression.bzip2;
 
 import de.carne.nio.compression.CompressionProperties;
 import de.carne.nio.compression.CompressionProperty;
-import de.carne.nio.compression.CompressionPropertyType;
 
 /**
  * {@linkplain Bzip2Decoder} properties.
  */
 public class Bzip2DecoderProperties extends CompressionProperties {
 
-	private static final CompressionProperty BLOCK_SIZE = new CompressionProperty("BLOCK_SIZE",
-			CompressionPropertyType.ENUM);
+	private static final CompressionProperty BLOCK_SIZE = new CompressionProperty("BLOCK_SIZE", Bzip2BlockSize.class);
 
 	/**
 	 * Construct {@linkplain Bzip2DecoderProperties} with default values.
@@ -37,7 +35,7 @@ public class Bzip2DecoderProperties extends CompressionProperties {
 
 	/**
 	 * Set the block size property.
-	 * 
+	 *
 	 * @param blockSize The block size to set.
 	 */
 	public void setBlockSizeProperty(Bzip2BlockSize blockSize) {
@@ -46,7 +44,7 @@ public class Bzip2DecoderProperties extends CompressionProperties {
 
 	/**
 	 * Get the block size property.
-	 * 
+	 *
 	 * @return The block size property.
 	 */
 	public Bzip2BlockSize getBlockSizeProperty() {

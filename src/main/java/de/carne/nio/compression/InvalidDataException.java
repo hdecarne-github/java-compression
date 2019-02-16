@@ -17,16 +17,16 @@
 package de.carne.nio.compression;
 
 /**
- * This exception is thrown when some unexpected or invalid data is encountered.
+ * This exception is thrown whenever some unexpected or invalid data is encountered.
  */
 public class InvalidDataException extends CompressionException {
 
 	private static final long serialVersionUID = 8521323840663502987L;
 
 	/**
-	 * Construct {@linkplain InvalidDataException}.
+	 * Constructs a new {@linkplain InvalidDataException} instance.
 	 *
-	 * @param data The data causing this exception.
+	 * @param data the data causing this exception.
 	 */
 	public InvalidDataException(Number... data) {
 		super(formatMessage(data));

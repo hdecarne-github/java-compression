@@ -19,26 +19,26 @@ package de.carne.nio.compression;
 import java.io.IOException;
 
 /**
- * Base class for all exceptions thrown by the compression packages.
+ * Base class for all exceptions thrown by this module.
  */
 public abstract class CompressionException extends IOException {
 
 	private static final long serialVersionUID = -3831126706488268850L;
 
 	/**
-	 * Construct {@linkplain CompressionException}.
+	 * Constructs a new {@linkplain CompressionException} instance.
 	 *
-	 * @param message The exception message.
+	 * @param message the exception message.
 	 */
 	protected CompressionException(String message) {
 		super(message);
 	}
 
 	/**
-	 * Construct {@linkplain CompressionException}.
+	 * Constructs a new {@linkplain CompressionException} instance.
 	 *
-	 * @param message The exception message.
-	 * @param cause The exception cause.
+	 * @param message the exception message.
+	 * @param cause the exception cause.
 	 */
 	protected CompressionException(String message, Throwable cause) {
 		super(message, cause);

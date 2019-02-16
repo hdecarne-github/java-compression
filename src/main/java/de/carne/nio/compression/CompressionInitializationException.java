@@ -17,26 +17,26 @@
 package de.carne.nio.compression;
 
 /**
- * This exception is thrown when a compression engine could not be initialized (e.g. due to invalid properties).
+ * This exception is thrown whenever a compression engine could not be initialized (e.g. due to invalid properties).
  */
 public class CompressionInitializationException extends CompressionException {
 
 	private static final long serialVersionUID = 4437492225453303130L;
 
 	/**
-	 * Construct {@linkplain CompressionInitializationException}.
+	 * Constructs a new {@linkplain CompressionInitializationException} instance.
 	 *
-	 * @param message The exception message.
+	 * @param message the exception message.
 	 */
 	public CompressionInitializationException(String message) {
 		super(message);
 	}
 
 	/**
-	 * Construct {@linkplain CompressionInitializationException}.
+	 * Constructs a new {@linkplain CompressionInitializationException} instance.
 	 *
-	 * @param message The exception message.
-	 * @param cause The exception cause.
+	 * @param message the exception message.
+	 * @param cause the exception cause.
 	 */
 	public CompressionInitializationException(String message, Throwable cause) {
 		super(message, cause);

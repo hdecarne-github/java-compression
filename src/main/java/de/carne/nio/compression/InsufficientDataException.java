@@ -17,17 +17,17 @@
 package de.carne.nio.compression;
 
 /**
- * This exception is thrown when not all requested data bytes could be read.
+ * This exception is thrown whenever a required number of data bytes not could be read (e.g. due to EOF condition).
  */
 public class InsufficientDataException extends CompressionException {
 
 	private static final long serialVersionUID = 7837528255415857515L;
 
 	/**
-	 * Construct {@linkplain InsufficientDataException}.
+	 * Constructs a new {@linkplain InsufficientDataException} instance.
 	 *
-	 * @param requested The number of bytes requested.
-	 * @param read The actual number of bytes read.
+	 * @param requested the number of bytes requested.
+	 * @param read the actual number of bytes read.
 	 */
 	public InsufficientDataException(int requested, int read) {
 		super(String.format("Failed to read the requested number of bytes: Requested = %1$d; Read = %2$d", requested,
