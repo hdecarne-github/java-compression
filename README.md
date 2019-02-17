@@ -14,7 +14,7 @@ In order to make it available to other projects and to use a license compatible 
 solutions this code is packaged in a separate project.
 
 #### Current status
-This project is in it's early phase and further development is needed.
+Currently only decoding for some basic compression formats is contained. Further development will be happen on demand.
 
 #### License
 This project is subject to the [LGPLv3](http://www.gnu.org/licenses/lgpl-3.0.en.html).
