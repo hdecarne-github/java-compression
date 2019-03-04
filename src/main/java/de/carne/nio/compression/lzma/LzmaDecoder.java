@@ -21,6 +21,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 
 import de.carne.nio.compression.CompressionInfos;
+import de.carne.nio.compression.InsufficientDataException;
 import de.carne.nio.compression.spi.Decoder;
 
 /**
@@ -29,7 +30,7 @@ import de.carne.nio.compression.spi.Decoder;
 public class LzmaDecoder extends Decoder {
 
 	private enum State {
-		BEGIN, DECODE, COPYFLUSH, EOFFLUSH, EOF
+		HEADER, BEGIN, DECODE, COPYFLUSH, EOFFLUSH, EOF
 	}
 
 	private final LzmaDecoderProperties properties;
@@ -142,7 +143,11 @@ public class LzmaDecoder extends Decoder {
 		this.copyDistance = 0;
 		this.copyLength = 0;
 		this.totalOut = 0;
-		this.state = State.BEGIN;
+		if (LzmaFormat.LZMALIB.equals(this.properties.getFormat())) {
+			this.state = State.HEADER;
+		} else {
+			this.state = State.BEGIN;
+		}
 	}
 
 	@Override
@@ -168,6 +173,10 @@ public class LzmaDecoder extends Decoder {
 
 				while (this.state != State.EOF && dst.remaining() > 0) {
 					switch (this.state) {
+					case HEADER:
+						decodeHeader(src);
+						this.state = State.BEGIN;
+						break;
 					case BEGIN:
 						this.rangeDecoder.beginDecode(src);
 						this.lzmaState = Lzma.STATE_INIT;
@@ -196,6 +205,19 @@ public class LzmaDecoder extends Decoder {
 			endProcessing(beginTime, Math.max(decoded, 0), dstRemainingStart - dst.remaining());
 		}
 		return decoded;
+	}
+
+	private void decodeHeader(ReadableByteChannel src) throws IOException {
+		ByteBuffer buffer = ByteBuffer.allocate(13);
+
+		src.read(buffer);
+		if (buffer.hasRemaining()) {
+			throw new InsufficientDataException(buffer.capacity(), buffer.position());
+		}
+		buffer.flip();
+		this.properties.setLcLpBpProperty(buffer.get());
+		this.properties.setDictionarySizeProperty(buffer.getInt());
+		this.properties.setDecodedSizeProperty(buffer.getLong());
 	}
 
 	private void decodeChunk(ByteBuffer dst, ReadableByteChannel src) throws IOException {

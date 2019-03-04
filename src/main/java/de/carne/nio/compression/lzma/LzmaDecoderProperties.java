@@ -24,69 +24,89 @@ import de.carne.nio.compression.CompressionProperty;
  */
 public class LzmaDecoderProperties extends CompressionProperties {
 
+	private static final CompressionProperty FORMAT = new CompressionProperty("FORMAT", LzmaFormat.class);
 	private static final CompressionProperty LCLPBP = new CompressionProperty("LCLPBP", Byte.class);
 	private static final CompressionProperty DICTIONARY_SIZE = new CompressionProperty("DICTIONARY_SIZE",
 			Integer.class);
 	private static final CompressionProperty DECODED_SIZE = new CompressionProperty("DECODED_SIZE", Long.class);
 
 	/**
-	 * Construct {@linkplain LzmaDecoderProperties} with default values.
+	 * Constructs a new {@linkplain LzmaDecoderProperties} instance with default values.
 	 */
 	public LzmaDecoderProperties() {
+		registerProperty(FORMAT, LzmaFormat.DEFAULT);
 		registerProperty(LCLPBP, Byte.valueOf((byte) 0x5d));
 		registerProperty(DICTIONARY_SIZE, Integer.valueOf(0x00800000));
 		registerProperty(DECODED_SIZE, Long.valueOf(-1l));
 	}
 
 	/**
-	 * Set the lc/lp/bp parameters to use for decoding.
+	 * Sets the format property.
 	 *
-	 * @param lclpbp The lc/lp/bp parameters to use for decoding.
+	 * @param format the format to set.
+	 */
+	public void setFormat(LzmaFormat format) {
+		setEnumProperty(FORMAT, format);
+	}
+
+	/**
+	 * Gets the format property.
+	 *
+	 * @return the format property.
+	 */
+	public LzmaFormat getFormat() {
+		return getEnumProperty(FORMAT, LzmaFormat.class);
+	}
+
+	/**
+	 * Sets the lc/lp/bp parameters to use for decoding.
+	 *
+	 * @param lclpbp the lc/lp/bp parameters to use for decoding.
 	 */
 	public void setLcLpBpProperty(byte lclpbp) {
 		setByteProperty(LCLPBP, lclpbp);
 	}
 
 	/**
-	 * Get the lc/lp/bp parameters to use for decoding.
+	 * Gets the lc/lp/bp parameters to use for decoding.
 	 *
-	 * @return The lc/lp/bp parameters to use for decoding.
+	 * @return the lc/lp/bp parameters to use for decoding.
 	 */
 	public byte getLcLpBpProperty() {
 		return getByteProperty(LCLPBP);
 	}
 
 	/**
-	 * Set the dictionary size to use for decoding.
+	 * Sets the dictionary size to use for decoding.
 	 *
-	 * @param dictionarySize The dictionary size to use for decoding.
+	 * @param dictionarySize the dictionary size to use for decoding.
 	 */
 	public void setDictionarySizeProperty(int dictionarySize) {
 		setIntProperty(DICTIONARY_SIZE, dictionarySize);
 	}
 
 	/**
-	 * Get the dictionary size to use for decoding.
+	 * Gets the dictionary size to use for decoding.
 	 *
-	 * @return The dictionary size to use for decoding.
+	 * @return the dictionary size to use for decoding.
 	 */
 	public int getDictionarySizeProperty() {
 		return getIntProperty(DICTIONARY_SIZE);
 	}
 
 	/**
-	 * Set the decoded size property.
+	 * Sets the decoded size property.
 	 *
-	 * @param decodedSize The decoded size property
+	 * @param decodedSize the decoded size property
 	 */
 	public void setDecodedSizeProperty(long decodedSize) {
 		setLongProperty(DECODED_SIZE, decodedSize);
 	}
 
 	/**
-	 * Get the decoded size property.
+	 * Gets the decoded size property.
 	 *
-	 * @return The decoded size property
+	 * @return the decoded size property
 	 */
 	public long getDecodedSizeProperty() {
 		return getLongProperty(DECODED_SIZE);
