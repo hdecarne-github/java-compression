@@ -32,7 +32,7 @@ import java.util.ServiceLoader;
 
 import org.junit.jupiter.api.Assertions;
 
-import de.carne.nio.compression.CompressionProperties;
+import de.carne.nio.compression.CompressionInfos;
 import de.carne.nio.compression.CompressionProperty;
 import de.carne.nio.compression.spi.Decoder;
 import de.carne.nio.compression.spi.DecoderFactory;
@@ -97,15 +97,15 @@ public abstract class CompressionTest {
 		decoder.reset();
 		System.out.println("Decode properties:");
 
-		CompressionProperties decoderProperties = decoder.properties();
+		CompressionInfos decoderInfos = decoder.properties();
 		List<CompressionProperty> sortedProperties = new ArrayList<>();
 
-		for (CompressionProperty decoderProperty : decoderProperties) {
+		for (CompressionProperty decoderProperty : decoderInfos) {
 			sortedProperties.add(decoderProperty);
 		}
 		Collections.sort(sortedProperties);
 		for (CompressionProperty decoderProperty : sortedProperties) {
-			Object decoderPropertyValue = decoderProperties.getProperty(decoderProperty);
+			Object decoderPropertyValue = decoderInfos.getProperty(decoderProperty);
 
 			System.out.print(
 					" " + decoderProperty.key() + "(" + decoderPropertyValue.getClass() + "): " + decoderPropertyValue);

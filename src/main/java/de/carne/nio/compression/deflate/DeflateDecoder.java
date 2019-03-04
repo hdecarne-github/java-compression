@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 
-import de.carne.nio.compression.CompressionProperties;
+import de.carne.nio.compression.CompressionInfos;
 import de.carne.nio.compression.InvalidDataException;
 import de.carne.nio.compression.common.BitDecoder;
 import de.carne.nio.compression.common.BitRegister;
@@ -89,7 +89,7 @@ public class DeflateDecoder extends Decoder {
 	}
 
 	@Override
-	public CompressionProperties properties() {
+	public CompressionInfos properties() {
 		return this.properties;
 	}
 

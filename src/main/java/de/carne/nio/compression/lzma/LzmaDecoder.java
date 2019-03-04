@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 
-import de.carne.nio.compression.CompressionProperties;
+import de.carne.nio.compression.CompressionInfos;
 import de.carne.nio.compression.spi.Decoder;
 
 /**
@@ -146,7 +146,7 @@ public class LzmaDecoder extends Decoder {
 	}
 
 	@Override
-	public CompressionProperties properties() {
+	public CompressionInfos properties() {
 		return this.properties;
 	}
 

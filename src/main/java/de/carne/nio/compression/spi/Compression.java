@@ -17,7 +17,7 @@
 package de.carne.nio.compression.spi;
 
 import de.carne.nio.compression.Check;
-import de.carne.nio.compression.CompressionProperties;
+import de.carne.nio.compression.CompressionInfos;
 
 /**
  * Base class for all compression engines.
@@ -52,7 +52,7 @@ public abstract class Compression {
 	 *
 	 * @return The compression properties.
 	 */
-	public abstract CompressionProperties properties();
+	public abstract CompressionInfos properties();
 
 	/**
 	 * Reset the compression engine to it's initial state.
@@ -119,7 +119,7 @@ public abstract class Compression {
 	 * Derived classes have to call this function to make sure engine statistics are properly recorded.
 	 *
 	 * @return The recorded start time, which has to be submitted to {@linkplain #endProcessing(long, long, long)} when
-	 *         the processing step is finished.
+	 * the processing step is finished.
 	 */
 	protected final synchronized long beginProcessing() {
 		return System.nanoTime();
