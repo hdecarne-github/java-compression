@@ -28,7 +28,7 @@ public class Bzip2DecoderProperties extends CompressionProperties {
 	private static final CompressionProperty BLOCK_SIZE = new CompressionProperty("BLOCK_SIZE", Bzip2BlockSize.class);
 
 	/**
-	 * Construct {@linkplain Bzip2DecoderProperties} with default values.
+	 * Constructs a new {@linkplain Bzip2DecoderProperties} instance with default values.
 	 */
 	public Bzip2DecoderProperties() {
 		registerProperty(FORMAT, Bzip2Format.DEFAULT);
@@ -37,7 +37,7 @@ public class Bzip2DecoderProperties extends CompressionProperties {
 
 	/**
 	 * Sets the format property.
-	 * 
+	 *
 	 * @param format the format to set.
 	 */
 	public void setFormat(Bzip2Format format) {
@@ -46,7 +46,7 @@ public class Bzip2DecoderProperties extends CompressionProperties {
 
 	/**
 	 * Gets the format property.
-	 * 
+	 *
 	 * @return the format property.
 	 */
 	public Bzip2Format getFormat() {

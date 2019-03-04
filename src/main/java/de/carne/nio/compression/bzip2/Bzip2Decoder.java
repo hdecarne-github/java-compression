@@ -153,7 +153,7 @@ public class Bzip2Decoder extends Decoder {
 		final byte version = (byte) this.bitDecoder.decodeBits(src, 8);
 		final byte headerBlockSize = (byte) this.bitDecoder.decodeBits(src, 8);
 
-		if (magic0 != (byte) 0x42 || magic1 != (byte) 0x5a || version != (byte) 0x6b) {
+		if (magic0 != (byte) 0x42 || magic1 != (byte) 0x5a || version != (byte) 0x68) {
 			throw new InvalidDataException(magic0, magic1, version);
 		}
 		switch (headerBlockSize) {

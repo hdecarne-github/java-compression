@@ -27,7 +27,7 @@ public enum Bzip2Format {
 	DEFAULT,
 
 	/**
-	 * BZ22LIB stream format.
+	 * BZ2LIB stream format.
 	 */
 	BZ2LIB
 
