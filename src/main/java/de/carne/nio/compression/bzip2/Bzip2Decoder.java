@@ -22,7 +22,7 @@ import java.nio.channels.ReadableByteChannel;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import de.carne.nio.compression.CompressionProperties;
+import de.carne.nio.compression.CompressionInfos;
 import de.carne.nio.compression.InvalidDataException;
 import de.carne.nio.compression.common.BitDecoder;
 import de.carne.nio.compression.common.HuffmanDecoder;
@@ -35,12 +35,12 @@ import de.carne.nio.compression.spi.Decoder;
 public class Bzip2Decoder extends Decoder {
 
 	private enum State {
-		BLOCKBEGIN, BLOCKDECODEA, BLOCKDECODEB, BLOCKDECODEC, EOF
+		HEADER, BLOCKBEGIN, BLOCKDECODEA, BLOCKDECODEB, BLOCKDECODEC, EOF
 	}
 
 	private final Bzip2DecoderProperties properties;
 	private final BitDecoder bitDecoder = new BitDecoder(new MsbBitstreamBitRegister());
-	private final int blockSizeLimit;
+	private int blockSizeLimit;
 	private int blockSize;
 	private int blockCRC;
 	private int blockCRCReg;
@@ -87,11 +87,15 @@ public class Bzip2Decoder extends Decoder {
 		this.selectors = null;
 		this.decoders = null;
 		this.counters = null;
-		this.state = State.BLOCKBEGIN;
+		if (Bzip2Format.BZ2LIB.equals(this.properties.getFormat())) {
+			this.state = State.HEADER;
+		} else {
+			this.state = State.BLOCKBEGIN;
+		}
 	}
 
 	@Override
-	public CompressionProperties properties() {
+	public CompressionInfos properties() {
 		return this.properties;
 	}
 
@@ -119,6 +123,10 @@ public class Bzip2Decoder extends Decoder {
 		int decoded = 0;
 
 		switch (this.state) {
+		case HEADER:
+			decoded = decodeHeader(src);
+			this.state = State.BLOCKBEGIN;
+			break;
 		case BLOCKBEGIN:
 			decoded = blockBegin(src) + decode0(dst, src);
 			break;
@@ -136,6 +144,53 @@ public class Bzip2Decoder extends Decoder {
 			break;
 		}
 		return decoded;
+	}
+
+	private int decodeHeader(ReadableByteChannel src) throws IOException {
+		final long totalInStart = this.bitDecoder.totalIn();
+		final byte magic0 = (byte) this.bitDecoder.decodeBits(src, 8);
+		final byte magic1 = (byte) this.bitDecoder.decodeBits(src, 8);
+		final byte version = (byte) this.bitDecoder.decodeBits(src, 8);
+		final byte headerBlockSize = (byte) this.bitDecoder.decodeBits(src, 8);
+
+		if (magic0 != (byte) 0x42 || magic1 != (byte) 0x5a || version != (byte) 0x6b) {
+			throw new InvalidDataException(magic0, magic1, version);
+		}
+		switch (headerBlockSize) {
+		case (byte) 0x30:
+			this.properties.setBlockSizeProperty(Bzip2BlockSize.SIZE0);
+			break;
+		case (byte) 0x31:
+			this.properties.setBlockSizeProperty(Bzip2BlockSize.SIZE1);
+			break;
+		case (byte) 0x32:
+			this.properties.setBlockSizeProperty(Bzip2BlockSize.SIZE2);
+			break;
+		case (byte) 0x33:
+			this.properties.setBlockSizeProperty(Bzip2BlockSize.SIZE3);
+			break;
+		case (byte) 0x34:
+			this.properties.setBlockSizeProperty(Bzip2BlockSize.SIZE4);
+			break;
+		case (byte) 0x35:
+			this.properties.setBlockSizeProperty(Bzip2BlockSize.SIZE5);
+			break;
+		case (byte) 0x36:
+			this.properties.setBlockSizeProperty(Bzip2BlockSize.SIZE6);
+			break;
+		case (byte) 0x37:
+			this.properties.setBlockSizeProperty(Bzip2BlockSize.SIZE7);
+			break;
+		case (byte) 0x38:
+			this.properties.setBlockSizeProperty(Bzip2BlockSize.SIZE8);
+			break;
+		case (byte) 0x39:
+			this.properties.setBlockSizeProperty(Bzip2BlockSize.SIZE9);
+			break;
+		default:
+			throw new InvalidDataException(headerBlockSize);
+		}
+		return (int) (this.bitDecoder.totalIn() - totalInStart);
 	}
 
 	private int blockBegin(ReadableByteChannel src) throws IOException {

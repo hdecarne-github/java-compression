@@ -24,28 +24,48 @@ import de.carne.nio.compression.CompressionProperty;
  */
 public class Bzip2DecoderProperties extends CompressionProperties {
 
+	private static final CompressionProperty FORMAT = new CompressionProperty("FORMAT", Bzip2Format.class);
 	private static final CompressionProperty BLOCK_SIZE = new CompressionProperty("BLOCK_SIZE", Bzip2BlockSize.class);
 
 	/**
 	 * Construct {@linkplain Bzip2DecoderProperties} with default values.
 	 */
 	public Bzip2DecoderProperties() {
+		registerProperty(FORMAT, Bzip2Format.DEFAULT);
 		registerProperty(BLOCK_SIZE, Bzip2BlockSize.SIZE9);
 	}
 
 	/**
-	 * Set the block size property.
+	 * Sets the format property.
+	 * 
+	 * @param format the format to set.
+	 */
+	public void setFormat(Bzip2Format format) {
+		setEnumProperty(FORMAT, format);
+	}
+
+	/**
+	 * Gets the format property.
+	 * 
+	 * @return the format property.
+	 */
+	public Bzip2Format getFormat() {
+		return getEnumProperty(FORMAT, Bzip2Format.class);
+	}
+
+	/**
+	 * Sets the block size property.
 	 *
-	 * @param blockSize The block size to set.
+	 * @param blockSize the block size to set.
 	 */
 	public void setBlockSizeProperty(Bzip2BlockSize blockSize) {
 		setEnumProperty(BLOCK_SIZE, blockSize);
 	}
 
 	/**
-	 * Get the block size property.
+	 * Gets the block size property.
 	 *
-	 * @return The block size property.
+	 * @return the block size property.
 	 */
 	public Bzip2BlockSize getBlockSizeProperty() {
 		return getEnumProperty(BLOCK_SIZE, Bzip2BlockSize.class);
