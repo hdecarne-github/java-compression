@@ -151,45 +151,12 @@ public class Bzip2Decoder extends Decoder {
 		final byte magic0 = (byte) this.bitDecoder.decodeBits(src, 8);
 		final byte magic1 = (byte) this.bitDecoder.decodeBits(src, 8);
 		final byte version = (byte) this.bitDecoder.decodeBits(src, 8);
-		final byte headerBlockSize = (byte) this.bitDecoder.decodeBits(src, 8);
+		/* final byte headerBlockSize = (byte) */this.bitDecoder.decodeBits(src, 8);
 
 		if (magic0 != (byte) 0x42 || magic1 != (byte) 0x5a || version != (byte) 0x68) {
 			throw new InvalidDataException(magic0, magic1, version);
 		}
-		switch (headerBlockSize) {
-		case (byte) 0x30:
-			this.properties.setBlockSizeProperty(Bzip2BlockSize.SIZE0);
-			break;
-		case (byte) 0x31:
-			this.properties.setBlockSizeProperty(Bzip2BlockSize.SIZE1);
-			break;
-		case (byte) 0x32:
-			this.properties.setBlockSizeProperty(Bzip2BlockSize.SIZE2);
-			break;
-		case (byte) 0x33:
-			this.properties.setBlockSizeProperty(Bzip2BlockSize.SIZE3);
-			break;
-		case (byte) 0x34:
-			this.properties.setBlockSizeProperty(Bzip2BlockSize.SIZE4);
-			break;
-		case (byte) 0x35:
-			this.properties.setBlockSizeProperty(Bzip2BlockSize.SIZE5);
-			break;
-		case (byte) 0x36:
-			this.properties.setBlockSizeProperty(Bzip2BlockSize.SIZE6);
-			break;
-		case (byte) 0x37:
-			this.properties.setBlockSizeProperty(Bzip2BlockSize.SIZE7);
-			break;
-		case (byte) 0x38:
-			this.properties.setBlockSizeProperty(Bzip2BlockSize.SIZE8);
-			break;
-		case (byte) 0x39:
-			this.properties.setBlockSizeProperty(Bzip2BlockSize.SIZE9);
-			break;
-		default:
-			throw new InvalidDataException(headerBlockSize);
-		}
+		this.properties.setBlockSizeProperty(Bzip2BlockSize.SIZE9);
 		return (int) (this.bitDecoder.totalIn() - totalInStart);
 	}
 
