@@ -169,12 +169,13 @@ public class LzmaDecoder extends Decoder {
 
 		try {
 			if (this.state != State.EOF) {
-				final long totalOutStart = this.totalOut;
+				final long rangeDecoderTotalInStart = this.rangeDecoder.totalIn();
 
+				decoded = 0;
 				while (this.state != State.EOF && dst.remaining() > 0) {
 					switch (this.state) {
 					case HEADER:
-						decodeHeader(src);
+						decoded += decodeHeader(src);
 						this.state = State.BEGIN;
 						break;
 					case BEGIN:
@@ -199,7 +200,7 @@ public class LzmaDecoder extends Decoder {
 						break;
 					}
 				}
-				decoded = (int) (this.totalOut - totalOutStart);
+				decoded += (int) (this.rangeDecoder.totalIn() - rangeDecoderTotalInStart);
 			}
 		} finally {
 			endProcessing(beginTime, Math.max(decoded, 0), dstRemainingStart - dst.remaining());
@@ -207,17 +208,18 @@ public class LzmaDecoder extends Decoder {
 		return decoded;
 	}
 
-	private void decodeHeader(ReadableByteChannel src) throws IOException {
+	private int decodeHeader(ReadableByteChannel src) throws IOException {
 		ByteBuffer buffer = ByteBuffer.allocate(13);
+		int read = src.read(buffer);
 
-		src.read(buffer);
-		if (buffer.hasRemaining()) {
-			throw new InsufficientDataException(buffer.capacity(), buffer.position());
+		if (read < buffer.capacity()) {
+			throw new InsufficientDataException(buffer.capacity(), read);
 		}
 		buffer.flip();
 		this.properties.setLcLpBpProperty(buffer.get());
 		this.properties.setDictionarySizeProperty(buffer.getInt());
 		this.properties.setDecodedSizeProperty(buffer.getLong());
+		return read;
 	}
 
 	private void decodeChunk(ByteBuffer dst, ReadableByteChannel src) throws IOException {
