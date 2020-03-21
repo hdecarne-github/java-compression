@@ -19,6 +19,8 @@ package de.carne.nio.compression.lzma;
 import java.io.IOException;
 import java.nio.channels.ReadableByteChannel;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 /**
  * LZMA LiteralDecoder
  */
@@ -64,7 +66,7 @@ final class LzmaLiteralDecoder {
 		}
 	}
 
-	private final Decoder2[] coders;
+	private final @NonNull Decoder2[] coders;
 	private final int numPrevBits;
 	private final int numPosBits;
 	private final int posMask;
@@ -76,7 +78,7 @@ final class LzmaLiteralDecoder {
 
 		final int numStates = 1 << (this.numPrevBits + this.numPosBits);
 
-		this.coders = new Decoder2[numStates];
+		this.coders = new @NonNull Decoder2[numStates];
 		for (int i = 0; i < numStates; i++) {
 			this.coders[i] = new Decoder2();
 		}

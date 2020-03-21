@@ -28,6 +28,7 @@ import java.nio.channels.WritableByteChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.ServiceLoader;
 
 import org.junit.jupiter.api.Assertions;
@@ -62,6 +63,7 @@ public abstract class CompressionTest {
 		}
 
 		Assertions.assertNotNull(decoder);
+		Objects.requireNonNull(decoder);
 
 		byte[] encodedData = loadData(encodedDataUrl);
 		byte[] decodedData = loadData(decodedDataUrl);
