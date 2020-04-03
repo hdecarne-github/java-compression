@@ -35,10 +35,10 @@ public final class HuffmanDecoder {
 	byte[] lengths;
 
 	/**
-	 * Construct {@code HuffmanDecoder}.
+	 * Constructs a new {@code HuffmanDecoder} instance.
 	 *
-	 * @param maxBits Maximum length of a symbol.
-	 * @param maxSymbols Maximum number of symbols.
+	 * @param maxBits maximum length of a symbol.
+	 * @param maxSymbols maximum number of symbols.
 	 */
 	public HuffmanDecoder(int maxBits, int maxSymbols) {
 		Check.assertTrue(maxBits > 0, "Invalid max bits: %1$d", maxBits);
@@ -51,9 +51,9 @@ public final class HuffmanDecoder {
 	}
 
 	/**
-	 * Set code lengths.
+	 * Sets code lengths.
 	 *
-	 * @param codeLengths The code lengths to set.
+	 * @param codeLengths the code lengths to set.
 	 * @throws IOException if inconsistent data is encountered.
 	 */
 	public void setCodeLengths(byte[] codeLengths) throws IOException {
@@ -104,13 +104,13 @@ public final class HuffmanDecoder {
 	}
 
 	/**
-	 * Decode next symbol.
+	 * Decodes next symbol.
 	 *
-	 * @param src The channel to read the symbol from.
-	 * @param bitDecoder The <code>BitDecoder</code> to use for bit decoding.
-	 * @param bufferIndex The bit buffer to use for bit decoding.
-	 * @return The read symbol.
-	 * @throws IOException If an I/O error occurred.
+	 * @param src the channel to read the symbol from.
+	 * @param bitDecoder the <code>BitDecoder</code> to use for bit decoding.
+	 * @param bufferIndex the bit buffer to use for bit decoding.
+	 * @return the read symbol.
+	 * @throws IOException if an I/O error occurred.
 	 */
 	public int decodeSymbol(ReadableByteChannel src, BitDecoder bitDecoder, int bufferIndex) throws IOException {
 		int maxBits = this.positions.length - 1;

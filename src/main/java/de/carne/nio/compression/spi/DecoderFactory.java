@@ -20,31 +20,31 @@ import de.carne.nio.compression.CompressionInitializationException;
 import de.carne.nio.compression.CompressionProperties;
 
 /**
- * Interface for compression decoder factories.
+ * Interface for all kinds of compression decoder factories.
  */
 public interface DecoderFactory extends CompressionFactory {
 
 	/**
-	 * Get the default {@linkplain Decoder} properties.
+	 * Gets the default {@linkplain Decoder} properties.
 	 *
-	 * @return The default {@linkplain Decoder} properties.
+	 * @return the default {@linkplain Decoder} properties.
 	 */
 	CompressionProperties defaultDecoderProperties();
 
 	/**
-	 * Create a new {@linkplain Decoder} instance with the given decoder properties.
+	 * Creates a new {@linkplain Decoder} instance with the given decoder properties.
 	 *
-	 * @param properties The {@linkplain Decoder} properties to use.
-	 * @return The created {@linkplain Decoder} instance.
+	 * @param properties the {@linkplain Decoder} properties to use.
+	 * @return the created {@linkplain Decoder} instance.
 	 * @throws CompressionInitializationException if the {@linkplain Decoder} initializer fails.
 	 * @see #defaultDecoderProperties()
 	 */
 	Decoder newDecoder(CompressionProperties properties) throws CompressionInitializationException;
 
 	/**
-	 * Create a new {@linkplain Decoder} instance with default properties.
+	 * Creates a new {@linkplain Decoder} instance with default properties.
 	 *
-	 * @return The created {@linkplain Decoder} instance.
+	 * @return the created {@linkplain Decoder} instance.
 	 * @throws CompressionInitializationException if the {@linkplain Decoder} initializer fails.
 	 * @see #defaultDecoderProperties()
 	 */

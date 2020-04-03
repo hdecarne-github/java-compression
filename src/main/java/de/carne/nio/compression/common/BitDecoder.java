@@ -36,20 +36,20 @@ public final class BitDecoder {
 	private long totalInBits;
 
 	/**
-	 * Construct {@linkplain BitDecoder}.
+	 * Constructs a new {@linkplain BitDecoder} instance.
 	 *
-	 * @param register The [@linkplain BitRegister} to use for bit access.
-	 * @param trailingBytes The optional bytes to feed after the underlying reader has reached EOF.
+	 * @param register the [@linkplain BitRegister} to use for bit access.
+	 * @param trailingBytes the optional bytes to feed after the underlying reader has reached EOF.
 	 */
 	public BitDecoder(BitRegister register, byte... trailingBytes) {
 		this(new BitRegister[] { register }, trailingBytes);
 	}
 
 	/**
-	 * Construct {@linkplain BitDecoder}.
+	 * Constructs a new {@linkplain BitDecoder} instance.
 	 *
-	 * @param registers The [@linkplain BitRegister}s to use for bit access.
-	 * @param trailingBytes The optional bytes to feed after the underlying reader has reached EOF.
+	 * @param registers the [@linkplain BitRegister}s to use for bit access.
+	 * @param trailingBytes the optional bytes to feed after the underlying reader has reached EOF.
 	 */
 	public BitDecoder(BitRegister[] registers, byte... trailingBytes) {
 		Check.assertTrue(registers.length > 0, "Empty registers");
@@ -67,7 +67,7 @@ public final class BitDecoder {
 	}
 
 	/**
-	 * Reset the decoder to it's initial state.
+	 * Resets the decoder to it's initial state.
 	 */
 	public void reset() {
 		clear();
@@ -75,7 +75,7 @@ public final class BitDecoder {
 	}
 
 	/**
-	 * Clear all pending bits.
+	 * Clears all pending bits.
 	 */
 	public void clear() {
 		this.totalInBits += this.registers[0].bitCount();
@@ -85,22 +85,22 @@ public final class BitDecoder {
 	}
 
 	/**
-	 * Get the total number of bytes decoded.
+	 * Gets the total number of bytes decoded.
 	 *
-	 * @return The total number of bytes decoded.
+	 * @return the total number of bytes decoded.
 	 */
 	public long totalIn() {
 		return (this.totalInBits + 7) >>> 3;
 	}
 
 	/**
-	 * Decode a number of bits from a {@linkplain ReadableByteChannel} without discarding them.
+	 * Decodes a number of bits from a {@linkplain ReadableByteChannel} without discarding them.
 	 * <p>
 	 * This function uses the register {@code 0} for bit decoding.
 	 *
-	 * @param src The {@linkplain ReadableByteChannel} to decode from.
-	 * @param count The number of bits to decode.
-	 * @return The decoded bits.
+	 * @param src the {@linkplain ReadableByteChannel} to decode from.
+	 * @param count the number of bits to decode.
+	 * @return the decoded bits.
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public int peekBits(ReadableByteChannel src, int count) throws IOException {
@@ -108,12 +108,12 @@ public final class BitDecoder {
 	}
 
 	/**
-	 * Decode a number of bits from a {@linkplain ReadableByteChannel} without discarding them.
+	 * Decodes a number of bits from a {@linkplain ReadableByteChannel} without discarding them.
 	 *
-	 * @param src The {@linkplain ReadableByteChannel} to decode from.
-	 * @param count The number of bits to decode.
-	 * @param registerIndex The register to use for bit decoding.
-	 * @return The decoded bits.
+	 * @param src the {@linkplain ReadableByteChannel} to decode from.
+	 * @param count the number of bits to decode.
+	 * @param registerIndex the register to use for bit decoding.
+	 * @return the decoded bits.
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public int peekBits(ReadableByteChannel src, int count, int registerIndex) throws IOException {
@@ -126,13 +126,13 @@ public final class BitDecoder {
 	}
 
 	/**
-	 * Decode a number of bits from a {@linkplain ReadableByteChannel} and discard them.
+	 * Decodes a number of bits from a {@linkplain ReadableByteChannel} and discard them.
 	 * <p>
 	 * This function uses the register {@code 0} for bit decoding.
 	 *
-	 * @param src The {@linkplain ReadableByteChannel} to decode from.
-	 * @param count The number of bits to decode.
-	 * @return The decoded bits.
+	 * @param src the {@linkplain ReadableByteChannel} to decode from.
+	 * @param count the number of bits to decode.
+	 * @return the decoded bits.
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public int decodeBits(ReadableByteChannel src, int count) throws IOException {
@@ -140,12 +140,12 @@ public final class BitDecoder {
 	}
 
 	/**
-	 * Decode a number of bits from a {@linkplain ReadableByteChannel} and discard them.
+	 * Decodes a number of bits from a {@linkplain ReadableByteChannel} and discard them.
 	 *
-	 * @param src The source channel to decode from.
-	 * @param count The number of bits to decode.
-	 * @param registerIndex The register to use for bit decoding.
-	 * @return The decoded bits.
+	 * @param src the source channel to decode from.
+	 * @param count the number of bits to decode.
+	 * @param registerIndex the register to use for bit decoding.
+	 * @return the decoded bits.
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public int decodeBits(ReadableByteChannel src, int count, int registerIndex) throws IOException {
@@ -159,7 +159,7 @@ public final class BitDecoder {
 	}
 
 	/**
-	 * Make sure the next decode or read action is byte-aligned.
+	 * Makes sure the next decode or read action is byte-aligned.
 	 */
 	public void alignToByte() {
 		int discardCount = this.registers[0].bitCount() % 8;
@@ -173,13 +173,13 @@ public final class BitDecoder {
 	}
 
 	/**
-	 * Perform a direct byte-aligned read and discard the corresponding bits.
+	 * Performs a direct byte-aligned read and discard the corresponding bits.
 	 * <p>
 	 * This function allows optimized access bulk reading data.
 	 *
-	 * @param src The {@linkplain ReadableByteChannel} to read from.
-	 * @param dst The {@linkplain ByteBuffer} to read into.
-	 * @return The number of read bytes or {@code -1} if the channel has reached EOF.
+	 * @param src the {@linkplain ReadableByteChannel} to read from.
+	 * @param dst the {@linkplain ByteBuffer} to read into.
+	 * @return the number of read bytes or {@code -1} if the channel has reached EOF.
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public int readBytes(ReadableByteChannel src, ByteBuffer dst) throws IOException {
@@ -210,10 +210,10 @@ public final class BitDecoder {
 	}
 
 	/**
-	 * Perform a direct byte-aligned read of a single byte and discard the corresponding bits.
+	 * Performs a direct byte-aligned read of a single byte and discard the corresponding bits.
 	 *
-	 * @param src The {@linkplain ReadableByteChannel} to read from.
-	 * @return The read byte or {@code -1} if the channel has reached EOF.
+	 * @param src the {@linkplain ReadableByteChannel} to read from.
+	 * @return the read byte or {@code -1} if the channel has reached EOF.
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public int readByte(ReadableByteChannel src) throws IOException {

@@ -37,10 +37,7 @@ final class LzmaRangeDecoder {
 	private int code;
 	private int range;
 
-	/**
-	 * Construct <code>LZMARangeDecoder</code>.
-	 */
-	public LzmaRangeDecoder() {
+	LzmaRangeDecoder() {
 		reset();
 	}
 

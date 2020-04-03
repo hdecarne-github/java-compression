@@ -56,16 +56,16 @@ public class DeflateDecoder extends Decoder {
 	private int numDistLevels;
 
 	/**
-	 * Construct {@code DeflateDecoder}.
+	 * Constructs a new {@code DeflateDecoder} instance.
 	 */
 	public DeflateDecoder() {
 		this(new DeflateDecoderProperties());
 	}
 
 	/**
-	 * Construct {@code DeflateDecoder}.
+	 * Constructs a new {@code DeflateDecoder} instance.
 	 *
-	 * @param properties Decoder properties to use.
+	 * @param properties the decoder properties to use.
 	 */
 	public DeflateDecoder(DeflateDecoderProperties properties) {
 		super(DeflateFactory.COMPRESSION_NAME);

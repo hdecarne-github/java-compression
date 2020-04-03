@@ -43,41 +43,20 @@ final class Deflate {
 	protected static final int HISTORY_SIZE_32 = 1 << 15;
 	protected static final int HISTORY_SIZE_64 = 1 << 16;
 
-	protected static final byte[] LEN_START_32 = {
+	protected static final byte[] LEN_START_32 = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16, 20, 24, 28, 32, 40, 48,
+			56, 64, 80, 96, 112, (byte) 128, (byte) 160, (byte) 192, (byte) 224, (byte) 255, 0, 0 };
+	protected static final byte[] LEN_DIRECT_BITS_32 = { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4,
+			4, 4, 4, 5, 5, 5, 5, 0, 0, 0 };
 
-			0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16, 20, 24, 28, 32, 40, 48, 56, 64, 80, 96, 112, (byte) 128,
-			(byte) 160, (byte) 192, (byte) 224, (byte) 255, 0, 0
+	protected static final byte[] LEN_START_64 = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16, 20, 24, 28, 32, 40, 48,
+			56, 64, 80, 96, 112, (byte) 128, (byte) 160, (byte) 192, (byte) 224, 0, 0, 0 };
+	protected static final byte[] LEN_DIRECT_BITS_64 = { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4,
+			4, 4, 4, 5, 5, 5, 5, 16, 0, 0 };
 
-	};
-	protected static final byte[] LEN_DIRECT_BITS_32 = {
-
-			0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 0, 0
-
-	};
-
-	protected static final byte[] LEN_START_64 = {
-
-			0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16, 20, 24, 28, 32, 40, 48, 56, 64, 80, 96, 112, (byte) 128,
-			(byte) 160, (byte) 192, (byte) 224, 0, 0, 0
-
-	};
-	protected static final byte[] LEN_DIRECT_BITS_64 = {
-
-			0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 16, 0, 0
-
-	};
-
-	protected static final int[] DIST_START = {
-
-			0, 1, 2, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192, 256, 384, 512, 768, 1024, 1536, 2048, 3072, 4096,
-			6144, 8192, 12288, 16384, 24576, 32768, 49152
-
-	};
-	protected static final int[] DIST_DIRECT_BITS = {
-
-			0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14
-
-	};
+	protected static final int[] DIST_START = { 0, 1, 2, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96, 128, 192, 256, 384,
+			512, 768, 1024, 1536, 2048, 3072, 4096, 6144, 8192, 12288, 16384, 24576, 32768, 49152 };
+	protected static final int[] DIST_DIRECT_BITS = { 0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9,
+			10, 10, 11, 11, 12, 12, 13, 13, 14, 14 };
 
 	protected static final int MATCH_MIN_LEN = 3;
 
@@ -102,11 +81,8 @@ final class Deflate {
 	protected static final int NUM_DIST_CODES_MIN = 1;
 	protected static final int NUM_LEVEL_CODES_MIN = 4;
 
-	protected static final byte[] CODE_LENGTH_ALPHABET_ORDER = {
-
-			16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15
-
-	};
+	protected static final byte[] CODE_LENGTH_ALPHABET_ORDER = { 16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2,
+			14, 1, 15 };
 
 	protected static final int LEVEL_FIELD_SIZE = 3;
 

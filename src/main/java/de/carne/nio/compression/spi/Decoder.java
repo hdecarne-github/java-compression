@@ -21,25 +21,25 @@ import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 
 /**
- * Base class for compression decoders
+ * Base class for all kinds of compression decoders
  */
 public abstract class Decoder extends Compression {
 
 	/**
-	 * Construct {@linkplain Decoder}.
+	 * Construct a new {@linkplain Decoder} instance.
 	 *
-	 * @param name The compression name.
+	 * @param name the compression name.
 	 */
 	protected Decoder(String name) {
 		super(name);
 	}
 
 	/**
-	 * Decode data.
+	 * Decodes data.
 	 *
-	 * @param dst The {@linkplain ByteBuffer} receiving the decoded bytes.
-	 * @param src The {@linkplain ReadableByteChannel} providing the encoded bytes.
-	 * @return The number of decoded bytes or {@code -1} if the end of the encoded stream has been reached.
+	 * @param dst the {@linkplain ByteBuffer} receiving the decoded bytes.
+	 * @param src the {@linkplain ReadableByteChannel} providing the encoded bytes.
+	 * @return the number of decoded bytes or {@code -1} if the end of the encoded stream has been reached.
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public abstract int decode(ByteBuffer dst, ReadableByteChannel src) throws IOException;

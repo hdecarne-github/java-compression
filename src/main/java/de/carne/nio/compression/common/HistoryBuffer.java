@@ -35,9 +35,9 @@ public final class HistoryBuffer {
 	private int bufferCopyLimit;
 
 	/**
-	 * Construct {@code HistoryBuffer}.
+	 * Construct a new {@code HistoryBuffer} instance.
 	 *
-	 * @param size The history buffer size.
+	 * @param size the history buffer size.
 	 */
 	public HistoryBuffer(int size) {
 		Check.assertTrue(size > 0, "Invalid size: %1$d", size);
@@ -47,16 +47,16 @@ public final class HistoryBuffer {
 	}
 
 	/**
-	 * Get the history buffer size.
+	 * Gets the history buffer size.
 	 *
-	 * @return The history buffer size.
+	 * @return the history buffer size.
 	 */
 	public int getSize() {
 		return this.buffer.length;
 	}
 
 	/**
-	 * Clear the history buffer.
+	 * Clears the history buffer.
 	 */
 	public void clear() {
 		this.bufferBeginPos = 0;
@@ -65,9 +65,9 @@ public final class HistoryBuffer {
 	}
 
 	/**
-	 * Put a single byte into the history buffer.
+	 * Puts a single byte into the history buffer.
 	 *
-	 * @param b The byte to put into the history buffer.
+	 * @param b the byte to put into the history buffer.
 	 */
 	public void putByte(byte b) {
 		this.buffer[this.bufferBeginPos] = b;
@@ -76,11 +76,11 @@ public final class HistoryBuffer {
 	}
 
 	/**
-	 * Read a number of bytes from a channel and put them into the history buffer.
+	 * Reads a number of bytes from a channel and put them into the history buffer.
 	 *
-	 * @param bitDecoder The {@linkplain BitDecoder} to use for reading the bytes.
-	 * @param src The {@linkplain ReadableByteChannel} to read the bytes from.
-	 * @param length The number of bytes to read and to put into the history buffer.
+	 * @param bitDecoder the {@linkplain BitDecoder} to use for reading the bytes.
+	 * @param src the {@linkplain ReadableByteChannel} to read the bytes from.
+	 * @param length the number of bytes to read and to put into the history buffer.
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public void putBytes(BitDecoder bitDecoder, ReadableByteChannel src, int length) throws IOException {
@@ -101,10 +101,10 @@ public final class HistoryBuffer {
 	}
 
 	/**
-	 * Copy (repeat) a number of bytes from the history buffer.
+	 * Copies (repeat) a number of bytes from the history buffer.
 	 *
-	 * @param dist The distance of the history bytes to copy.
-	 * @param len The number of bytes to copy.
+	 * @param dist the distance of the history bytes to copy.
+	 * @param len the number of bytes to copy.
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public void copyBlock(int dist, int len) throws IOException {
@@ -134,10 +134,10 @@ public final class HistoryBuffer {
 	}
 
 	/**
-	 * Flush the history data to a byte buffer.
+	 * Flushes the history data to a byte buffer.
 	 *
-	 * @param dst The {@linkplain ByteBuffer} receiving the history data.
-	 * @return The number of flushed bytes.
+	 * @param dst the {@linkplain ByteBuffer} receiving the history data.
+	 * @return the number of flushed bytes.
 	 */
 	public int flush(ByteBuffer dst) {
 		int len = 0;

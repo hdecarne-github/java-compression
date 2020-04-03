@@ -44,11 +44,11 @@ import de.carne.nio.compression.spi.DecoderFactory;
 public abstract class CompressionTest {
 
 	/**
-	 * Test decoder output.
+	 * Tests decoder output.
 	 *
-	 * @param compressionName The compression name to test the decoder for.
-	 * @param encodedDataUrl The {@linkplain URL} to the encoded test data.
-	 * @param decodedDataUrl The {@linkplain URL} to the decoded test data.
+	 * @param compressionName the compression name to test the decoder for.
+	 * @param encodedDataUrl the {@linkplain URL} to the encoded test data.
+	 * @param decodedDataUrl the {@linkplain URL} to the decoded test data.
 	 * @throws IOException if an I/O error occurs.
 	 */
 	protected void runDecoderTest(String compressionName, URL encodedDataUrl, URL decodedDataUrl) throws IOException {

@@ -67,11 +67,11 @@ public class LzmaDecoder extends Decoder {
 	private int copyDistance;
 	private int copyLength;
 
-	int lzmaState;
-	int rep0;
-	int rep1;
-	int rep2;
-	int rep3;
+	private int lzmaState;
+	private int rep0;
+	private int rep1;
+	private int rep2;
+	private int rep3;
 
 	private long currentPos;
 	private byte prevByte;
@@ -81,9 +81,9 @@ public class LzmaDecoder extends Decoder {
 	private State state = State.EOF;
 
 	/**
-	 * Construct {@linkplain LzmaDecoder}.
+	 * Constructs a new {@linkplain LzmaDecoder} instance.
 	 *
-	 * @param properties The decoder properties to use.
+	 * @param properties the decoder properties to use.
 	 */
 	public LzmaDecoder(LzmaDecoderProperties properties) {
 		super(LzmaFactory.COMPRESSION_NAME);

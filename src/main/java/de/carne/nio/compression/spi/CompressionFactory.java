@@ -17,14 +17,14 @@
 package de.carne.nio.compression.spi;
 
 /**
- * Basic interface for all compression factories.
+ * Basic interface for all kinds of compression factories.
  */
 public interface CompressionFactory {
 
 	/**
-	 * Get the compression name.
+	 * Gets the compression name.
 	 *
-	 * @return The compression name.
+	 * @return the compression name.
 	 */
 	String compressionName();
 

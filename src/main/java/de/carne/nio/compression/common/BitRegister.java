@@ -41,7 +41,7 @@ public abstract class BitRegister {
 	}
 
 	/**
-	 * Clear all bits.
+	 * Clears all bits.
 	 */
 	public final void clear() {
 		this.register = 0;
@@ -49,35 +49,35 @@ public abstract class BitRegister {
 	}
 
 	/**
-	 * Get the number of bits currently stored in the register.
+	 * Gets the number of bits currently stored in the register.
 	 *
-	 * @return The number of bits currently stored in the register.
+	 * @return the number of bits currently stored in the register.
 	 */
 	public final int bitCount() {
 		return this.bitCount;
 	}
 
 	/**
-	 * Feed additional bits to the register.
+	 * Feeds additional bits to the register.
 	 *
-	 * @param b The byte bits to feed.
-	 * @return The updated number of bits stored in the register.
+	 * @param b the byte bits to feed.
+	 * @return the updated number of bits stored in the register.
 	 */
 	public abstract int feedBits(byte b);
 
 	/**
-	 * Take a peek at the register's bits.
+	 * Takes a peek at the register's bits.
 	 *
-	 * @param count The number of bits to return.
-	 * @return The register bits.
+	 * @param count the number of bits to return.
+	 * @return the register bits.
 	 */
 	public abstract int peekBits(int count);
 
 	/**
-	 * Discard bits from the register.
+	 * Discards bits from the register.
 	 *
-	 * @param count The number of bits to discard.
-	 * @return The updated number of bits stored in the register.
+	 * @param count the number of bits to discard.
+	 * @return the updated number of bits stored in the register.
 	 */
 	public abstract int discardBits(int count);
 

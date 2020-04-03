@@ -21,36 +21,36 @@ import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
 
 /**
- * Base class for compression encoders
+ * Base class for all kinds of compression encoders
  */
 public abstract class Encoder extends Compression {
 
 	/**
-	 * Construct {@linkplain Encoder}.
+	 * Constructs a new {@linkplain Encoder} instance.
 	 *
-	 * @param name The compression name.
+	 * @param name the compression name.
 	 */
 	protected Encoder(String name) {
 		super(name);
 	}
 
 	/**
-	 * Encode data.
+	 * Encodes data.
 	 *
-	 * @param src The {@linkplain ByteBuffer} providing the data to encode.
-	 * @param dst The {@linkplain WritableByteChannel} receiving the encoded bytes.
-	 * @return The number of encoded bytes.
+	 * @param src the {@linkplain ByteBuffer} providing the data to encode.
+	 * @param dst the {@linkplain WritableByteChannel} receiving the encoded bytes.
+	 * @return the number of encoded bytes.
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public abstract int encode(ByteBuffer src, WritableByteChannel dst) throws IOException;
 
 	/**
-	 * Close the encoding data stream and write any needed termination mark.
+	 * Finishes encoding and writes any needed termination mark.
 	 *
-	 * @param dst The {@linkplain WritableByteChannel} receiving the encoded bytes.
-	 * @return The number of encoded bytes.
+	 * @param dst the {@linkplain WritableByteChannel} receiving the encoded bytes.
+	 * @return the number of encoded bytes.
 	 * @throws IOException if an I/O error occurs.
 	 */
-	public abstract int closeEncoding(WritableByteChannel dst) throws IOException;
+	public abstract int finishEncoding(WritableByteChannel dst) throws IOException;
 
 }

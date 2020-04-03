@@ -20,7 +20,7 @@ import de.carne.nio.compression.CompressionInitializationException;
 import de.carne.nio.compression.CompressionProperties;
 
 /**
- * Interface for compression encoder factories.
+ * Interface for all kinds of compression encoder factories.
  */
 public interface EncoderFactory extends CompressionFactory {
 

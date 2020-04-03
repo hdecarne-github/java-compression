@@ -31,7 +31,7 @@ public class DeflateDecoderProperties extends CompressionProperties {
 			Boolean.class);
 
 	/**
-	 * Construct {@linkplain DeflateDecoderProperties} with default values.
+	 * Constructs a new {@linkplain DeflateDecoderProperties} instance with default values.
 	 */
 	public DeflateDecoderProperties() {
 		registerProperty(FORMAT, DeflateFormat.DEFAULT);
@@ -41,72 +41,72 @@ public class DeflateDecoderProperties extends CompressionProperties {
 	}
 
 	/**
-	 * Set the stream format to use for decoding.
+	 * Sets the stream format to use for decoding.
 	 *
-	 * @param format The stream format to use for decoding.
+	 * @param format the stream format to use for decoding.
 	 */
 	public void setFormatProperty(DeflateFormat format) {
 		setEnumProperty(FORMAT, format);
 	}
 
 	/**
-	 * Get the stream format to use for decoding.
+	 * Gets the stream format to use for decoding.
 	 *
-	 * @return The stream format for decoding.
+	 * @return the stream format for decoding.
 	 */
 	public DeflateFormat getFormatProperty() {
 		return getEnumProperty(FORMAT, DeflateFormat.class);
 	}
 
 	/**
-	 * Set the 64k history option.
+	 * Sets the 64k history option.
 	 *
-	 * @param history64 Whether to use a 64k history.
+	 * @param history64 whether to use a 64k history.
 	 */
 	public void setHistory64Property(boolean history64) {
 		setBooleanProperty(HISTORY64, history64);
 	}
 
 	/**
-	 * Get the 64k history option.
+	 * Gets the 64k history option.
 	 *
-	 * @return The 64k history option.
+	 * @return the 64k history option.
 	 */
 	public boolean getHistory64Property() {
 		return getBooleanProperty(HISTORY64);
 	}
 
 	/**
-	 * Set the keep history option.
+	 * Sets the keep history option.
 	 *
-	 * @param keepHistory The keep history option.
+	 * @param keepHistory the keep history option.
 	 */
 	public void setKeepHistoryProperty(boolean keepHistory) {
 		setBooleanProperty(KEEP_HISTORY, keepHistory);
 	}
 
 	/**
-	 * Get the keep history option.
+	 * Gets the keep history option.
 	 *
-	 * @return The keep history option.
+	 * @return the keep history option.
 	 */
 	public boolean getKeepHistoryProperty() {
 		return getBooleanProperty(KEEP_HISTORY);
 	}
 
 	/**
-	 * Set the restart after EOS option.
+	 * Sets the restart after EOS option.
 	 *
-	 * @param restartAfterEos The restart after EOS option.
+	 * @param restartAfterEos the restart after EOS option.
 	 */
 	public void setRestartAfterEosProperty(boolean restartAfterEos) {
 		setBooleanProperty(RESTART_AFTER_EOS, restartAfterEos);
 	}
 
 	/**
-	 * Get the restart after EOS option.
+	 * Gets the restart after EOS option.
 	 *
-	 * @return The restart after EOS option.
+	 * @return the restart after EOS option.
 	 */
 	public boolean getRestartAfterEosProperty() {
 		return getBooleanProperty(RESTART_AFTER_EOS);

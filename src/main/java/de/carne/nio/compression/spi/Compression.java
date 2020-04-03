@@ -20,7 +20,7 @@ import de.carne.nio.compression.Check;
 import de.carne.nio.compression.CompressionInfos;
 
 /**
- * Base class for all compression engines.
+ * Base class for all kinds of compression engines.
  */
 public abstract class Compression {
 
@@ -30,32 +30,32 @@ public abstract class Compression {
 	private long totalOut = 0L;
 
 	/**
-	 * Construct {@linkplain Compression}.
+	 * Constructs a new {@linkplain Compression} instance.
 	 *
-	 * @param name The compression name.
+	 * @param name the compression name.
 	 */
 	protected Compression(String name) {
 		this.name = name;
 	}
 
 	/**
-	 * Get the compression name.
+	 * Gets the compression name.
 	 *
-	 * @return The compression name.
+	 * @return the compression name.
 	 */
 	public final String name() {
 		return this.name;
 	}
 
 	/**
-	 * Get the compression properties.
+	 * Gets the compression properties.
 	 *
-	 * @return The compression properties.
+	 * @return the compression properties.
 	 */
 	public abstract CompressionInfos properties();
 
 	/**
-	 * Reset the compression engine to it's initial state.
+	 * Resets the compression engine to it's initial state.
 	 */
 	public synchronized void reset() {
 		this.processingNanos = 0L;
@@ -64,37 +64,37 @@ public abstract class Compression {
 	}
 
 	/**
-	 * Get the time (in milliseconds) spent in this engine since it's creation respectively the last call to
+	 * Gets the time (in milliseconds) spent in this engine since it's creation respectively the last call to
 	 * {@linkplain #reset()}.
 	 *
-	 * @return The time (in milliseconds) spent in this engine since the last call to {@linkplain #reset()}.
+	 * @return the time (in milliseconds) spent in this engine since the last call to {@linkplain #reset()}.
 	 */
 	public final synchronized long processingTime() {
 		return this.processingNanos / 1000000L;
 	}
 
 	/**
-	 * Get the number of bytes consumed by this engine since it's creation respectively the last call to
+	 * Gets the number of bytes consumed by this engine since it's creation respectively the last call to
 	 * {@linkplain #reset()}.
 	 *
-	 * @return The number of bytes consumed by this engine since the last call to {@linkplain #reset()}.
+	 * @return the number of bytes consumed by this engine since the last call to {@linkplain #reset()}.
 	 */
 	public final synchronized long totalIn() {
 		return this.totalIn;
 	}
 
 	/**
-	 * Get the input processing rate (in bytes per second) of this engine based upon the consumed bytes
+	 * Gets the input processing rate (in bytes per second) of this engine based upon the consumed bytes
 	 * {@linkplain #totalIn()} and the processing time {@linkplain #processingTime()}.
 	 *
-	 * @return The input processing rate (in bytes per second).
+	 * @return the input processing rate (in bytes per second).
 	 */
 	public final synchronized long rateIn() {
 		return (this.processingNanos >= 1000000L ? (this.totalIn * 1000L) / (this.processingNanos / 1000000L) : 0L);
 	}
 
 	/**
-	 * Get the number of bytes emitted by this engine since it's creation respectively the last call to
+	 * Gets the number of bytes emitted by this engine since it's creation respectively the last call to
 	 * {@linkplain #reset()}.
 	 *
 	 * @return The number of bytes emitted by this engine since the last call to {@linkplain #reset()}.
@@ -104,21 +104,21 @@ public abstract class Compression {
 	}
 
 	/**
-	 * Get the output processing rate (in bytes per second) of this engine based upon the emitted bytes
+	 * Gets the output processing rate (in bytes per second) of this engine based upon the emitted bytes
 	 * {@linkplain #totalOut()} and the processing time {@linkplain #processingTime()}.
 	 *
-	 * @return The output processing rate (in bytes per second).
+	 * @return the output processing rate (in bytes per second).
 	 */
 	public final synchronized long rateOut() {
 		return (this.processingNanos >= 1000000L ? (this.totalOut * 1000L) / (this.processingNanos / 1000000L) : 0L);
 	}
 
 	/**
-	 * Record the start time of a processing step.
+	 * Records the start time of a processing step.
 	 * <p>
 	 * Derived classes have to call this function to make sure engine statistics are properly recorded.
 	 *
-	 * @return The recorded start time, which has to be submitted to {@linkplain #endProcessing(long, long, long)} when
+	 * @return the recorded start time, which has to be submitted to {@linkplain #endProcessing(long, long, long)} when
 	 * the processing step is finished.
 	 */
 	protected final synchronized long beginProcessing() {
@@ -126,13 +126,13 @@ public abstract class Compression {
 	}
 
 	/**
-	 * Record the processing time and input/output bytes at the end of a processing step.
+	 * Records the processing time and input/output bytes at the end of a processing step.
 	 * <p>
 	 * Derived classes have to call this function to make sure engine statistics are properly recorded.
 	 *
-	 * @param beginTime The begin time as returned by {@linkplain #beginProcessing()}.
-	 * @param in The number of consumed bytes.
-	 * @param out The number of emitted bytes.
+	 * @param beginTime the begin time as returned by {@linkplain #beginProcessing()}.
+	 * @param in the number of consumed bytes.
+	 * @param out the number of emitted bytes.
 	 */
 	protected final synchronized void endProcessing(long beginTime, long in, long out) {
 		Check.assertTrue(in >= 0, "Invalid in: %1$d", in);

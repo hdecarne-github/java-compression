@@ -61,14 +61,14 @@ public class Bzip2Decoder extends Decoder {
 	private State state = State.EOF;
 
 	/**
-	 * Construct {@linkplain Bzip2Decoder}.
+	 * Constructs a new {@linkplain Bzip2Decoder} instance.
 	 */
 	public Bzip2Decoder() {
 		this(new Bzip2DecoderProperties());
 	}
 
 	/**
-	 * Construct {@linkplain Bzip2Decoder}.
+	 * Constructs a new {@linkplain Bzip2Decoder} instance.
 	 *
 	 * @param properties The decoder properties.
 	 */
