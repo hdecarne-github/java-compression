@@ -23,6 +23,17 @@ defaultTasks "classes", "testClasses"
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
+tasks.withType(JavaCompile) {
+	// Caused by org.eclipse.jdt.annotation
+	options.compilerArgs += ["-Xlint:-requires-transitive-automatic"]
+}
+
+plugins.withType(JavaPlugin).configureEach {
+	java {
+		modularity.inferModulePath = true
+	}
+}
+
 repositories {
 	jcenter()
 	maven { url "https://oss.jfrog.org/libs-release/" }
@@ -42,7 +53,6 @@ dependencies {
 jar {
 	manifest {
 		attributes(
-			'Automatic-Module-Name': automaticModuleName,
 			'Created-By': "Gradle ${gradle.gradleVersion} (${System.properties['os.name']}:${System.properties['os.arch']}:${System.properties['os.version']})",
 			'Build-Jdk' : System.properties['java.version'],
 			'Build-Timestamp': new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ").format(new Date()),
