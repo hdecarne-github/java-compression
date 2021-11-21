@@ -1,6 +1,6 @@
 ### Java compression library
 [![Publication](https://img.shields.io/maven-central/v/de.carne/java-compression)](https://search.maven.org/artifact/de.carne/java-compression)
-[![Build Status](https://travis-ci.com/hdecarne/java-compression.svg?branch=master)](https://travis-ci.com/hdecarne/java-compression)
+![Build](https://github.com/hdecarne/java-compression/actions/workflows/build-on-linux.yml/badge.svg)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=de.carne%3Ajava-compression&metric=coverage)](https://sonarcloud.io/dashboard?id=de.carne%3Ajava-compression)
 
 This project provides pure Java based implementations of several common compression algorithms.
